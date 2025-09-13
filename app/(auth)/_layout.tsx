@@ -15,21 +15,21 @@ export default function TabLayout() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
       <Image 
-        className="h-full w-full absolute top-0" 
+        className="h-screen w-screen absolute top-0" 
         resizeMode='cover' 
         source={require("@/assets/images/fridge.jpg")} 
       />
 
       {/* Logo */}
-      <View className="h-2/3 w-screen flex justify-center items-center">
-        <View className="p-8 card">
+      <View className="h-1/2 w-screen flex justify-center items-center">
+        <View className="p-8 bg-white dark:bg-black rounded-lg">
           <Logo />
         </View>
       </View>
 
-      {/* Form */}
-      <View className="w-screen h-screen absolute top-0 bg-stone-400/25"/>
+      <View className="w-screen h-screen absolute top-0 bg-black/10"/>
       <LinearGradient
+        className="h-1/2 flex items-center justify-center"
         locations={[
           0, 
           0.2, 
@@ -42,7 +42,6 @@ export default function TabLayout() {
         ]}
       > 
         <Slot/> 
-
       </LinearGradient>
     </KeyboardAvoidingView>
 

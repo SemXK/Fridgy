@@ -1,22 +1,31 @@
-import { Text } from 'react-native'
+import { primaryColor } from '@/constants/theme'
+import { ActivityIndicator, Text } from 'react-native'
 import { Button } from 'react-native-paper'
 
 interface ButtonInterface {
   onPress: () => void,
   buttonText:  string,
-  className?: string
+  className?: string,
+  isLoading?: boolean,
+  mode?: "text" | "elevated" | "outlined" | "contained" | "contained-tonal"
 }
 
-const PrimaryButton = ({onPress, buttonText, className}: ButtonInterface) => {
+const PrimaryButton = ({onPress, buttonText, className, isLoading, mode}: ButtonInterface) => {
   return (
     <Button 
-      mode="elevated"
-      buttonColor='#0284c7'
+      mode="outlined"
+      buttonColor={!isLoading ? primaryColor[500] : "#d5d5d5"}
+      disabled={isLoading}
       textColor='white'
       onPress={onPress}
       className={className}
       >
-      <Text>{buttonText}</Text>
+      {
+        isLoading ?
+        <ActivityIndicator size={16} color="#ffffff" />
+        :
+        <Text>{buttonText}</Text>
+      }
     </Button>
   )
 }

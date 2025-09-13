@@ -37,7 +37,6 @@ export async function login(email: string, password: string) {
   // 1! application context update
 }
 
-
 export async function register( username: string, email: string, password: string) {
 
   // * Create account
@@ -46,9 +45,9 @@ export async function register( username: string, email: string, password: strin
     email,
     password,
     name: username
-  }).catch(e => console.log(e));
-
-  if (!newAccount) throw new Error
+  }).catch(e => e);
+  console.log("newAccount", newAccount)
+  if(!newAccount.$id) throw new Error(newAccount) 
 
   // * Create user record from the new account
   const userRecord = await databases.createDocument(
@@ -60,8 +59,12 @@ export async function register( username: string, email: string, password: strin
       email, 
     }
   )
-  if (!userRecord) throw new Error
-
+  .catch(e => {
+    console.log("Er", e)
+    return e
+  });
+  // if (!userRecord) throw new Error
+  console.log(userRecord, newAccount)
   return userRecord
   // await login(email, password);
 }

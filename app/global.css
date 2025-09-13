@@ -2,14 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Position styles */
+/* Position styles
 .centered-flex{
   @apply flex items-center justify-center
 }
 
 
-/* Component Display */
 .card {
   @apply " bg-white dark:bg-black rounded-2xl centered-flex"
 }
-
+ */

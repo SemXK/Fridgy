@@ -1,6 +1,6 @@
-import { getCurrentTheme } from '@/constants/theme';
+import { getCurrentTheme, primaryColor } from '@/constants/theme';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Icon, TextInput } from 'react-native-paper';
 
 
@@ -17,11 +17,14 @@ const CustomFormField = ({value, setValue, label, secureTextEntry = false, secur
   return (
     <View className="relative ">
       <TextInput
-        label={label}
+        label={<Text className="text-primary-500">{label}</Text>}
         value={value}
         onChangeText={v => setValue(v)}
-        outlineColor="transparent"
-        activeOutlineColor="transparent"
+        outlineColor={primaryColor[500]}
+        activeOutlineColor={primaryColor[500]}
+        placeholderTextColor={primaryColor[500]}
+        textColor={primaryColor[500]}
+        activeUnderlineColor={primaryColor[500]}
         mode={mode || 'outlined'}
         secureTextEntry={secureTextEntry}
         style={{
