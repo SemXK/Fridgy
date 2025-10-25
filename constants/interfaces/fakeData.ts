@@ -67,13 +67,15 @@ export const packageList: PackageType[] = [
   },
 ];
 
-export const Products: Product[] = [
+export const productList: Product[] = [
   {
     id: 1,
     name: "Pomodori",
     quantity: "2",
     package: packageList[4],
     foodTypes: [foodTypes[0]],
+    image: require("../../assets/images/vegan-burger.jpg"),
+
     created_at: new Date(),
     updated_at: new Date(),
   },
@@ -82,6 +84,7 @@ export const Products: Product[] = [
     name: "Grana Padano",
     quantity: "1",
     foodTypes: [foodTypes[5], foodTypes[6]],
+    image: require("../../assets/images/pancakes.jpg"),
     created_at: new Date(),
     updated_at: new Date(),
   },
@@ -90,6 +93,7 @@ export const Products: Product[] = [
     name: "Petti di pollo",
     quantity: "4",
     foodTypes: [foodTypes[3]],
+    image: require("../../assets/images/fresh-fruits.jpg"),
     created_at: new Date(),
     updated_at: new Date(),
   },
