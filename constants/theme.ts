@@ -1,61 +1,71 @@
-import { Appearance, Platform } from 'react-native';
-
+import { Appearance, Platform } from "react-native";
 
 // * Costanti, da cambiare anche in tailwindcss.conf
 export const primaryColor = {
-  50: "#f0f9ff",
-  100: "#e0f2fe",
-  200: "#bae6fd",
-  300: "#7dd3fc",
-  400: "#38bdf8",
-  500: "#0ea5e9",
-  600: "#0284c7",
-  700: "#0369a1",
-  800: "#075985",
-  900: "#0c4a6e"
-}
+  "50": "#faf8f3",
+  "100": "#f3ecdd",
+  "200": "#e6d6b8",
+  "300": "#d2b67e",
+  "400": "#bfa05b",
+  "500": "#4b8a52",
+  "600": "#3c6f44",
+  "700": "#305937",
+  "800": "#25432b",
+  "900": "#1a2f1f",
+};
+export const secondaryColor = {
+  "50": "#fdfbf7",
+  "100": "#f8f3ea",
+  "200": "#f1e5cf",
+  "300": "#e5cfac",
+  "400": "#d4b889",
+  "500": "#c3a16a",
+  "600": "#a88454",
+  "700": "#896942",
+  "800": "#6b5133",
+  "900": "#4e3a25",
+};
 
 // * Palette di colori in base al tema
 export const Colors = {
   light: {
-    primaryClearColor: "#fff",         // colore definito come "bianco"
+    primaryClearColor: "#fff", // colore definito come "bianco"
     shadowColor: "#090705",
-    primaryColor
+    primaryColor,
   },
   dark: {
     primaryClearColor: "#000",
-    shadowColor: "#090705"
+    shadowColor: "#090705",
   },
 };
 
 // * Accesso alla palette
 
 export function getCurrentTheme() {
-  let  isLightTheme = Appearance.getColorScheme() == "light"
-  return isLightTheme ?  Colors.light : Colors.dark
+  let isLightTheme = Appearance.getColorScheme() == "light";
+  return isLightTheme ? Colors.light : Colors.dark;
 }
 export function getOppositeTheme() {
-  let  isLightTheme = Appearance.getColorScheme() != "light"
-  return isLightTheme ?  Colors.light : Colors.dark
+  let isLightTheme = Appearance.getColorScheme() != "light";
+  return isLightTheme ? Colors.light : Colors.dark;
 }
-
 
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
+    sans: "system-ui",
     /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
+    serif: "ui-serif",
     /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
+    rounded: "ui-rounded",
     /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+    mono: "ui-monospace",
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: "normal",
+    serif: "serif",
+    rounded: "normal",
+    mono: "monospace",
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
