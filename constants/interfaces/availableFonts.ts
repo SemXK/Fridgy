@@ -1,0 +1,17 @@
+export type AvailableFonts =
+  | "Nunito-Black"
+  | "Nunito-BlackItalic"
+  | "Nunito-Bold"
+  | "Nunito-BoldItalic"
+  | "Nunito-ExtraBold"
+  | "Nunito-ExtraBoldItalic"
+  | "Nunito-ExtraLight"
+  | "Nunito-ExtraLightItalic"
+  | "Nunito-Italic"
+  | "Nunito-Light"
+  | "Nunito-LightItalic"
+  | "Nunito-Medium"
+  | "Nunito-MediumItalic"
+  | "Nunito-Regular"
+  | "Nunito-SemiBold"
+  | "Nunito-SemiBoldItalic";

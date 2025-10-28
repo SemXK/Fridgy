@@ -97,13 +97,13 @@ export const productList: Product[] = [
     created_at: new Date(),
     updated_at: new Date(),
   },
-  {
-    id: 4,
-    name: "Tonno",
-    package: packageList[0],
-    quantity: "4",
-    foodTypes: [foodTypes[3]],
-    created_at: new Date(),
-    updated_at: new Date(),
-  },
+  // {
+  //   id: 4,
+  //   name: "Tonno",
+  //   package: packageList[0],
+  //   quantity: "4",
+  //   foodTypes: [foodTypes[3]],
+  //   created_at: new Date(),
+  //   updated_at: new Date(),
+  // },
 ];

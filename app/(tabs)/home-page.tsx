@@ -13,7 +13,7 @@ const HomePage = () => {
 
   // * Display
   return (
-    <View className="w-full h-screen p-4 bg-primary-600 flex gap-4 flex-row flex-wrap justify-between">
+    <View className="w-full h-screen p-4  flex gap-4 flex-row flex-wrap justify-between">
       <MainImage />
       {productList.map(product =>
         <ProductMiniCard

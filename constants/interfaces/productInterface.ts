@@ -1,3 +1,5 @@
+import { ImageSourcePropType } from "react-native";
+
 export interface FoodType {
   id: number;
   type: string; // latticini, carne, verdure ec...
@@ -13,7 +15,7 @@ export interface Product {
   name: string;
   quantity: string;
   foodTypes: FoodType[];
-  image?: string;
+  image?: ImageSourcePropType;
   package?: PackageType;
   created_at: Date;
   updated_at: Date;
