@@ -17,30 +17,37 @@ export const foodTypes: FoodType[] = [
   {
     id: 1,
     type: "Verdure",
+    color: "bg-emerald-700",
   },
   {
     id: 2,
     type: "Frutta",
+    color: "bg-emerald-500",
   },
   {
     id: 3,
     type: "Carne Bianca",
+    color: "bg-rose-500",
   },
   {
     id: 4,
     type: "Legumi",
+    color: "bg-amber-900",
   },
   {
     id: 5,
     type: "Latticini",
+    color: "bg-emerald-500 stone-300",
   },
   {
     id: 6,
     type: "Formaggi",
+    color: "bg-amber-600",
   },
   {
     id: 7,
     type: "Pesce",
+    color: "bg-grey-500",
   },
 ];
 
@@ -74,7 +81,7 @@ export const productList: Product[] = [
     quantity: "2",
     package: packageList[4],
     foodTypes: [foodTypes[0]],
-    image: require("../../assets/images/vegan-burger.jpg"),
+    image: require("../../assets/images/foodImages/tomatoes.png"),
 
     created_at: new Date(),
     updated_at: new Date(),
@@ -83,8 +90,8 @@ export const productList: Product[] = [
     id: 2,
     name: "Grana Padano",
     quantity: "1",
-    foodTypes: [foodTypes[5], foodTypes[6]],
-    image: require("../../assets/images/pancakes.jpg"),
+    foodTypes: [foodTypes[5]],
+    image: require("../../assets/images/foodImages/granaPadano.png"),
     created_at: new Date(),
     updated_at: new Date(),
   },
@@ -92,8 +99,8 @@ export const productList: Product[] = [
     id: 3,
     name: "Petti di pollo",
     quantity: "4",
-    foodTypes: [foodTypes[3]],
-    image: require("../../assets/images/fresh-fruits.jpg"),
+    foodTypes: [foodTypes[2]],
+    image: require("../../assets/images/foodImages/pettoDiPollo.png"),
     created_at: new Date(),
     updated_at: new Date(),
   },

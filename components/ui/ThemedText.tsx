@@ -1,12 +1,22 @@
+import { AvailableFonts } from '@/constants/interfaces/availableFonts';
 import React from 'react';
 import { Text } from 'react-native';
 
-const ThemedText = ({label, textStyle}:any) => {
+interface TTInterface {
+  label: string;
+  textStyle?: string;
+  darkModeDisabled?: boolean;
+  font?: AvailableFonts;
+}
+
+const ThemedText = ({ label, textStyle, darkModeDisabled, font }: TTInterface) => {
 
   return (
     <Text
-      style={{fontFamily: 'Nunito'}}
-      className={"text-black dark:text-white " + textStyle}>
+      style={{ fontFamily: font || 'Nunito' }}
+      className={
+        `${!darkModeDisabled && 'text-black dark:text-white '} ${textStyle}`
+      }>
       {label}
     </Text>
   )

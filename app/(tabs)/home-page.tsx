@@ -1,9 +1,7 @@
-import ProductMiniCard from '@/components/details/ProductMiniCard'
 import MainImage from '@/components/ui/HomaPageImage'
-import { productList } from '@/constants/interfaces/fakeData'
 import { Product } from '@/constants/interfaces/productInterface'
 import React from 'react'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 
 const HomePage = () => {
   // * functions
@@ -15,13 +13,14 @@ const HomePage = () => {
   return (
     <View className="w-full h-screen p-4  flex gap-4 flex-row flex-wrap justify-between">
       <MainImage />
-      {productList.map(product =>
+      <Text>Home Page</Text>
+      {/* {productList.map(product =>
         <ProductMiniCard
           onPress={() => handlePress(product)}
           key={product.id}
           product={product}
         />
-      )}
+      )} */}
     </View>
   )
 }
