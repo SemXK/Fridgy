@@ -1,29 +1,30 @@
-// components/ui/AnimatedTabBar.tsx
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function AnimatedTabBar({ state, descriptors, navigation }: any) {
-
   return (
     <View
       style={{
-        position: 'fixed',
-        bottom: 40,
-        padding: 10,
+        position: 'absolute',
+        bottom: 0,
+        margin: 10,
         flexDirection: 'row',
-        backgroundColor: primaryColor[600],
-        borderRadius: 20,
-        elevation: 10,
-        marginHorizontal: 40
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: primaryColor[500],
+        borderRadius: 16,
+        paddingVertical: 10,
+
       }}
     >
-      {state.routes.map((route: any, index: any) => {
+      {state.routes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
-        const label = options.title !== undefined ? options.title : route.name;
+        const label = options.title ?? route.name;
         const isFocused = state.index === index;
+
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
@@ -33,41 +34,47 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
             navigation.navigate(route.name);
           }
         };
-        console.log({
-          state
-        })
+
+        const icons: Record<string, string> = {
+          Home: 'home-outline',
+          Fridge: 'fridge-outline',
+          Recipes: 'silverware-fork-knife',
+          Profile: 'account-outline',
+        };
+
+        const iconName = icons[route.name] || 'circle-outline';
+
         return (
           <TouchableOpacity
             key={route.key}
             onPress={onPress}
+            activeOpacity={0.7}
             style={{ flex: 1, alignItems: 'center' }}
           >
-
             <MotiView
+              className="items-center"
               animate={{
-                scale: isFocused ? 1.2 : 1,
-                translateY: isFocused ? -5 : 0,
+                scale: isFocused ? 1.15 : 1,
+                translateY: isFocused ? -4 : 0,
               }}
               transition={{ type: 'timing', duration: 250 }}
             >
               <MaterialCommunityIcons
-                className=" text-primary-600"
-                name="fridge-outline"
+                name={iconName}
                 size={24}
-                color='white'
+                color={isFocused ? 'white' : primaryColor[200]}
               />
+              <Text
+                style={{
+                  fontSize: 11,
+                  marginTop: 4,
+                  color: isFocused ? 'white' : primaryColor[200],
+                  fontWeight: isFocused ? '600' : '400',
+                }}
+              >
+                {label}
+              </Text>
             </MotiView>
-
-            {/* <Text
-              style={{
-                color: isFocused ? 'red' : 'black',
-                fontSize: 12,
-                marginTop: 4,
-              }}
-            >
-              {label}
-            </Text> */}
-
           </TouchableOpacity>
         );
       })}

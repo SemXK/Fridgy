@@ -1,12 +1,12 @@
 import { Appearance, Platform } from "react-native";
 
-// * Costanti, da cambiare anche in tailwindcss.conf
+// # Costanti, da cambiare anche in tailwindcss.conf
 export const primaryColor = {
-  "50": "#faf8f3",
-  "100": "#f3ecdd",
-  "200": "#e6d6b8",
-  "300": "#d2b67e",
-  "400": "#bfa05b",
+  "50": "#f2f7f3",
+  "100": "#d9e8dc",
+  "200": "#b5d1bb",
+  "300": "#8db996",
+  "400": "#6da477",
   "500": "#4b8a52",
   "600": "#3c6f44",
   "700": "#305937",

@@ -5,21 +5,30 @@ import React from 'react';
 
 export default function TabLayout() {
   return (
-
-    //   <Slot />
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
       }}
-      tabBar={(props) => <AnimatedTabBar {...props} />}>
+      tabBar={(props) => <AnimatedTabBar {...props} />}
+    >
       <Tabs.Screen
-        name="home-page"
+        name="Home"
         options={{
           title: 'Home',
           tabBarHideOnKeyboard: true,
           headerShown: false,
         }}
+      />
+      <Tabs.Screen
+        name="Fridge"
+        options={{
+          title: 'Il tuo frigo',
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+
+        }}
+
       />
     </Tabs>
   );

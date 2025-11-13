@@ -1,4 +1,4 @@
-import { getCurrentTheme, primaryColor } from '@/constants/theme';
+import { primaryColor } from '@/constants/theme';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Icon, TextInput } from 'react-native-paper';
@@ -9,36 +9,39 @@ interface CFF {
   setValue: (value: string) => void,
   label: string,
   secureTextEntry?: boolean,
-  secureTextEntryChange?: (value:boolean) => void,
+  secureTextEntryChange?: (value: boolean) => void,
   mode?: "flat" | "outlined"
 }
 
-const CustomFormField = ({value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode}:CFF) => {
+const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode }: CFF) => {
   return (
     <View className="relative ">
       <TextInput
-        label={<Text className="text-primary-500">{label}</Text>}
+        label={<Text className="text-white">{label}</Text>}
         value={value}
-        onChangeText={v => setValue(v)}
+        onChangeText={setValue}
+        mode={mode || 'outlined'}
+        secureTextEntry={secureTextEntry}
         outlineColor={primaryColor[500]}
         activeOutlineColor={primaryColor[500]}
         placeholderTextColor={primaryColor[500]}
-        textColor={primaryColor[500]}
+        textColor="white"
         activeUnderlineColor={primaryColor[500]}
-        mode={mode || 'outlined'}
-        secureTextEntry={secureTextEntry}
         style={{
-          padding: 0,
-          shadowOpacity: 1,
-          shadowColor: getCurrentTheme().shadowColor,
-          elevation: 5,
-          borderRadius: 50,
-          backgroundColor: getCurrentTheme().primaryClearColor
+          borderRadius: 100,
+          backgroundColor: primaryColor[600],
         }}
-        
+        theme={{
+          colors: {
+            background: 'transparent',
+            surfaceVariant: 'transparent',
+            onSurfaceVariant: 'white',
+          },
+          roundness: 100,
+        }}
       />
-      {!!secureTextEntryChange && 
-        <TouchableOpacity 
+      {!!secureTextEntryChange &&
+        <TouchableOpacity
           className="aspect-square w-12 absolute right-0 top-1/3"
           onPress={(e) => {
             e.stopPropagation()
@@ -55,4 +58,4 @@ const CustomFormField = ({value, setValue, label, secureTextEntry = false, secur
   )
 }
 
-export default CustomFormField
+export default ThemedFormField

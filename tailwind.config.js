@@ -17,16 +17,16 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          "50": "#f5f7f5",  // very light gray-green
-          "100": "#e3ebe3",  // light desaturated green
-          "200": "#c8d6c8",  // pale mossy green
-          "300": "#a2b7a2",  // muted sage
-          "400": "#7c977c",  // soft olive green
-          "500": "#4b8a52",  // your base
-          "600": "#3e7145",  // darker moss
-          "700": "#355d3a",  // forest green
-          "800": "#2a4930",  // deep green
-          "900": "#1d3323",  // near-black green
+          "50": "#f2f7f3",
+          "100": "#d9e8dc",
+          "200": "#b5d1bb",
+          "300": "#8db996",
+          "400": "#6da477",
+          "500": "#4b8a52",
+          "600": "#3e7145",
+          "700": "#355d3a",
+          "800": "#2a4930",
+          "900": "#1d3323",
         },
         secondary: {
           "50": "#fdfbf7",
