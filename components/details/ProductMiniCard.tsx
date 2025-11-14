@@ -21,8 +21,9 @@ const ProductMiniCard = (props: Props) => {
   // * Display
   return (
     <TouchableOpacity
-      className=" relative w-full h-full aspect-square shadow-xl  flex flex-col bg-primary-500/20 rounded-xl p-4 justify-start"
+      className="relative w-full h-full aspect-square bg-primary-500/20 rounded-xl p-4 justify-start"
       onPress={props.onPress}
+
     >
       {/* Tasto Favourite */}
       <View className="absolute top-0 right-0 ">
@@ -45,6 +46,7 @@ const ProductMiniCard = (props: Props) => {
 
       {/* Descrizione Prodotto */}
       <Image
+
         className="w-1/2 h-2/3 self-center aspect-square rounded-xl "
         source={props.product.image as ImageSourcePropType}
         width={160}
@@ -59,13 +61,15 @@ const ProductMiniCard = (props: Props) => {
       />
 
       {/* Descrizione Prodotto */}
-      <View className="flex flex-row ">
+      <View className="flex flex-row " >
         <ThemedText label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
         <ThemedText label={`${props.product.quantity}`} />
       </View>
 
       {/* Tipo di prodotto */}
-      <View className='flex flex-row flex-wrap gap-1'>
+      <View
+
+        className='flex flex-row flex-wrap gap-1'>
         {props.product.foodTypes.map((type) => {
           return (
             <ThemedText

@@ -44,7 +44,7 @@ const FridgeLayout = () => {
   return (
     <FridgeContext.Provider value={{ filter, setFilter, headerHeight, expandHeader, collapseHeader }}>
 
-      <View className="h-screen bg-white dark:bg-black relative">
+      <View className="h-screen w-screen bg-white dark:bg-black relative">
 
         {/* Header */}
         <View className="w-full  py-10 px-4  rounded-b-[50px]">

@@ -14,16 +14,29 @@ const FridgeList = () => {
 
   return (
     <FlatList
-      className="p-4 h-full"
+      className="w-full h-full"
       data={productList.filter(p => p.name.includes(filter))}
       keyExtractor={item => String(item.id)}
       numColumns={2}
-      columnWrapperStyle={{ justifyContent: 'space-between' }}
-      contentContainerStyle={{ paddingBottom: 100 }}
+      contentContainerStyle={{
+        paddingHorizontal: 12, // padding on left/right of whole list
+        paddingBottom: 100,
+      }}
+      columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 12 }} // row spacing
       renderItem={({ item }) => (
         <View
-          style={{ width: '48%', aspectRatio: 1, marginBottom: 8 }}
-          className="rounded-lg"
+          style={{
+            flex: 1,
+            aspectRatio: 1,
+            marginHorizontal: 6, // half of the gap, so two items sum to 12px
+            backgroundColor: 'white',
+            borderRadius: 12,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.15,
+            shadowRadius: 3,
+            elevation: 4,
+          }}
         >
           <ProductMiniCard
             onPress={() => handlePress(item)}
@@ -32,6 +45,8 @@ const FridgeList = () => {
         </View>
       )}
     />
+
+
   )
 }
 
