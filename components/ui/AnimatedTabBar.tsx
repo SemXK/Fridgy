@@ -8,11 +8,13 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   return (
     <View
       style={{
+        width: "80%",
         position: 'absolute',
-        bottom: 0,
+        bottom: 12,
         margin: 10,
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        alignSelf: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: primaryColor[500],
         borderRadius: 16,
@@ -36,10 +38,10 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         };
 
         const icons: Record<string, string> = {
-          Home: 'home-outline',
-          Fridge: 'fridge-outline',
-          Recipes: 'silverware-fork-knife',
-          Profile: 'account-outline',
+          'Home': 'home-outline',
+          '(fridge-tab)': 'fridge-outline',
+          'Recipes': 'silverware-fork-knife',
+          'Profile': 'account-outline',
         };
 
         const iconName = icons[route.name] || 'circle-outline';
