@@ -1,8 +1,8 @@
 import ThemedFormField from '@/components/inputs/CustomFormField'
+import CartButton from '@/components/pressable/CartButton'
 import ThemedText from '@/components/ui/ThemedText'
 import { primaryColor } from '@/constants/theme'
 import { AntDesign } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router, Slot } from 'expo-router'
 import React, { createContext, useContext, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const FridgeContext = createContext<{
   filter: string
   setFilter: (v: string) => void
-  openDetail: (title: string) => void
+  openDetail: () => void
   closeDetail: () => void
 }>({} as any)
 export const useFridge = () => useContext(FridgeContext)
@@ -23,16 +23,13 @@ const FridgeLayout = () => {
   // % States
   const [intoDetail, setIntoDetail] = useState<boolean>(false)
   const [filter, setFilter] = useState<string>("");
-  const [headerTitle, setHeaderTitle] = useState("Il tuo inventario")
 
   // & Animation Section
-  const openDetail = (title: string) => {
+  const openDetail = () => {
     setIntoDetail(true);
-    setHeaderTitle(title);
   }
   const closeDetail = () => {
     setIntoDetail(false);
-    setHeaderTitle("Il tuo inventario")
   }
 
   // * Display
@@ -44,26 +41,22 @@ const FridgeLayout = () => {
         {/* Header */}
         {
           !intoDetail ?
-            <LinearGradient
-              className="w-full p-4"
-              colors={['#fff', '#fff', '#ffffffbb', 'transparent']}
-              locations={[0, 0.1, 0.9, 1]}
-            >
+            <View className="w-full p-4" >
 
               <ThemedText
-                label="Il tuo inventario"
+                darkModeDisabled
+                label="Il mio inventario"
                 font="Nunito-ExtraBold"
                 textStyle='text-4xl text-primary-500 '
               />
-              {/* Inupt filter */}
 
+              {/* Inupt filter */}
               <ThemedFormField
                 value={filter}
                 setValue={setFilter}
                 label="Cerca..."
               />
-            </LinearGradient>
-
+            </View>
             :
             <View className="w-full flex flex-row justify-between px-4">
               <TouchableOpacity
@@ -81,6 +74,8 @@ const FridgeLayout = () => {
                   label='Indietro'
                 />
               </TouchableOpacity>
+
+              <CartButton />
             </View>
         }
 

@@ -26,9 +26,15 @@ export default function TabLayout() {
           title: 'Il tuo frigo',
           tabBarHideOnKeyboard: true,
           headerShown: false,
-
         }}
-
+      />
+      <Tabs.Screen
+        name="Cart"
+        options={{
+          title: 'Il tuo carrello',
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+        }}
       />
     </Tabs>
   );

@@ -24,7 +24,7 @@ const FridgeDetail = () => {
       router.back();
     }
     setCurrentProduct(product);
-    openDetail(product?.name as string)
+    openDetail()
     return () => closeDetail()
   }, [])
 
@@ -51,33 +51,66 @@ const FridgeDetail = () => {
               />
             </View>
 
-            <View className="p-6  h-[70%]">
+            <View className="p-6 flex flex-col gap-4 h-[70%]">
 
-              <ThemedText
-                font="Nunito-ExtraBold"
-                textStyle="text-4xl text-primary-500"
-                label={currentProduct.name}
-              />
+              {/* Titolo prodotto */}
+              <View>
+                <ThemedText
+                  darkModeDisabled
+                  font="Nunito-ExtraBold"
+                  textStyle="text-4xl text-primary-500"
+                  label={currentProduct.name}
+                />
+                <View className="flex flex-row " >
+                  <View
+                    className='flex flex-row flex-wrap gap-1'>
+                    {currentProduct.foodTypes.map((type) => {
+                      return (
+                        <ThemedText
+                          textStyle="text-xl"
+                          key={type.id}
+                          font="Nunito-Italic"
+                          label={type.type}
+                        />
+                      )
+                    })}
+                  </View>
+                </View>
+              </View>
 
               {/* Descrizione Prodotto */}
-              <View className="flex flex-row " >
-                <View
-                  className='flex flex-row flex-wrap gap-1'>
-                  {currentProduct.foodTypes.map((type) => {
-                    return (
-                      <ThemedText
-                        textStyle="text-xl"
-                        key={type.id}
-                        font="Nunito-Italic"
-                        label={type.type}
-                      />
-                    )
-                  })}
+              <View>
+                <ThemedText
+                  darkModeDisabled
+                  font="Nunito-ExtraBold"
+                  textStyle="text-2xl text-primary-500"
+                  label="Descrizione del prodotto"
+                />
+                <ThemedText
+                  font="Nunito-Italic"
+                  label={currentProduct.description || 'Nessuna descrizione presente'}
+                />
+
+              </View>
+
+              {/* Grafico Prezzi di acquisto */}
+              <View>
+                <ThemedText
+                  darkModeDisabled
+                  font="Nunito-ExtraBold"
+                  textStyle="text-2xl text-primary-500"
+                  label="Storico acquisti"
+                />
+                <View className="w-full h-48 flex flex-row justify-center items-center rounded-lg border-2 border-primary-500/50 bg-stone-100 dark:bg-stone-900">
+                  <ThemedText
+                    font="Nunito-ExtraLight"
+                    label="Non implementato"
+                  />
                 </View>
               </View>
 
               {/* Azioni */}
-              <View className="w-full flex flex-row justify-center self-center gap-4 absolute bottom-4 h-12">
+              <View className="w-full flex flex-row justify-center self-center gap-4 absolute bottom-12 h-12">
                 <PrimaryIconButton
                   iconSpecs={{
                     name: 'heart-outline',

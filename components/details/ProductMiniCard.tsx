@@ -22,7 +22,7 @@ const ProductMiniCard = (props: Props) => {
   // * Display
   return (
     <TouchableOpacity
-      className="relative w-full h-full aspect-square bg-stone-100 rounded-xl p-4 justify-start "
+      className="relative w-full h-full aspect-square bg-stone-100 dark:bg-stone-900 rounded-xl p-4 justify-start "
       onPress={props.onPress}
 
     >
@@ -36,7 +36,7 @@ const ProductMiniCard = (props: Props) => {
           className="rounded-full"
         >
           <IconButton
-            icon="heart"
+            icon={props.product.favourite ? "heart" : "heart-outline"}
             size={26}
             iconColor={colors.rose[500]}
             className='text-rose-500'
@@ -47,7 +47,6 @@ const ProductMiniCard = (props: Props) => {
 
       {/* Descrizione Prodotto */}
       <Image
-
         className="w-1/2 h-2/3 self-center aspect-square rounded-xl "
         source={props.product.image as ImageSourcePropType}
         width={160}
@@ -56,6 +55,7 @@ const ProductMiniCard = (props: Props) => {
       />
 
       <ThemedText
+        darkModeDisabled
         font="Nunito-ExtraBold"
         textStyle="text-2xl text-primary-500"
         label={props.product.name}
@@ -63,9 +63,15 @@ const ProductMiniCard = (props: Props) => {
 
       {/* Descrizione Prodotto */}
       <View className="flex flex-row " >
-        <ThemedText label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
+        <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
         <ThemedText label={`${props.product.quantity}`} />
       </View>
+      <View className="flex flex-row " >
+        <ThemedText darkModeDisabled label='Prezzo: ' font='Nunito-Italic' textStyle='color-primary-500' />
+        <ThemedText label={`${props.product.price}`} />
+      </View>
+
+
 
       {/* Tipo di prodotto */}
       <View

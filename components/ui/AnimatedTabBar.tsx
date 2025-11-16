@@ -16,8 +16,10 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const route = state.routes[state.index];
   const focusedChild = getFocusedRouteName(route);
   const isHome = route.name === "Home";
+  const isCart = route.name === "Cart";
+
   const isFridgeIndex = route.name === "(fridge-tab)" && focusedChild === "index";
-  if (!isHome && !isFridgeIndex) {
+  if (!isHome && !isFridgeIndex && !isCart) {
     return null;
   }
 
@@ -35,11 +37,13 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         backgroundColor: primaryColor[500],
         borderRadius: 16,
         paddingVertical: 10,
-
       }}
     >
       {state.routes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
+        if (options.tabBarItemStyle?.display === 'none') {
+          return null
+        }
         const label = options.title ?? route.name;
         const isFocused = state.index === index;
 
@@ -56,8 +60,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         const icons: Record<string, string> = {
           'Home': 'home-outline',
           '(fridge-tab)': 'fridge-outline',
-          'Recipes': 'silverware-fork-knife',
-          'Profile': 'account-outline',
+          'Cart': 'cart-outline'
         };
 
         const iconName = icons[route.name] || 'circle-outline';
@@ -81,16 +84,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
                 size={24}
                 color={isFocused ? 'white' : primaryColor[200]}
               />
-              {/* <Text
-                style={{
-                  fontSize: 11,
-                  marginTop: 4,
-                  color: isFocused ? 'white' : primaryColor[200],
-                  fontWeight: isFocused ? '600' : '400',
-                }}
-              >
-                {label}
-              </Text> */}
             </MotiView>
           </TouchableOpacity>
         );
