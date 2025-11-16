@@ -2,13 +2,29 @@ import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+
+function getFocusedRouteName(route: any): string {
+  let r = route;
+  while (r?.state && r.state.index != null) {
+    r = r.state.routes[r.state.index];
+  }
+  return r?.name;
+}
 
 export default function AnimatedTabBar({ state, descriptors, navigation }: any) {
+  const route = state.routes[state.index];
+  const focusedChild = getFocusedRouteName(route);
+  const isHome = route.name === "Home";
+  const isFridgeIndex = route.name === "(fridge-tab)" && focusedChild === "index";
+  if (!isHome && !isFridgeIndex) {
+    return null;
+  }
+
   return (
     <View
       style={{
-        width: "80%",
+        width: "70%",
         position: 'absolute',
         bottom: 12,
         margin: 10,
@@ -45,7 +61,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         };
 
         const iconName = icons[route.name] || 'circle-outline';
-
         return (
           <TouchableOpacity
             key={route.key}
@@ -66,7 +81,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
                 size={24}
                 color={isFocused ? 'white' : primaryColor[200]}
               />
-              <Text
+              {/* <Text
                 style={{
                   fontSize: 11,
                   marginTop: 4,
@@ -75,7 +90,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
                 }}
               >
                 {label}
-              </Text>
+              </Text> */}
             </MotiView>
           </TouchableOpacity>
         );

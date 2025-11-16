@@ -1,4 +1,5 @@
 import { Product } from '@/constants/interfaces/productInterface';
+import { Ionicons } from '@react-native-vector-icons/ionicons';
 import React from 'react';
 import { GestureResponderEvent, Image, ImageSourcePropType, TouchableOpacity, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
@@ -21,7 +22,7 @@ const ProductMiniCard = (props: Props) => {
   // * Display
   return (
     <TouchableOpacity
-      className="relative w-full h-full aspect-square bg-primary-500/20 rounded-xl p-4 justify-start"
+      className="relative w-full h-full aspect-square bg-stone-100 rounded-xl p-4 justify-start "
       onPress={props.onPress}
 
     >
@@ -91,20 +92,15 @@ const ProductMiniCard = (props: Props) => {
       </View>
 
       {/* Azioni Prodotto */}
-      {/* <View className="flex flex-row justify-end  ">
-          <TouchableOpacity
-            activeOpacity={.1}
-            className="rounded-full"
-            onPress={(e) => goToDetail(props.product, e)}
-          >
-            <IconButton
-              background={primaryColor[500]}
-              icon="chevron-right"
-              iconColor={primaryColor[500]}
-              size={26}
-            />
-          </TouchableOpacity>
-        </View> */}
+      <View
+        className="absolute bottom-0 right-0 rounded-tl-2xl rounded-br-2xl bg-primary-500 p-2"
+      >
+        <Ionicons
+          name="add"
+          size={26}
+          color="white"
+        />
+      </View>
 
     </TouchableOpacity>
   )

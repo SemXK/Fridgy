@@ -1,23 +1,29 @@
 import { primaryColor } from '@/constants/theme'
-import { ActivityIndicator, Text } from 'react-native'
+import Ionicons from '@react-native-vector-icons/ionicons'
+import { ActivityIndicator } from 'react-native'
 import { Button } from 'react-native-paper'
 
 interface ButtonInterface {
   onPress: () => void,
-  buttonText: string,
+  iconSpecs: {
+    name: any,
+    color: string,
+    size: number
+  },
   className?: string,
   isLoading?: boolean,
   mode?: "text" | "elevated" | "outlined" | "contained" | "contained-tonal"
 }
 
-const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode }: ButtonInterface) => {
+const PrimaryIconButton = ({ onPress, iconSpecs, className, isLoading, mode }: ButtonInterface) => {
   return (
     <Button
-      mode={mode || "outlined"}
-      buttonColor={!isLoading ? primaryColor[500] : "#d5d5d5"}
+      mode="outlined"
       style={{
-        borderWidth: 0,
+        borderWidth: 2,
+        borderColor: primaryColor[500],
       }}
+
       disabled={isLoading}
       textColor='white'
       onPress={onPress}
@@ -27,10 +33,12 @@ const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode }: Butt
         isLoading ?
           <ActivityIndicator size={16} color="#ffffff" />
           :
-          <Text>{buttonText}</Text>
+          <Ionicons
+            {...iconSpecs}
+          />
       }
     </Button>
   )
 }
 
-export default PrimaryButton
+export default PrimaryIconButton

@@ -17,7 +17,7 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
   return (
     <View className="relative ">
       <TextInput
-        label={<Text className="text-white">{label}</Text>}
+        label={<Text className="text-primary-500">{label}</Text>}
         value={value}
         onChangeText={setValue}
         mode={mode || 'outlined'}
@@ -29,14 +29,8 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
         activeUnderlineColor={primaryColor[500]}
         style={{
           borderRadius: 100,
-          backgroundColor: primaryColor[600],
         }}
         theme={{
-          colors: {
-            background: 'transparent',
-            surfaceVariant: 'transparent',
-            onSurfaceVariant: 'white',
-          },
           roundness: 100,
         }}
       />

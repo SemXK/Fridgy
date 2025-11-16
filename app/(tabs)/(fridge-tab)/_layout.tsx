@@ -1,18 +1,19 @@
 import ThemedFormField from '@/components/inputs/CustomFormField'
 import ThemedText from '@/components/ui/ThemedText'
-import { Product } from '@/constants/interfaces/productInterface'
-import { Slot } from 'expo-router'
+import { primaryColor } from '@/constants/theme'
+import { AntDesign } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import { router, Slot } from 'expo-router'
 import React, { createContext, useContext, useState } from 'react'
-import { View } from 'react-native'
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 // ? Context
 const FridgeContext = createContext<{
   filter: string
   setFilter: (v: string) => void
-  headerHeight: any
-  expandHeader: (title: string, headerImageComponent?: React.Component) => void
-  collapseHeader: () => void
+  openDetail: (title: string) => void
+  closeDetail: () => void
 }>({} as any)
 export const useFridge = () => useContext(FridgeContext)
 
@@ -20,56 +21,76 @@ export const useFridge = () => useContext(FridgeContext)
 const FridgeLayout = () => {
 
   // % States
+  const [intoDetail, setIntoDetail] = useState<boolean>(false)
   const [filter, setFilter] = useState<string>("");
   const [headerTitle, setHeaderTitle] = useState("Il tuo inventario")
 
   // & Animation Section
-  const headerHeight = useSharedValue<number>(20)
-  const expandHeader = (title: string, headerImageComponent?: React.Component) => {
-    headerHeight.value = withTiming(40, { duration: 500 })
-    setHeaderTitle(title)
+  const openDetail = (title: string) => {
+    setIntoDetail(true);
+    setHeaderTitle(title);
   }
-  const collapseHeader = () => {
+  const closeDetail = () => {
+    setIntoDetail(false);
     setHeaderTitle("Il tuo inventario")
-    headerHeight.value = withTiming(20, { duration: 500 })
   }
-  const headerAnimatedStyle = useAnimatedStyle(() => ({
-    height: `${headerHeight.value}%`,
-  }))
-
-  // $ Variables
-  const [currentProduct, setCurrentProduct] = useState<Product | null>(null)
 
   // * Display
   return (
-    <FridgeContext.Provider value={{ filter, setFilter, headerHeight, expandHeader, collapseHeader }}>
+    <FridgeContext.Provider value={{ filter, setFilter, openDetail, closeDetail }}>
 
-      <View className="h-screen w-screen bg-white dark:bg-black relative">
+      <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black ">
 
         {/* Header */}
-        <View className="w-full  py-10 px-4  rounded-b-[50px]">
-          <ThemedText
-            label={headerTitle}
-            font="Nunito-ExtraBold"
-            textStyle='text-4xl text-primary-500'
-          />
-          {
-            currentProduct ?
-              <></>
-              :
+        {
+          !intoDetail ?
+            <LinearGradient
+              className="w-full p-4"
+              colors={['#fff', '#fff', '#ffffffbb', 'transparent']}
+              locations={[0, 0.1, 0.9, 1]}
+            >
+
+              <ThemedText
+                label="Il tuo inventario"
+                font="Nunito-ExtraBold"
+                textStyle='text-4xl text-primary-500 '
+              />
+              {/* Inupt filter */}
+
               <ThemedFormField
                 value={filter}
                 setValue={setFilter}
                 label="Cerca..."
               />
-          }
+            </LinearGradient>
 
-        </View>
+            :
+            <View className="w-full flex flex-row justify-between px-4">
+              <TouchableOpacity
+                onPress={() => router.back()}
+                className="flex flex-row items-center align-middle"
+              >
+                <AntDesign
+                  name='left'
+                  size={16}
+                  color={primaryColor[500]}
+                />
+                <ThemedText
+                  darkModeDisabled
+                  textStyle='text-primary-500'
+                  label='Indietro'
+                />
+              </TouchableOpacity>
+            </View>
+        }
+
 
         {/* Children Components */}
-        <Slot />
+        <View className="mt-42">
+          <Slot />
+        </View>
 
-      </View>
+      </SafeAreaView>
     </FridgeContext.Provider>
 
   )

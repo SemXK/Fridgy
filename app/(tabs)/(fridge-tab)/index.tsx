@@ -35,7 +35,7 @@ const FridgeList = () => {
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.15,
             shadowRadius: 3,
-            elevation: 4,
+            elevation: 2,
           }}
         >
           <ProductMiniCard
