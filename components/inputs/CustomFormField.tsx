@@ -1,6 +1,6 @@
 import { primaryColor } from '@/constants/theme';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Appearance, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, TextInput } from 'react-native-paper';
 
 
@@ -17,7 +17,7 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
   return (
     <View className="relative ">
       <TextInput
-        label={<Text className="text-primary-500">{label}</Text>}
+        label={<Text className="text-primary-500 ">{label}</Text>}
         value={value}
         onChangeText={setValue}
         mode={mode || 'outlined'}
@@ -25,14 +25,18 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
         outlineColor={primaryColor[500]}
         activeOutlineColor={primaryColor[500]}
         placeholderTextColor={primaryColor[500]}
-        textColor="white"
+        textColor={Appearance.getColorScheme() === 'light' ? 'black' : 'white'}
         activeUnderlineColor={primaryColor[500]}
+        outlineStyle={{ backgroundColor: 'transparent' }}
         style={{
           borderRadius: 100,
           backgroundColor: 'transparent'
         }}
         theme={{
           roundness: 100,
+          colors: {
+            background: Appearance.getColorScheme() === 'light' ? 'white' : 'black',
+          },
         }}
       />
       {!!secureTextEntryChange &&
@@ -45,6 +49,7 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
         >
           <Icon
             source={secureTextEntry ? "eye" : "eye-off"}
+            color={primaryColor[500]}
             size={24}
           />
         </TouchableOpacity>
