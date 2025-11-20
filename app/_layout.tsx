@@ -7,6 +7,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
+import "react-native-gesture-handler";
 import 'react-native-reanimated';
 import './global.css';
 

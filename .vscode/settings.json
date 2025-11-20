@@ -3,5 +3,8 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "prettier.enable": false,
+  "blade.format.enable": false,
+  "javascript.format.enable": false
 }

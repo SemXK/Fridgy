@@ -1,6 +1,8 @@
 import { primaryColor } from '@/constants/theme'
-import { ActivityIndicator, Text } from 'react-native'
-import { Button } from 'react-native-paper'
+import React from 'react'
+import { Text } from 'react-native'
+import { ActivityIndicator, Button } from 'react-native-paper'
+
 
 interface ButtonInterface {
   onPress: () => void,
@@ -14,18 +16,18 @@ const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode }: Butt
   return (
     <Button
       mode={mode || "outlined"}
-      buttonColor={!isLoading ? primaryColor[500] : "#d5d5d5"}
+      buttonColor={primaryColor[500]}
       style={{
+        height: 40,
         borderWidth: 0,
       }}
-      disabled={isLoading}
       textColor='white'
-      onPress={onPress}
+      onPress={!isLoading ? onPress : undefined}
       className={className}
-    >
+    >      
       {
-        isLoading ?
-          <ActivityIndicator size={16} color="#ffffff" />
+        isLoading ? 
+          <ActivityIndicator animating size={40} color="#fff" />
           :
           <Text>{buttonText}</Text>
       }

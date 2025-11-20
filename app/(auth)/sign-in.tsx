@@ -1,7 +1,6 @@
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import ThemedText from '@/components/ui/ThemedText';
-import { login } from '@/lib/appwrite';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { View } from 'react-native';
@@ -25,13 +24,7 @@ export default function SignIn() {
     try {
 
       if (username && password) {
-        const res: any = await login(username, password)
-        const currentUser = {
-          id: res.$id,
-          email: res.email,
-          username: res.email
-        }
-        console.log("currentUser", currentUser)
+
       }
       else {
         setShowSnackbar("Compila tutti i campi")

@@ -1,10 +1,9 @@
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import ThemedText from '@/components/ui/ThemedText';
-import { register } from '@/lib/appwrite';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 
 
@@ -12,41 +11,42 @@ import { Snackbar } from 'react-native-paper';
 export default function SignUp() {
   // * inputs
   const [username, setUsername] = useState<string>("username")
-  const [email, setEmail] = useState<string>("email@gmail.com")
+  const [email, setEmail] = useState<string>("emailsss@gmail.com")
   const [password, setPassword] = useState<string>("password")
+  const [confirmPassword, setConfirmPassword] = useState<string>(password)
 
   // * State settings
-
   const [showSnackbar, setShowSnackbar] = useState<string>("")
-
   const [visible, setVisible] = useState<boolean>(false)
   const [authLoading, setAuthLoading] = useState<boolean>(false)
+
   // & Functions
   const handleRegister = async () => {
     setAuthLoading(true)
-    try {
+    // if (username && email && password && confirmPassword) {
+    //   await AuthController
+    //     .register({ username, email, password, confirmPassword })
+    //     .then((data) => {
+    //       router.navigate('/(tabs)/Home');
+    //     })
+    //     .catch(e => {
+    //       setShowSnackbar(e.message)
+    //     })
 
-      if (username && email && password) {
-        const res = await register(username, email, password)
-        console.log("res: ", res)
-      }
-      else {
-        console.log("Missing fields")
-      }
-    }
-    catch (e: any) {
-      setShowSnackbar(e.message)
-    }
-    setAuthLoading(false)
+    // }
+    // else {
+    //   setShowSnackbar("Compila tutti i campi")
+    // }
+    // setAuthLoading(false)
   }
 
   return (
-    <View className="w-full ">
+    <View className="w-full">
 
+      {/* SnackBar */}
       <Snackbar
-        className="absolute -bottom-8"
-
-        onDismiss={() => { }}
+        className="absolute top-0"
+        onDismiss={() => {}}
         visible={!!showSnackbar}
         action={{
           label: 'Ok',
@@ -54,9 +54,10 @@ export default function SignUp() {
             setShowSnackbar("");
           }
         }}
-      >
+        >
         {showSnackbar}
       </Snackbar>
+
       {/* fields */}
       <View className="p-4 flex flex-col justify-between h-3/4">
         {/* Header + fields */}
@@ -91,6 +92,14 @@ export default function SignUp() {
               secureTextEntry={!visible}
               secureTextEntryChange={setVisible}
             />
+            <CustomFormField
+              value={confirmPassword}
+              setValue={setConfirmPassword}
+              label="Conferma Password"
+              secureTextEntry={!visible}
+              secureTextEntryChange={setVisible}
+            />
+
           </View>
         </View>
 
@@ -123,3 +132,9 @@ export default function SignUp() {
 }
 
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+});

@@ -1,13 +1,11 @@
-import MainImage from '@/components/ui/HomaPageImage'
-import { Product } from '@/constants/interfaces/productInterface'
-import React from 'react'
-import { Text, View } from 'react-native'
+import MainImage from '@/components/ui/HomaPageImage';
+import React, { useEffect } from 'react';
+import { Text, View } from 'react-native';
 
 const HomePage = () => {
-  // * functions
-  const handlePress = (product: Product) => {
-    console.log(product)
-  }
+
+  // * lifecycle
+  useEffect(() => {}, [])
 
   // * Display
   return (
