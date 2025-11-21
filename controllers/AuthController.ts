@@ -22,7 +22,6 @@ export abstract class AuthController extends Controller {
   static tokenType: string | undefined; // Maybe this isnt even needed
   static expiresIn: number | undefined; // Maybe this isnt even needed
 
-
   static register = async (credentials: Credentials): Promise<AxiosResponse<unknown, AuthResponse> | AxiosError> => {
     return await this.basicPostCall("register", credentials).then((res: AxiosResponse) => {
       if (res.status === 200) {
@@ -60,10 +59,12 @@ export abstract class AuthController extends Controller {
     if(this.currentUser) {
       return this.currentUser;
     }
-    else if(this.currentToken) {
-      return await this.basicGetCall("me").then((res: AxiosResponse) => {
+    else if(this.currentToken || SecureStore.getItem("authToken")) {
+      console.log("token", this.currentToken)
+      return await this.authenticatedGetCall("me").then((res: AxiosResponse) => {
         if (res.status === 200) {
           const data = (res as AxiosResponse).data as AuthResponse;
+          console.log({ data: data.token })
           SecureStore.setItem('authToken', data.token);
           this.currentUser = data.user;
           this.currentToken = data.token;
@@ -78,5 +79,8 @@ export abstract class AuthController extends Controller {
     else {
       throw new Error ("Unauthorized");
     }
+  }
+  private callUserApi() {
+    
   }
 }

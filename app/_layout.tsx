@@ -52,6 +52,7 @@ export default function RootLayout() {
       .then((userResponse: User) => {
         setUser(userResponse);
       })
+      .catch(e => console.log("e:", e.message)) 
     }
   }, [])
 
@@ -68,7 +69,7 @@ export default function RootLayout() {
       <UserContext value={user}>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
-          <Stack>
+          <Stack initialRouteName="(tabs)">
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
