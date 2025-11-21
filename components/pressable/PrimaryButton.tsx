@@ -1,7 +1,9 @@
-import { primaryColor } from '@/constants/theme'
-import React from 'react'
-import { Text } from 'react-native'
-import { ActivityIndicator, Button } from 'react-native-paper'
+import 'react-native-reanimated';
+
+import { primaryColor } from '@/constants/theme';
+import React from 'react';
+import { ActivityIndicator, Text } from 'react-native';
+import { Button } from 'react-native-paper';
 
 
 interface ButtonInterface {
@@ -21,17 +23,19 @@ const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode }: Butt
         height: 40,
         borderWidth: 0,
       }}
+      contentStyle={{ justifyContent: 'center', alignItems: 'center' }}
       textColor='white'
       onPress={!isLoading ? onPress : undefined}
       className={className}
     >      
       {
         isLoading ? 
-          <ActivityIndicator animating size={40} color="#fff" />
+          <ActivityIndicator animating size={24} color="#fff" />
           :
           <Text>{buttonText}</Text>
       }
     </Button>
+
   )
 }
 

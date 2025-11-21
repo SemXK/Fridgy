@@ -1,7 +1,10 @@
+import 'react-native-reanimated';
+
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import ThemedText from '@/components/ui/ThemedText';
-import { Link } from 'expo-router';
+import { AuthController } from '@/controllers/AuthController';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
@@ -9,8 +12,8 @@ import { Snackbar } from 'react-native-paper';
 
 export default function SignIn() {
   // * inputs
-  const [username, setUsername] = useState<string>("username")
-  const [password, setPassword] = useState<string>("password")
+  const [email, setEmail] = useState<string>("sems@gmailss.com")
+  const [password, setPassword] = useState<string>("Password123!")
 
   // * State settings
 
@@ -21,17 +24,18 @@ export default function SignIn() {
   // & Functions
   const handleRegister = async () => {
     setAuthLoading(true)
-    try {
-
-      if (username && password) {
-
-      }
-      else {
-        setShowSnackbar("Compila tutti i campi")
-      }
+    if (email && password) {
+      await AuthController
+        .login({ email, password})
+        .then(() => {
+          router.navigate('/(tabs)/Home');
+        })
+        .catch(e => {
+          setShowSnackbar(e.message)
+        })
     }
-    catch (e: any) {
-      console.log("e", e.message)
+    else {
+      setShowSnackbar("Compila tutti i campi")
     }
     setAuthLoading(false)
   }
@@ -70,9 +74,9 @@ export default function SignIn() {
           <View className="gap-4">
 
             <CustomFormField
-              value={username}
-              setValue={setUsername}
-              label="Username"
+              value={email}
+              setValue={setEmail}
+              label="Email"
             />
             <CustomFormField
               value={password}

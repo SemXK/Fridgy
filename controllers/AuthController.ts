@@ -12,11 +12,16 @@ interface Credentials {
 export interface AuthResponse {
   user: User;
   token: string;
+  tokenType?: string;
+  expiresIn?: number;
 }
 
 export abstract class AuthController extends Controller {
   static currentUser: User | null;
   static currentToken: string | null;
+  static tokenType: string | undefined; // Maybe this isnt even needed
+  static expiresIn: number | undefined; // Maybe this isnt even needed
+
 
   static register = async (credentials: Credentials): Promise<AxiosResponse<unknown, AuthResponse> | AxiosError> => {
     return await this.basicPostCall("register", credentials).then((res: AxiosResponse) => {
@@ -34,18 +39,44 @@ export abstract class AuthController extends Controller {
       return res as AxiosResponse<unknown, AuthResponse> | AxiosError;
     })
   };
-  static me = async (): Promise<void> => {
-    return await this.basicGetCall("me").then((res: AxiosResponse) => {
+  static login = async (credentials: Partial<Credentials>): Promise<AxiosResponse<unknown, AuthResponse> | AxiosError> => {
+    return await this.basicPostCall("login", credentials).then((res: AxiosResponse) => {
       if (res.status === 200) {
         const data = (res as AxiosResponse).data;
         SecureStore.setItem('authToken', data.token);
         this.currentUser = data.user;
         this.currentToken = data.token;
+        this.tokenType = data.tokenType;
+        this.expiresIn = data.expiresIn;
+        return res as AxiosResponse<unknown, AuthResponse>;
       }
-      else if (res.status === 401){
-        throw new AxiosError("Generic error");
+      else if (res.status === 401) {
+        throw new AxiosError("Invalid Credentials");
       }
-
+      return res as AxiosResponse<unknown, AuthResponse> | AxiosError;
     })
+  };
+  static me = async (): Promise<User> => {
+    if(this.currentUser) {
+      return this.currentUser;
+    }
+    else if(this.currentToken) {
+      return await this.basicGetCall("me").then((res: AxiosResponse) => {
+        if (res.status === 200) {
+          const data = (res as AxiosResponse).data as AuthResponse;
+          SecureStore.setItem('authToken', data.token);
+          this.currentUser = data.user;
+          this.currentToken = data.token;
+          return data.user;
+        }
+        else if (res.status === 401){
+          throw new AxiosError("Unauthorized");
+        }
+        throw new Error("Unexpected response");
+      });
+    }
+    else {
+      throw new Error ("Unauthorized");
+    }
   }
 }

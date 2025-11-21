@@ -7,7 +7,6 @@ import { TouchableOpacity } from 'react-native'
 const CartButton = () => {
   // * Functions
   const handlePress = () => {
-    console.log("Move")
     router.navigate('/(tabs)/Cart');
   }
 

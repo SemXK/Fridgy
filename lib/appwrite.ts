@@ -46,7 +46,6 @@ export async function register( username: string, email: string, password: strin
     password,
     name: username
   }).catch(e => e);
-  console.log("newAccount", newAccount)
   if(!newAccount.$id) throw new Error(newAccount) 
 
   // * Create user record from the new account
@@ -60,11 +59,9 @@ export async function register( username: string, email: string, password: strin
     }
   )
   .catch(e => {
-    console.log("Er", e)
     return e
   });
   // if (!userRecord) throw new Error
-  console.log(userRecord, newAccount)
   return userRecord
   // await login(email, password);
 }

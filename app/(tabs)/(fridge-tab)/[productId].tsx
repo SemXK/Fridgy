@@ -5,9 +5,10 @@ import { productList } from "@/constants/interfaces/fakeData"
 import { Product } from "@/constants/interfaces/productInterface"
 import { primaryColor } from "@/constants/theme"
 import { router, useLocalSearchParams } from "expo-router"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Image, Text, View } from "react-native"
 import { useFridge } from "./_layout"
+
 
 const FridgeDetail = () => {
   // * Context

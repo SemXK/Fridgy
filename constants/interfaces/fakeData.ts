@@ -222,6 +222,5 @@ export let currentCart: Cart = {
   userId: currentUser.id,
 };
 export function changeCurrentCart(newCart: Cart) {
-  console.log(newCart);
   currentCart = newCart;
 }

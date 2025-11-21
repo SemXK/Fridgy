@@ -1,10 +1,10 @@
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import ThemedText from '@/components/ui/ThemedText';
-import { Link } from 'expo-router';
+import { AuthController } from '@/controllers/AuthController';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Snackbar } from 'react-native-paper';
 
 
 
@@ -23,40 +23,32 @@ export default function SignUp() {
   // & Functions
   const handleRegister = async () => {
     setAuthLoading(true)
-    // if (username && email && password && confirmPassword) {
-    //   await AuthController
-    //     .register({ username, email, password, confirmPassword })
-    //     .then((data) => {
-    //       router.navigate('/(tabs)/Home');
-    //     })
-    //     .catch(e => {
-    //       setShowSnackbar(e.message)
-    //     })
-
-    // }
-    // else {
-    //   setShowSnackbar("Compila tutti i campi")
-    // }
-    // setAuthLoading(false)
+    if (username && email && password && confirmPassword) {
+      await AuthController
+        .register({ username, email, password, confirmPassword })
+        .then((data) => {
+          router.navigate('/(tabs)/Home');
+        })
+        .catch(e => {
+          console.log({e})
+          setShowSnackbar(e.message)
+        })
+    }
+    else {
+      setShowSnackbar("Compila tutti i campi")
+    }
+    setAuthLoading(false)
   }
 
   return (
     <View className="w-full">
 
       {/* SnackBar */}
-      <Snackbar
-        className="absolute top-0"
-        onDismiss={() => {}}
-        visible={!!showSnackbar}
-        action={{
-          label: 'Ok',
-          onPress: () => {
-            setShowSnackbar("");
-          }
-        }}
-        >
-        {showSnackbar}
-      </Snackbar>
+      {/* <CustomSnackbar 
+        visible={!!showSnackbar} 
+        message={showSnackbar} 
+        onDismiss={() => setShowSnackbar("")} 
+      /> */}
 
       {/* fields */}
       <View className="p-4 flex flex-col justify-between h-3/4">
@@ -115,15 +107,17 @@ export default function SignUp() {
               className="w-1/2"
               onPress={handleRegister}
             />
+
+            {/* Route */}
+            <View className="flex-row self-center gap-2 ">
+              <ThemedText font='Nunito-Light' textStyle='text-stone-400 dark:text-stone-500' label="Hai un accounts?" />
+              <Link href="/sign-in">
+                <ThemedText darkModeDisabled font='Nunito-Bold' label="Accedi" textStyle="text-primary-500 underline" />
+              </Link>
+            </View>
+
           </View>
 
-          {/* Route */}
-          <View className="flex-row self-center gap-2 ">
-            <ThemedText font='Nunito-Light' textStyle='text-stone-400 dark:text-stone-500' label="Hai un accounts?" />
-            <Link href="/sign-in">
-              <ThemedText darkModeDisabled font='Nunito-Bold' label="Accedi" textStyle="text-primary-500 underline" />
-            </Link>
-          </View>
         </View>
       </View>
 

@@ -1,14 +1,13 @@
-import { currentUser } from '@/constants/interfaces/fakeData';
 import { User } from '@/constants/interfaces/usersInterface';
+import { AuthController } from '@/controllers/AuthController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import "react-native-gesture-handler";
-import 'react-native-reanimated';
 import './global.css';
 
 
@@ -45,11 +44,18 @@ export default function RootLayout() {
     }
   }, [loaded, error]);
 
-
   //  * Auth
   const [user, setUser] = useState<User | null>(null)
   useEffect(() => {
-    setUser(currentUser);
+    if(!user) {
+      AuthController.me()
+      .then((userResponse: User) => {
+        setUser(userResponse);
+      })
+      .catch(() => {
+        router.navigate('/(auth)/sign-in')
+      })
+    }
   }, [])
 
   if (!loaded && !error) {
