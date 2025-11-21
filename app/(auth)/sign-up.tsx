@@ -1,5 +1,6 @@
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
+import CustomSnackbar from '@/components/ui/CustomSnackbar';
 import ThemedText from '@/components/ui/ThemedText';
 import { AuthController } from '@/controllers/AuthController';
 import { Link, router } from 'expo-router';
@@ -44,11 +45,11 @@ export default function SignUp() {
     <View className="w-full">
 
       {/* SnackBar */}
-      {/* <CustomSnackbar 
+      <CustomSnackbar
         visible={!!showSnackbar} 
         message={showSnackbar} 
         onDismiss={() => setShowSnackbar("")} 
-      /> */}
+      />
 
       {/* fields */}
       <View className="p-4 flex flex-col justify-between h-3/4">

@@ -3,10 +3,10 @@ import { AuthController } from '@/controllers/AuthController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Appearance, StatusBar } from 'react-native';
 import "react-native-gesture-handler";
 import './global.css';
 
@@ -44,16 +44,13 @@ export default function RootLayout() {
     }
   }, [loaded, error]);
 
-  //  * Auth
+  //  * Auth (non obligatorio)
   const [user, setUser] = useState<User | null>(null)
   useEffect(() => {
     if(!user) {
       AuthController.me()
       .then((userResponse: User) => {
         setUser(userResponse);
-      })
-      .catch(() => {
-        router.navigate('/(auth)/sign-in')
       })
     }
   }, [])
@@ -65,8 +62,8 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar
-        barStyle='dark-content'
-        backgroundColor="transparent"
+        barStyle={Appearance.getColorScheme() === 'light' ? 'dark-content' : 'light-content'}
+        backgroundColor={Appearance.getColorScheme() === 'light' ? 'white' : 'black'}
       />
       <UserContext value={user}>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -78,7 +75,6 @@ export default function RootLayout() {
 
         </ThemeProvider>
       </UserContext>
-
     </>
   );
 }

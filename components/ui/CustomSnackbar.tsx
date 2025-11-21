@@ -1,35 +1,44 @@
+import { primaryColor } from '@/constants/theme';
 import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
-interface CustomSnackbarProps {
+interface SnackbarProps {
   visible: boolean;
   message: string;
-  onDismiss: () => void;
+  duration?: number;
+  onDismiss?: () => void;
 }
 
-export default function CustomSnackbar({ visible, message, onDismiss }: CustomSnackbarProps) {
-  const translateY = useSharedValue(-100);
+export default function Snackbar({ visible, message, duration = 3000, onDismiss }: SnackbarProps) {
+  const opacity = useSharedValue(0);
 
   useEffect(() => {
     if (visible) {
-      translateY.value = withTiming(0, { duration: 300 });
+      opacity.value = withTiming(1, { duration: 100 });
+      if (duration > 0) {
+        const timer = setTimeout(() => {
+          opacity.value = withTiming(0, { duration: 100 });
+          onDismiss?.();
+        }, duration);
+        return () => clearTimeout(timer);
+      }
     } else {
-      translateY.value = withTiming(-100, { duration: 300 });
+      opacity.value = withTiming(0, { duration: 100 });
     }
   }, [visible]);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
+    opacity: opacity.value,
   }));
 
   return (
     <Animated.View style={[styles.snackbar, animatedStyle]}>
       <Text style={styles.message}>{message}</Text>
-      <TouchableOpacity onPress={onDismiss}>
-        <Text style={styles.action}>Ok</Text>
+      <TouchableOpacity onPress={() => { opacity.value = withTiming(0); onDismiss?.(); }}>
+        <Text style={styles.action}>OK</Text>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -38,7 +47,7 @@ export default function CustomSnackbar({ visible, message, onDismiss }: CustomSn
 const styles = StyleSheet.create({
   snackbar: {
     position: 'absolute',
-    bottom: 12,
+    bottom: 100,
     left: width * 0.05,
     width: width * 0.9,
     backgroundColor: '#323232',
@@ -55,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   action: {
-    color: '#BB86FC',
+    color: primaryColor[500],
     fontWeight: 'bold',
     fontSize: 16,
   },

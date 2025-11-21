@@ -2,12 +2,12 @@ import 'react-native-reanimated';
 
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
+import CustomSnackbar from '@/components/ui/CustomSnackbar';
 import ThemedText from '@/components/ui/ThemedText';
 import { AuthController } from '@/controllers/AuthController';
 import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Snackbar } from 'react-native-paper';
 
 
 export default function SignIn() {
@@ -42,21 +42,11 @@ export default function SignIn() {
 
   return (
     <View className="w-full ">
-
-      <Snackbar
-        className="absolute bottom-0"
-        onDismiss={() => { }}
-        visible={!!showSnackbar}
-        action={{
-          label: 'Ok',
-          onPress: () => {
-            setShowSnackbar("");
-          }
-        }}
-      >
-        Testo
-      </Snackbar>
-
+      <CustomSnackbar
+        visible={!!showSnackbar} 
+        message={showSnackbar} 
+        onDismiss={() => setShowSnackbar("")} 
+      />
       <View className="p-4 flex flex-col justify-between h-3/4">
         {/* Header + Fields */}
         <View>
