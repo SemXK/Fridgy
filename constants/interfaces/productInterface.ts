@@ -4,22 +4,12 @@ export interface CartItemInterface {
   product?: Product;
   productId: number;
   quantity: number;
-}
-
-export interface Cart {
-  activeItems: CartItemInterface[];
   userId: number;
-}
 
-export interface FoodType {
+}
+export interface ProductType {
   id: number;
   type: string; // latticini, carne, verdure ec...
-  color: string;
-}
-
-export interface PackageType {
-  id: number;
-  package: string;
 }
 
 export interface Receipt {
@@ -34,15 +24,13 @@ export interface Receipt {
 export interface Product {
   id: number;
   name: string;
-  quantity: string;
-  foodTypes: FoodType[];
   image?: ImageSourcePropType;
   description: string;
-  package?: PackageType;
-  favourite?: boolean;
   price: number;
-  priceHistory: Receipt[];
   taxPercent: number;
+
+  priceHistory: Receipt[];
+  productTypes: ProductType[];
   created_at: Date;
   updated_at: Date;
 }

@@ -1,4 +1,4 @@
-import { Cart, FoodType, PackageType, Product } from "./productInterface";
+import { CartItemInterface, Product, ProductType, } from "./productInterface";
 import { User } from "./usersInterface";
 
 export const currentUser: User = {
@@ -12,75 +12,42 @@ export const currentUser: User = {
   created_at: new Date(),
   updated_at: new Date(),
 };
-
-export const foodTypes: FoodType[] = [
+export const productType: ProductType[] = [
   {
     id: 1,
     type: "Verdure",
-    color: "bg-emerald-700",
   },
   {
     id: 2,
     type: "Frutta",
-    color: "bg-emerald-500",
   },
   {
     id: 3,
     type: "Carne Bianca",
-    color: "bg-rose-500",
   },
   {
     id: 4,
     type: "Legumi",
-    color: "bg-amber-900",
   },
   {
     id: 5,
     type: "Latticini",
-    color: "bg-emerald-500 stone-300",
   },
   {
     id: 6,
     type: "Formaggi",
-    color: "bg-amber-600",
   },
   {
     id: 7,
     type: "Pesce",
-    color: "bg-grey-500",
   },
   {
     id: 8,
     type: "Carne Rossa",
-    color: "bg-grey-500",
   },
   {
     id: 9,
     type: "Carne",
-    color: "bg-grey-500",
-  },
-];
-
-export const packageList: PackageType[] = [
-  {
-    id: 1,
-    package: "Lattina",
-  },
-  {
-    id: 2,
-    package: "Barattolo",
-  },
-  {
-    id: 3,
-    package: "Cartone",
-  },
-  {
-    id: 4,
-    package: "Bottiglia",
-  },
-  {
-    id: 5,
-    package: "Confezione di plastica",
   },
 ];
 
@@ -88,9 +55,7 @@ export const productList: Product[] = [
   {
     id: 1,
     name: "Pomodori",
-    quantity: "2",
-    package: packageList[4],
-    foodTypes: [foodTypes[0]],
+    productTypes: [productType[0]],
     image: require("../../assets/images/foodImages/tomatoes.png"),
 
     created_at: new Date(),
@@ -103,8 +68,7 @@ export const productList: Product[] = [
   {
     id: 2,
     name: "Grana Padano",
-    quantity: "1",
-    foodTypes: [foodTypes[5]],
+    productTypes: [productType[5]],
     image: require("../../assets/images/foodImages/granaPadano.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -116,8 +80,7 @@ export const productList: Product[] = [
   {
     id: 3,
     name: "Petti di pollo",
-    quantity: "4",
-    foodTypes: [foodTypes[2]],
+    productTypes: [productType[2]],
     image: require("../../assets/images/foodImages/pettoDiPollo.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -129,8 +92,7 @@ export const productList: Product[] = [
   {
     id: 4,
     name: "Yogurt",
-    quantity: "10",
-    foodTypes: [foodTypes[4]],
+    productTypes: [productType[4]],
     image: require("../../assets/images/foodImages/yogurtMuller.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -142,8 +104,7 @@ export const productList: Product[] = [
   {
     id: 5,
     name: "Uova",
-    quantity: "23",
-    foodTypes: [],
+    productTypes: [],
     image: require("../../assets/images/foodImages/eggs.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -155,8 +116,7 @@ export const productList: Product[] = [
   {
     id: 6,
     name: "Latte",
-    quantity: "1",
-    foodTypes: [foodTypes[4]],
+    productTypes: [productType[4]],
     image: require("../../assets/images/foodImages/milk.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -168,8 +128,7 @@ export const productList: Product[] = [
   {
     id: 7,
     name: "Burro",
-    quantity: "1",
-    foodTypes: [foodTypes[4]],
+    productTypes: [productType[4]],
     image: require("../../assets/images/foodImages/butter.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -181,8 +140,7 @@ export const productList: Product[] = [
   {
     id: 8,
     name: "Wurstel",
-    quantity: "1",
-    foodTypes: [foodTypes[8]],
+    productTypes: [productType[8]],
     image: require("../../assets/images/foodImages/wurstel.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -194,8 +152,7 @@ export const productList: Product[] = [
   {
     id: 9,
     name: "Carne Macinata",
-    quantity: "1",
-    foodTypes: [foodTypes[7]],
+    productTypes: [productType[7]],
     image: require("../../assets/images/foodImages/mincedMeat.png"),
     created_at: new Date(),
     updated_at: new Date(),
@@ -205,22 +162,21 @@ export const productList: Product[] = [
     taxPercent: 0,
   },
 ];
+export let currentCart: CartItemInterface[] = [
+  {
+    productId: 1,
+    quantity: 2,
+    product: productList[0],
+    userId: currentUser.id, 
+  },
+  {
+    productId: 3,
+    quantity: 2,
+    product: productList[3],
+    userId: currentUser.id, 
+  },
+]
 
-export let currentCart: Cart = {
-  activeItems: [
-    {
-      productId: 1,
-      product: productList[0],
-      quantity: 2,
-    },
-    {
-      productId: 3,
-      product: productList[3],
-      quantity: 4,
-    },
-  ],
-  userId: currentUser.id,
-};
-export function changeCurrentCart(newCart: Cart) {
+export function changeCurrentCart(newCart: any) {
   currentCart = newCart;
 }
