@@ -2,6 +2,7 @@ import ProductMiniCard from "@/components/details/ProductMiniCard"
 import { productList } from "@/constants/interfaces/fakeData"
 import { Product } from "@/constants/interfaces/productInterface"
 import { router } from "expo-router"
+import React from "react"
 import { FlatList, View } from "react-native"
 import { useFridge } from "./_layout"
 

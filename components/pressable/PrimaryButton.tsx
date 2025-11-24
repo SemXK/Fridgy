@@ -2,8 +2,9 @@ import 'react-native-reanimated';
 
 import { primaryColor } from '@/constants/theme';
 import React from 'react';
-import { ActivityIndicator, Text } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-paper';
+import ThemedText from '../ui/ThemedText';
 
 
 interface ButtonInterface {
@@ -32,7 +33,10 @@ const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode }: Butt
         isLoading ? 
           <ActivityIndicator animating size={24} color="#fff" />
           :
-          <Text>{buttonText}</Text>
+          <ThemedText
+            font='Nunito-Bold'
+            label={buttonText}
+          />
       }
     </Button>
 

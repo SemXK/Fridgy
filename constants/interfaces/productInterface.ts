@@ -9,6 +9,7 @@ export interface CartItemInterface {
 }
 export interface ProductType {
   id: number;
+  image?: ImageSourcePropType;
   type: string; // latticini, carne, verdure ec...
 }
 
@@ -33,4 +34,12 @@ export interface Product {
   productTypes: ProductType[];
   created_at: Date;
   updated_at: Date;
+}
+
+export interface Discount {
+  id: number;
+  discount: number;
+  name: string;
+  image?: ImageSourcePropType;
+
 }

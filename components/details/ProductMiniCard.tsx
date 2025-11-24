@@ -35,8 +35,9 @@ const ProductMiniCard = (props: Props) => {
           activeOpacity={.1}
           className="rounded-full"
         >
+          {/* props.product.favourite */}
           <IconButton
-            icon={props.product.favourite ? "heart" : "heart-outline"}
+            icon={false ? "heart" : "heart-outline"}
             size={26}
             iconColor={colors.rose[500]}
             className='text-rose-500'
@@ -64,7 +65,7 @@ const ProductMiniCard = (props: Props) => {
       {/* Descrizione Prodotto */}
       <View className="flex flex-row " >
         <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
-        <ThemedText label={`${props.product.quantity}`} />
+        {/* <ThemedText label={`${props.product.quantity}`} /> */}
       </View>
       <View className="flex flex-row " >
         <ThemedText darkModeDisabled label='Prezzo: ' font='Nunito-Italic' textStyle='color-primary-500' />
@@ -74,7 +75,7 @@ const ProductMiniCard = (props: Props) => {
 
 
       {/* Tipo di prodotto */}
-      <View
+      {/* <View
 
         className='flex flex-row flex-wrap gap-1'>
         {props.product.foodTypes.map((type) => {
@@ -91,11 +92,8 @@ const ProductMiniCard = (props: Props) => {
             //   label={type.type}
             // />
           )
-        }
-
-        )
-        }
-      </View>
+        })}
+      </View> */}
 
       {/* Azioni Prodotto */}
       <View
