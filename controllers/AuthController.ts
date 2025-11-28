@@ -1,6 +1,7 @@
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
-import * as SecureStore from "expo-secure-store";
+// import * as SecureStore from "expo-secure-store";
+
 import { Controller } from "./Controller";
 
 interface Credentials {
@@ -12,6 +13,7 @@ interface Credentials {
 export interface AuthResponse {
   user: User;
   token: string;
+  refreshToken: string;
   tokenType?: string;
   expiresIn?: number;
 }
@@ -26,8 +28,8 @@ export abstract class AuthController extends Controller {
     return await this.basicPostCall("register", credentials).then((res: AxiosResponse) => {
       if (res.status === 200) {
         const data = (res as AxiosResponse).data;
-        SecureStore.setItem('authToken', data.token);
-
+        this.setAuthToken(data.token)
+        this.setRefreshToken(data.refreshToken)
         this.currentUser = data.user;
         this.currentToken = data.token;
         return res as AxiosResponse<unknown, AuthResponse>;
@@ -42,7 +44,8 @@ export abstract class AuthController extends Controller {
     return await this.basicPostCall("login", credentials).then((res: AxiosResponse) => {
       if (res.status === 200) {
         const data = (res as AxiosResponse).data;
-        SecureStore.setItem('authToken', data.token);
+        this.setAuthToken(data.token)
+        this.setRefreshToken(data.refreshToken)
         this.currentUser = data.user;
         this.currentToken = data.token;
         this.tokenType = data.tokenType;
@@ -59,13 +62,14 @@ export abstract class AuthController extends Controller {
     if(this.currentUser) {
       return this.currentUser;
     }
-    else if(this.currentToken || SecureStore.getItem("authToken")) {
+    else if(this.currentToken || await this.getAuthToken()) {
       console.log("token", this.currentToken)
       return await this.authenticatedGetCall("me").then((res: AxiosResponse) => {
         if (res.status === 200) {
           const data = (res as AxiosResponse).data as AuthResponse;
           console.log({ data: data.token })
-          SecureStore.setItem('authToken', data.token);
+          this.setAuthToken(data.token)
+          this.setRefreshToken(data.refreshToken)
           this.currentUser = data.user;
           this.currentToken = data.token;
           return data.user;
@@ -79,8 +83,5 @@ export abstract class AuthController extends Controller {
     else {
       throw new Error ("Unauthorized");
     }
-  }
-  private callUserApi() {
-    
   }
 }

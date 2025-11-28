@@ -49,15 +49,16 @@ const ProductMiniCard = (props: Props) => {
       {/* Descrizione Prodotto */}
       <UrlImage
         source={props.product.image}
-        className=" self-center rounded-xl bg-rose-500"
-        width={100}
-        height={100}
+        className=" self-center "
+        width={125}
+        height={125}
         resizeMode="contain"
       />
       <ThemedText
+        numberOfLines={1}
         darkModeDisabled
         font="Nunito-ExtraBold"
-        textStyle="text-2xl text-primary-500"
+        textStyle="text-xl text-primary-500 line-clamp-1"
         label={props.product.name}
       />
 

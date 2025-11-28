@@ -7,12 +7,14 @@ interface TTInterface {
   textStyle?: string;
   darkModeDisabled?: boolean;
   font?: AvailableFonts;
+  numberOfLines?: number;
 }
 
-const ThemedText = ({ label, textStyle, darkModeDisabled, font }: TTInterface) => {
+const ThemedText = ({ label, textStyle, darkModeDisabled, font, numberOfLines }: TTInterface) => {
 
   return (
     <Text
+      numberOfLines={numberOfLines}
       style={{ fontFamily: font || 'Nunito' }}
       className={
         `${!darkModeDisabled && 'text-black dark:text-white '} ${textStyle}`

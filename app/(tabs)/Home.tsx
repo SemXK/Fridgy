@@ -140,10 +140,10 @@ const HomePage = () => {
           <FlatList
             data={item.data} // the array of products
             horizontal
-            initialNumToRender={10}
-            maxToRenderPerBatch={10}
-            windowSize={5}
-            removeClippedSubviews={false} 
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={3}
+            removeClippedSubviews={true}
             keyExtractor={(product) => String(product.id)}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{

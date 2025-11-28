@@ -32,12 +32,13 @@ const ProductTypeMiniCard = (props: Props) => {
       /> */}
       <UrlImage
         source={props.item.image}
-        className="w-1/2 h-1/2 self-center  rounded-xl bg-rose-100"
-        width={50}
-        height={50}
+        className="w-1/2 h-1/2 self-center "
+        width={65}
+        height={65}
         resizeMode="contain"
       />
       <ThemedText
+        numberOfLines={1}
         darkModeDisabled
         font="Nunito-ExtraBold"
         textStyle=" text-primary-500 line-clamp-1"

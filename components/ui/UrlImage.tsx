@@ -24,7 +24,7 @@ const UrlImage = ({ source, width, height, resizeMode = 'contain', style, classN
   return (
     <Image
       className={className}
-      style={{ width, height }}
+      style={[{ width, height }, style]}
       source={{ uri: imageUri }}
       resizeMode={resizeMode}
     />
