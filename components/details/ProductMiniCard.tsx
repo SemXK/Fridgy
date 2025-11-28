@@ -1,10 +1,11 @@
 import { Product } from '@/constants/interfaces/productInterface';
 import { Ionicons } from '@react-native-vector-icons/ionicons';
 import React from 'react';
-import { GestureResponderEvent, Image, ImageSourcePropType, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import colors from "tailwindcss/colors";
 import ThemedText from '../ui/ThemedText';
+import UrlImage from '../ui/UrlImage';
 
 interface Props {
   product: Product,
@@ -16,12 +17,12 @@ const ProductMiniCard = (props: Props) => {
   // % Functions
   const handleFavouriteClick = (e: GestureResponderEvent, product: Product) => {
     e.stopPropagation();
-
   }
 
   // * Display
   return (
     <TouchableOpacity
+      activeOpacity={0.7} 
       className="relative w-full h-full aspect-square bg-stone-100 dark:bg-stone-900 rounded-xl p-4 justify-start "
       onPress={props.onPress}
 
@@ -45,16 +46,14 @@ const ProductMiniCard = (props: Props) => {
         </TouchableOpacity>
       </View>
 
-
       {/* Descrizione Prodotto */}
-      <Image
-        className="w-1/2 h-2/3 self-center aspect-square rounded-xl "
-        source={props.product.image as ImageSourcePropType}
-        width={160}
-        height={160}
+      <UrlImage
+        source={props.product.image}
+        className=" self-center rounded-xl bg-rose-500"
+        width={100}
+        height={100}
         resizeMode="contain"
       />
-
       <ThemedText
         darkModeDisabled
         font="Nunito-ExtraBold"
@@ -71,8 +70,6 @@ const ProductMiniCard = (props: Props) => {
         <ThemedText darkModeDisabled label='Prezzo: ' font='Nunito-Italic' textStyle='color-primary-500' />
         <ThemedText label={`${props.product.price}`} />
       </View>
-
-
 
       {/* Tipo di prodotto */}
       {/* <View
@@ -107,7 +104,7 @@ const ProductMiniCard = (props: Props) => {
       </View>
 
     </TouchableOpacity>
-  )
+  ) 
 }
 
 export default ProductMiniCard

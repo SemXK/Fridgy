@@ -1,7 +1,8 @@
 import { ProductType } from '@/constants/interfaces/productInterface';
 import React from 'react';
-import { GestureResponderEvent, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { GestureResponderEvent, TouchableOpacity } from 'react-native';
 import ThemedText from '../ui/ThemedText';
+import UrlImage from '../ui/UrlImage';
 
 interface Props {
   item: ProductType,
@@ -13,7 +14,6 @@ const ProductTypeMiniCard = (props: Props) => {
   // % Functions
   const handleFavouriteClick = (e: GestureResponderEvent, product: ProductType) => {
     e.stopPropagation();
-
   }
 
   // * Display
@@ -23,11 +23,18 @@ const ProductTypeMiniCard = (props: Props) => {
       onPress={props.onPress}
     >
       {/* Descrizione Prodotto */}
-      <Image
+      {/* <Image
         className="w-3/4 h-3/4 self-center  rounded-xl "
         source={props.item.image as ImageSourcePropType}
         width={200}
         height={200}
+        resizeMode="contain"
+      /> */}
+      <UrlImage
+        source={props.item.image}
+        className="w-1/2 h-1/2 self-center  rounded-xl bg-rose-100"
+        width={50}
+        height={50}
         resizeMode="contain"
       />
       <ThemedText

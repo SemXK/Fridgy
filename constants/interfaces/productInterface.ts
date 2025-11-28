@@ -1,5 +1,23 @@
 import { ImageSourcePropType } from "react-native";
 
+// * Generic interfaces
+export interface PaginatedResponse<T>{
+  currentPage: number;
+  data: T[],
+  first_page_url: string | null;
+  from: number;
+  last_page: number;
+  last_page_url: string | null;
+  links: string[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+}
+
+// * Table interfaces
 export interface CartItemInterface {
   product?: Product;
   productId: number;
@@ -9,10 +27,9 @@ export interface CartItemInterface {
 }
 export interface ProductType {
   id: number;
-  image?: ImageSourcePropType;
+  image: string;
   type: string; // latticini, carne, verdure ec...
 }
-
 export interface Receipt {
   id: number;
   price: number;
@@ -21,21 +38,25 @@ export interface Receipt {
   created_at: Date;
   updated_at: Date;
 }
-
 export interface Product {
   id: number;
   name: string;
-  image?: ImageSourcePropType;
+  image: string;
   description: string;
+  brand: string;
+  quantiy: number;
+  uam: string;
+  itemsNumber?: number;
+
   price: number;
+  pricePerUma?: number;
   taxPercent: number;
 
-  priceHistory: Receipt[];
+  // priceHistory: Receipt[];
   productTypes: ProductType[];
   created_at: Date;
   updated_at: Date;
 }
-
 export interface Discount {
   id: number;
   discount: number;

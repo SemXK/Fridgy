@@ -2,8 +2,9 @@ import DiscountMiniCard from '@/components/details/DiscountMiniCard';
 import ProductMiniCard from '@/components/details/ProductMiniCard';
 import ProductTypeMiniCard from '@/components/details/ProductTypeMiniCard';
 import ThemedText from '@/components/ui/ThemedText';
-import { discountList, productList, productType } from '@/constants/interfaces/fakeData';
+import { discountList } from '@/constants/interfaces/fakeData';
 import { Discount, Product, ProductType } from '@/constants/interfaces/productInterface';
+import { ProductController } from '@/controllers/ProductController';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { UserContext } from '../_layout';
@@ -13,12 +14,40 @@ const HomePage = () => {
   // * Context
   const user = useContext(UserContext);
 
-  // * State
+  // * Display State
   const [showSnackbar, setShowSnackbar] = useState<string>("");
+
+  // * Variables State
+  const [productList, setProductList] = useState<Product[]>([])
+  const [productTypeList, setProductTypeList] = useState<ProductType[]>([])
 
   // * lifecycle
   useEffect(() => {
+    getProductTypes()
+    getShopItems()
   }, [])
+
+  // * API calls
+  const getShopItems = async () => {
+    await ProductController
+      .getShopProducts()
+      .then((res) => {
+        setProductList(res as Product[])
+      })
+      .catch(e => {
+        setShowSnackbar(e.message)
+      })
+  }
+  const getProductTypes = async () => {
+    await ProductController
+      .getProductTypes()
+      .then((res) => {
+        setProductTypeList(res as ProductType[])
+      })
+      .catch(e => {
+        setShowSnackbar(e.message)
+      })
+  }
 
   // * Functions
   const handleTouch = ( ) => {
@@ -34,6 +63,7 @@ const HomePage = () => {
   }
   const discountPress = (discount: Discount) => {
   }
+
   // * Sections
   const sections = [
     {
@@ -41,7 +71,7 @@ const HomePage = () => {
       title: "Categorie",
       height: 100,
       width: 125,
-      data: productType,
+      data: productTypeList,
       renderCard: (item: ProductType) => (
         <ProductTypeMiniCard
           onPress={() => productTypePress(item)}
@@ -89,6 +119,7 @@ const HomePage = () => {
       )
     }
   ];
+
   // * Display
   return (
     <FlatList
@@ -105,20 +136,25 @@ const HomePage = () => {
             textStyle="text-primary-500 text-2xl p-4"
             label={item.title}
           />
+
           <FlatList
-            data={item.data}
+            data={item.data} // the array of products
             horizontal
-            keyExtractor={(i) => String(i.id)}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            windowSize={5}
+            removeClippedSubviews={false} 
+            keyExtractor={(product) => String(product.id)}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
               paddingHorizontal: 12,
-              gap: 8
+              gap: 8,
             }}
             renderItem={({ item: product }) => (
               <View
                 style={{
-                  width: item.width,
-                  height: item.height,
+                  width: item.width, // use outer section width
+                  height: item.height, // use outer section height
                   backgroundColor: "white",
                   borderRadius: 12,
                   marginRight: 8,
@@ -134,6 +170,7 @@ const HomePage = () => {
             )}
           />
         </View>
+
       )}
     />
   );
