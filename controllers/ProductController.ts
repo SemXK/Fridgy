@@ -18,8 +18,9 @@ export abstract class ProductController extends Controller {
   };
 
   // % Prodotti
-  static getShopProducts = async (): Promise<Product[] | AxiosError> => {
-    return await this.basicPostCall("products/shop-products", {}).then((res: AxiosResponse<Product[]>) => {
+  static getShopProducts = async (textQuery?: string): Promise<Product[] | AxiosError> => {
+    return await this.basicPostCall("products/shop-products", {textQuery})
+    .then((res: AxiosResponse<Product[]>) => {
       if (res.status === 200) {
         const paginatedResponse: PaginatedResponse<Product> = (res as AxiosResponse).data;
         this.shopProducts = paginatedResponse.data;

@@ -1,6 +1,6 @@
 import { Discount } from '@/constants/interfaces/productInterface';
 import React from 'react';
-import { GestureResponderEvent, Image, ImageSourcePropType, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, ImageBackground, TouchableOpacity, View } from 'react-native';
 import WhiteButton from '../pressable/WhiteButton';
 import ThemedText from '../ui/ThemedText';
 
@@ -19,18 +19,19 @@ const DiscountMiniCard = (props: Props) => {
   // * Display
   return (
     <TouchableOpacity
-      className="relative w-full h-full aspect-square bg-stone-100 dark:bg-stone-900 rounded-xl justify-start "
+      className="relative w-full h-full aspect-square  rounded-xl justify-start "
       onPress={props.onPress}
-
     >
+    <ImageBackground
+      source={props.item.image}
+      style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0 }}
+      imageStyle={{ borderRadius: 16 }}
+      resizeMode="cover"
+    >
+    </ImageBackground>
+
       {/* Descrizione Prodotto */}
-      <Image
-        className="w-full h-full self-center aspect-square rounded-xl absolute "
-        source={props.item.image as ImageSourcePropType}
-        width={160}
-        height={160}
-        resizeMode="cover"
-      />
+
 
       {/* Azioni Prodotto */}
       <View className="absolute top-0 w-full h-full rounded-xl bg-primary-500/75 flex flex-col items-center justify-between p-2">

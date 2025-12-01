@@ -1,22 +1,16 @@
 import { primaryColor } from '@/constants/theme'
-import { router } from 'expo-router'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
-const CartButton = () => {
-  // * Functions
-  const handlePress = () => {
-    router.navigate('/(tabs)/Cart');
-  }
-
+const NotificationButton = () => {
   return (
     <TouchableOpacity
-      onPress={handlePress}
+      onPress={(e) => {}}
       activeOpacity={.1}
       >
       <IconButton
-        icon="shopping-outline"
+        icon="bell"
         size={20}
         iconColor={primaryColor[500]}
       />
@@ -24,4 +18,4 @@ const CartButton = () => {
   )
 }
 
-export default CartButton
+export default NotificationButton

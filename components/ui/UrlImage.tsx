@@ -1,4 +1,5 @@
 // UrlImage.tsx
+import Constants from "expo-constants";
 import React, { useEffect, useState } from 'react';
 import { Image, ImageResizeMode, ImageStyle, StyleProp } from 'react-native';
 
@@ -10,11 +11,17 @@ interface UrlImageProps {
   style?: StyleProp<ImageStyle>;
   className?: string;
 }
+  const baseUrl: string = `${
+    Constants.deviceName !== 'sdk_gphone64_x86_64' ? 
+    process.env.EXPO_PUBLIC_ASSETS_URL
+    :
+    process.env.EXPO_PUBLIC_EMULATOR_ASSETS_URL
+  }`;
 
 const UrlImage = ({ source, width, height, resizeMode = 'contain', style, className }: UrlImageProps) => {
   const [imageUri, setImageUri] = useState<string>("")
   useEffect(() => {
-    setImageUri(`${process.env.EXPO_PUBLIC_ASSETS_URL}/${source}`)
+    setImageUri(`${baseUrl}/${source}`)
   }, [])
 
   if(!imageUri){

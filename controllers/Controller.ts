@@ -1,8 +1,14 @@
 import axios from "axios";
+import Constants from "expo-constants";
 import * as Keychain from 'react-native-keychain';
 
 export abstract class Controller {
-  static baseUrl: string = `${process.env.EXPO_PUBLIC_BACKEND_URL}`;
+  static baseUrl: string = `${
+    Constants.deviceName !== 'sdk_gphone64_x86_64' ? 
+    process.env.EXPO_PUBLIC_BACKEND_URL
+    :
+    process.env.EXPO_PUBLIC_EMULATOR_BACKEND_URL
+  }`;
 
   // * Secure store auth tokens
   protected static getAuthToken = async() => {
@@ -36,22 +42,21 @@ export abstract class Controller {
       return await axios.get(`${this.baseUrl}/${apiPath}`);
     } 
     catch (error: any) {
-      return error;
+      throw  error;
     }
   };
-  static basicPostCall = async (apiPath: string, payload: unknown) => {
+  static basicPostCall = async (apiPath: string, data: unknown) => {
     try {
-      return await axios.post(`${this.baseUrl}/${apiPath}`, payload);
+      return await axios.post(`${this.baseUrl}/${apiPath}`,data);
     } 
     catch (error: any) {
-      return error;
+      throw  error;
     }
   };
 
   // * Authenticated API calls
   static authenticatedGetCall = async (apiPath: string) => {
     const token = this.getAuthToken();
-    console.log({token})
     if(token) {
       try {
         return await axios.get(
@@ -66,8 +71,7 @@ export abstract class Controller {
       }
     }
     else {
-      console.log("Error: no token")
-      // throw new Error("Unauthorized")
+      throw new Error("Unauthorized")
     }
   };
 }

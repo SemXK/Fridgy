@@ -63,11 +63,9 @@ export abstract class AuthController extends Controller {
       return this.currentUser;
     }
     else if(this.currentToken || await this.getAuthToken()) {
-      console.log("token", this.currentToken)
       return await this.authenticatedGetCall("me").then((res: AxiosResponse) => {
         if (res.status === 200) {
           const data = (res as AxiosResponse).data as AuthResponse;
-          console.log({ data: data.token })
           this.setAuthToken(data.token)
           this.setRefreshToken(data.refreshToken)
           this.currentUser = data.user;

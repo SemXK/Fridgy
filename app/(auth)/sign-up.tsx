@@ -31,7 +31,6 @@ export default function SignUp() {
           router.navigate('/(tabs)/Home');
         })
         .catch(e => {
-          console.log({e})
           setShowSnackbar(e.message)
         })
     }

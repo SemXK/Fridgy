@@ -29,11 +29,11 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
         activeUnderlineColor={primaryColor[500]}
         outlineStyle={{ backgroundColor: 'transparent' }}
         style={{
-          borderRadius: 100,
+          borderRadius: 10,
           backgroundColor: 'transparent'
         }}
         theme={{
-          roundness: 100,
+          roundness: 10,
           colors: {
             background: Appearance.getColorScheme() === 'light' ? 'white' : 'black',
           },
