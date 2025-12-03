@@ -1,6 +1,7 @@
 import axios from "axios";
 import Constants from "expo-constants";
 import * as Keychain from 'react-native-keychain';
+import { AuthController } from "./AuthController";
 
 export abstract class Controller {
   static baseUrl: string = `${
@@ -57,12 +58,14 @@ export abstract class Controller {
   // * Authenticated API calls
   static authenticatedGetCall = async (apiPath: string) => {
     const token = this.getAuthToken();
+    const guestId = await AuthController.sessionGetId()
     if(token) {
       try {
         return await axios.get(
           `${this.baseUrl}/${apiPath}`,
           {headers: {
-            Authorization: `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Guest-Token': guestId
           }}
         );
       } 

@@ -1,4 +1,4 @@
-import { User } from '@/constants/interfaces/usersInterface';
+import { AuthType, Guest, User } from '@/constants/interfaces/usersInterface';
 import { AuthController } from '@/controllers/AuthController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import './global.css';
 
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
-export const UserContext = createContext<User | null>(null);
+export const UserContext = createContext<AuthType>({});
 
 export default function RootLayout() {
   // * theme
@@ -46,14 +46,24 @@ export default function RootLayout() {
 
   //  * Auth (non obligatorio)
   const [user, setUser] = useState<User | null>(null)
+  const [guest, setGuest] = useState<Guest | null>(null)
+
   useEffect(() => {
-    if(!user) {
-      AuthController.me()
-      .then((userResponse: User) => {
-        setUser(userResponse);
+    // # Momentaneamente non è obbligatorio
+    // if(!user) {
+    //   AuthController.me()
+    //   .then((userResponse: User) => {
+    //     setUser(userResponse);
+    //   })
+    //   .catch(e => console.log("e:", e.message)) 
+    // }
+    // 1* Guest API (per ora gli utenti sono tutti guest)
+    if(!guest) {
+      AuthController.sessionInit().then((res) => {
+        setGuest(AuthController.currentGuest);
       })
-      .catch(e => console.log("e:", e.message)) 
     }
+    // AuthController.sessionGetId().then((res) => console.log({res}))
   }, [])
 
   if (!loaded && !error) {
@@ -66,7 +76,7 @@ export default function RootLayout() {
         barStyle={Appearance.getColorScheme() === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor={Appearance.getColorScheme() === 'light' ? 'white' : 'black'}
       />
-      <UserContext value={user}>
+      <UserContext value={{user, guest}}>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
           <Stack initialRouteName="(tabs)">

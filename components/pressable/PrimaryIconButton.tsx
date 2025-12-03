@@ -1,5 +1,6 @@
 import { primaryColor } from '@/constants/theme'
-import Ionicons from '@react-native-vector-icons/ionicons'
+import { Ionicons } from '@expo/vector-icons'
+import React from 'react'
 import { ActivityIndicator } from 'react-native'
 import { Button } from 'react-native-paper'
 

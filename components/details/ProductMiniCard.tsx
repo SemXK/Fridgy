@@ -1,5 +1,5 @@
 import { Product } from '@/constants/interfaces/productInterface';
-import { Ionicons } from '@react-native-vector-icons/ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { IconButton } from 'react-native-paper';

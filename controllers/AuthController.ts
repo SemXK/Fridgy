@@ -1,6 +1,7 @@
-import { User } from "@/constants/interfaces/usersInterface";
+import { Guest, User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
-// import * as SecureStore from "expo-secure-store";
+import * as Crypto from 'expo-crypto';
+import * as SecureStore from "expo-secure-store";
 
 import { Controller } from "./Controller";
 
@@ -20,6 +21,7 @@ export interface AuthResponse {
 
 export abstract class AuthController extends Controller {
   static currentUser: User | null;
+  static currentGuest: Guest | null;
   static currentToken: string | null;
   static tokenType: string | undefined; // Maybe this isnt even needed
   static expiresIn: number | undefined; // Maybe this isnt even needed
@@ -82,4 +84,55 @@ export abstract class AuthController extends Controller {
       throw new Error ("Unauthorized");
     }
   }
+
+  // * Offline Session functions
+  static createSession = async (guestId: string) => {
+    return await this.basicPostCall("init-guest-session", {guestId}).then((res: AxiosResponse<Guest>) => {
+      if (res.status === 200) {
+        this.currentGuest = res.data
+      }
+    })
+  }
+  static sessionInit = async () => {
+    try {
+
+      // 1* unique guest id from phone's storage
+      let guestId = await SecureStore.getItemAsync("guestId");
+
+      // 1* Create guest session
+      if (!guestId) {
+        guestId = Crypto.randomUUID();
+        await SecureStore.setItemAsync("guestId", guestId as string);
+        
+        // 2* api create guest 
+        this.createSession(guestId as string)
+        
+      }
+
+      // 1* Get guest session
+      else {
+        return await this.basicGetCall(`guest-session/${guestId}`).then((res: AxiosResponse<Guest>) => {
+          if (res.status === 200) {
+            this.currentGuest = res.data
+            console.log({createSessionWithToken: this.currentGuest})
+          }
+          else {
+            // 2* api create guest 
+            sessionStorage.removeItem("guestId")
+            guestId = Crypto.randomUUID();
+            this.createSession(guestId)
+          }
+        })
+      }
+      return this.currentGuest
+    } 
+    catch (err) {
+      await SecureStore.deleteItemAsync("guestId")
+      console.log("Error getting guest id", err);
+    }
+  }
+  static sessionGetId = async (): Promise<string | null>  => {
+    return await SecureStore.getItemAsync("guestId") ;
+  }
+
 }
