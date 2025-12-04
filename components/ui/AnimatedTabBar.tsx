@@ -16,12 +16,11 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const route = state.routes[state.index];
   const focusedChild = getFocusedRouteName(route);
   const isHome = route.name === "Home";
-  const isCart = route.name === "Cart";
   const isFridgeIndex = route.name === "(fridge-tab)" && focusedChild === "index";
 
-  // if (!isHome && !isFridgeIndex && !isCart) {
-  //   return null;
-  // }
+  if (!isHome && !isFridgeIndex) {
+    return null;
+  }
 
   return (
     <View
@@ -60,7 +59,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         const icons: Record<string, string> = {
           'Home': 'home-outline',
           '(fridge-tab)': 'fridge-outline',
-          'Cart': 'cart-outline'
         };
 
         const iconName = icons[route.name] || 'circle-outline';

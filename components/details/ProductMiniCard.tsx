@@ -1,6 +1,8 @@
-import { Product } from '@/constants/interfaces/productInterface';
+import { CartContext } from '@/app/_layout';
+import { CartContextInterface, CartItemInterface, Product } from '@/constants/interfaces/productInterface';
+import { ProductController } from '@/controllers/ProductController';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useContext } from 'react';
 import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import colors from "tailwindcss/colors";
@@ -13,11 +15,21 @@ interface Props {
 }
 
 const ProductMiniCard = (props: Props) => {
+  // * Context
+  const { setCart } = useContext(CartContext) as CartContextInterface;
 
   // % Functions
   const handleFavouriteClick = (e: GestureResponderEvent, product: Product) => {
     e.stopPropagation();
   }
+  const addProductToCart = async () => {
+    const productId = props.product.id;
+    ProductController.addItemToCart(productId)
+    .then((res) => {
+      setCart(res as CartItemInterface[])
+    })
+    .catch(e => console.log(e.message))
+  } 
 
   // * Display
   return (
@@ -95,6 +107,7 @@ const ProductMiniCard = (props: Props) => {
 
       {/* Azioni Prodotto */}
       <View
+        onTouchEnd={addProductToCart}
         className="absolute bottom-0 right-0 rounded-tl-2xl rounded-br-2xl bg-primary-500 p-2"
       >
         <Ionicons

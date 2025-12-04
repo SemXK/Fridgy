@@ -1,4 +1,4 @@
-import { PaginatedResponse, Product, ProductType } from "@/constants/interfaces/productInterface";
+import { CartItemInterface, PaginatedResponse, Product, ProductType } from "@/constants/interfaces/productInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -33,4 +33,52 @@ export abstract class ProductController extends Controller {
     })
   };
 
+  // % Cart
+  static getCartItems = async (): Promise<CartItemInterface[] | AxiosError> => {
+    return await this.authenticatedGetCall("products/get-cart")
+    .then((res: AxiosResponse<CartItemInterface[]>) => {
+      console.log("Status", res.status)
+      if (res.status === 200) {
+        const cartList: CartItemInterface[] = (res as AxiosResponse).data;
+        return cartList;
+      }
+      else if (res.status === 401) {
+        throw new AxiosError("Invalid Credentials");
+      }
+      return new AxiosError("Unexpected response status: " + res.status);
+    })
+    .catch((e) => {
+      return e as AxiosError
+    })
+  };
+  static addItemToCart = async (productId: number): Promise<CartItemInterface[] | AxiosError> => {
+    return await this.authenticatedPostCall("products/add-to-cart", {productId})
+    .then((res: AxiosResponse<CartItemInterface[]>) => {
+      if (res.status === 200) {
+        return res.data;
+      }
+      else if (res.status === 401) {
+        throw new AxiosError("Invalid Credentials");
+      }
+      return new AxiosError("Unexpected response status: "+ res.status);
+    })
+    .catch((e) => {
+      return e as AxiosError
+    })
+  };
+  static removeItemFromCart = async (productId: number): Promise<CartItemInterface[] | AxiosError> => {
+    return await this.authenticatedPostCall("products/remove-from-cart", {productId})
+    .then((res: AxiosResponse<CartItemInterface[]>) => {
+      if (res.status === 200) {
+        return res.data;
+      }
+      else if (res.status === 401) {
+        throw new AxiosError("Invalid Credentials");
+      }
+      return new AxiosError("Unexpected response status: "+ res.status);
+    })
+    .catch((e) => {
+      return e as AxiosError
+    })
+  };
 }

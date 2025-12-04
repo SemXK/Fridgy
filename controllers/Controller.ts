@@ -1,6 +1,6 @@
 import axios from "axios";
 import Constants from "expo-constants";
-import * as Keychain from 'react-native-keychain';
+import * as SecureStore from "expo-secure-store";
 import { AuthController } from "./AuthController";
 
 export abstract class Controller {
@@ -12,69 +12,88 @@ export abstract class Controller {
   }`;
 
   // * Secure store auth tokens
-  protected static getAuthToken = async() => {
-    const creds = await Keychain.getInternetCredentials("authToken");
-    return creds ? creds.password : null;
-  }
-  protected static setAuthToken = async(token: string) => {
-    await Keychain.setInternetCredentials(
-      "authToken",     
-      "jwt",            
-      token,          
-      { accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY }
-    );
-  }
-  protected static getRefreshToken = async() => {
-    const creds = await Keychain.getInternetCredentials("refreshToken");
-    return creds ? creds.password : null; 
-  }
-  protected static setRefreshToken = async(token: string) => {
-    await Keychain.setInternetCredentials(
-      "refreshToken",
-      "refresh",
-      token,
-      { accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY }
-    );
-  }
+  protected static getAuthToken = async () => {
+    const token = await SecureStore.getItemAsync("authToken");
+    return token ?? null;
+  };
+  protected static setAuthToken = async (token: string) => {
+    await SecureStore.setItemAsync("authToken", token);
+  };
+  protected static getRefreshToken = async () => {
+    const token = await SecureStore.getItemAsync("refreshToken");
+    return token ?? null;
+  };
+  protected static setRefreshToken = async (token: string) => {
+    await SecureStore.setItemAsync("refreshToken", token);
+  };
 
   // * Generic API calls
-  static basicGetCall = async (apiPath: string,) => {
+  static basicGetCall = async (apiPath: string) => {
     try {
       return await axios.get(`${this.baseUrl}/${apiPath}`);
     } 
     catch (error: any) {
-      throw  error;
+      throw error;
     }
   };
   static basicPostCall = async (apiPath: string, data: unknown) => {
     try {
-      return await axios.post(`${this.baseUrl}/${apiPath}`,data);
+      return await axios.post(`${this.baseUrl}/${apiPath}`, data);
     } 
     catch (error: any) {
-      throw  error;
+      throw error;
     }
   };
 
   // * Authenticated API calls
   static authenticatedGetCall = async (apiPath: string) => {
-    const token = this.getAuthToken();
-    const guestId = await AuthController.sessionGetId()
-    if(token) {
+    const token = await this.getAuthToken();
+    const guestId = await AuthController.sessionGetId();
+
+    if (token) {
       try {
         return await axios.get(
           `${this.baseUrl}/${apiPath}`,
-          {headers: {
-            'Authorization': `Bearer ${token}`,
-            'Guest-Token': guestId
-          }}
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Guest-Token': guestId
+            }
+          }
         );
       } 
       catch (error: any) {
         return error;
       }
-    }
+    } 
     else {
-      throw new Error("Unauthorized")
+      throw new Error("Unauthorized");
+    }
+  };
+  static authenticatedPostCall = async (apiPath: string, payload: unknown) => {
+    const token = await this.getAuthToken();
+    const guestId = await AuthController.sessionGetId();
+
+    if (token) {
+      try {
+        // FIXED: axios.post expects (url, data, config)
+        return await axios.post(
+          `${this.baseUrl}/${apiPath}`,
+          payload,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Guest-Token': guestId
+            }
+          }
+        );
+      } 
+      catch (error: any) {
+        return error;
+      }
+    } 
+    else {
+      throw new Error("Unauthorized");
     }
   };
 }

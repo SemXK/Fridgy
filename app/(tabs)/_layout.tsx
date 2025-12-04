@@ -34,6 +34,7 @@ export default function TabLayout() {
           title: 'Il tuo carrello',
           tabBarHideOnKeyboard: true,
           headerShown: false,
+          href:null
         }}
       />
     </Tabs>

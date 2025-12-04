@@ -17,12 +17,18 @@ export interface PaginatedResponse<T>{
   total: number;
 }
 
+// * Context Interface
+export interface CartContextInterface {
+  cart: CartItemInterface[];
+  setCart: React.Dispatch<React.SetStateAction<CartItemInterface[]>>
+}
+
 // * Table interfaces
 export interface CartItemInterface {
+  id: number;
   product?: Product;
   productId: number;
   quantity: number;
-  userId: number;
 
 }
 export interface ProductType {

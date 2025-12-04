@@ -1,7 +1,10 @@
+import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/productInterface';
 import { AuthType, Guest, User } from '@/constants/interfaces/usersInterface';
 import { AuthController } from '@/controllers/AuthController';
+import { ProductController } from '@/controllers/ProductController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { AxiosError } from 'axios';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,6 +17,7 @@ import './global.css';
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
 export const UserContext = createContext<AuthType>({});
+export const CartContext = createContext<CartContextInterface | undefined>(undefined);
 
 export default function RootLayout() {
   // * theme
@@ -45,8 +49,9 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   //  * Auth (non obligatorio)
-  const [user, setUser] = useState<User | null>(null)
-  const [guest, setGuest] = useState<Guest | null>(null)
+  const [user, setUser] = useState<User | undefined>(undefined)
+  const [guest, setGuest] = useState<Guest | undefined>(undefined)
+  const [cart, setCart] = useState<CartItemInterface[]>([])
 
   useEffect(() => {
     // # Momentaneamente non è obbligatorio
@@ -55,7 +60,6 @@ export default function RootLayout() {
     //   .then((userResponse: User) => {
     //     setUser(userResponse);
     //   })
-    //   .catch(e => console.log("e:", e.message)) 
     // }
     // 1* Guest API (per ora gli utenti sono tutti guest)
     if(!guest) {
@@ -63,11 +67,22 @@ export default function RootLayout() {
         setGuest(AuthController.currentGuest);
       })
     }
-    // AuthController.sessionGetId().then((res) => console.log({res}))
+    // 1* Cart API
+    ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {
+      if (!(res instanceof AxiosError)) {
+        setCart(res);
+      }
+    })
   }, [])
 
+  // % Font loader
   if (!loaded && !error) {
     return null;
+  }
+
+  // % User Loader
+  if(!user && !guest) {
+    return null
   }
 
   return (
@@ -77,14 +92,16 @@ export default function RootLayout() {
         backgroundColor={Appearance.getColorScheme() === 'light' ? 'white' : 'black'}
       />
       <UserContext value={{user, guest}}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <CartContext value={{cart, setCart}}>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
-          <Stack initialRouteName="(tabs)">
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
+            <Stack initialRouteName="(tabs)">
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
 
-        </ThemeProvider>
+          </ThemeProvider>
+        </CartContext>
       </UserContext>
     </>
   );

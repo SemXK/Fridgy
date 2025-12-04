@@ -1,37 +1,40 @@
-import { changeCurrentCart, currentCart } from '@/constants/interfaces/fakeData'
-import { CartItemInterface, Product } from '@/constants/interfaces/productInterface'
-import React, { useState } from 'react'
-import { GestureResponderEvent, Image, Pressable, TouchableOpacity, View } from 'react-native'
+import { CartContext } from '@/app/_layout'
+import { CartContextInterface, CartItemInterface, Product } from '@/constants/interfaces/productInterface'
+import { ProductController } from '@/controllers/ProductController'
+import React, { useContext, useState } from 'react'
+import { GestureResponderEvent, Pressable, TouchableOpacity, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import ThemedText from '../ui/ThemedText'
+import UrlImage from '../ui/UrlImage'
 
 interface CartItem {
   cartItem: CartItemInterface
 }
 const ProductCartItem = (props: CartItem) => {
+  // * Context
+  const { setCart } = useContext(CartContext) as CartContextInterface;
 
   // * States
   const [product, setProduct] = useState<Product>(props.cartItem.product as Product);
-  const [itemQuantity, setItemQuantity] = useState<number>(props.cartItem.quantity)
 
   // * Function
   const addItem = (e: GestureResponderEvent) => {
     e.stopPropagation();
-    setItemQuantity(itemQuantity + 1)
+    const productId = props.cartItem.productId;
+    ProductController.addItemToCart(productId)
+    .then((res) => {
+      setCart(res as CartItemInterface[])
+    })
+    .catch(e => console.log(e.message))
   }
   const removeItem = (e: GestureResponderEvent) => {
     e.stopPropagation();
-    if (itemQuantity >= 1) {
-      setItemQuantity(itemQuantity - 1)
-    }
-    else {
-      const newCart = {
-        ...currentCart,
-        activeItems: currentCart.activeItems.filter(item => item.productId !== props.cartItem.productId)
-      }
-      changeCurrentCart(newCart)
-    }
-
+    const productId = props.cartItem.productId;
+    ProductController.removeItemFromCart(productId)
+    .then((res) => {
+      setCart(res as CartItemInterface[])
+    })
+    .catch(e => console.log(e.message))
   }
 
   // * Disaplay
@@ -64,7 +67,7 @@ const ProductCartItem = (props: CartItem) => {
           className=" rounded-br-xl rounded-tl-xl bg-primary-500 p-0 bottom-0"
         >
           <IconButton
-            icon={itemQuantity >= 1 ? "minus" : "delete-outline"}
+            icon={props.cartItem.quantity >= 1 ? "minus" : "delete-outline"}
             size={14}
             iconColor="white"
           />
@@ -73,13 +76,12 @@ const ProductCartItem = (props: CartItem) => {
 
 
       {/* Image */}
-      <Image
-        className="w-28 h-28 rounded-xl "
+      <UrlImage
+        className="rounded-xl "
         source={product.image}
         resizeMode="contain"
-        height={14}
-        width={14}
-
+        height={100}
+        width={100}
       />
 
       {/* Description */}
@@ -92,7 +94,7 @@ const ProductCartItem = (props: CartItem) => {
         />
         <View className="flex flex-row " >
           <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
-          <ThemedText label={`${itemQuantity}`} />
+          <ThemedText label={`${props.cartItem.quantity}`} />
         </View>
 
       </View>
@@ -102,3 +104,4 @@ const ProductCartItem = (props: CartItem) => {
 }
 
 export default ProductCartItem
+

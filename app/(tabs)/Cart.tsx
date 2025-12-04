@@ -1,14 +1,16 @@
 import ProductCartItem from '@/components/details/ProductCartItem'
 import ThemedText from '@/components/ui/ThemedText'
-import { currentCart } from '@/constants/interfaces/fakeData'
-import { Cart } from '@/constants/interfaces/productInterface'
-import React, { useState } from 'react'
+import { CartContextInterface } from '@/constants/interfaces/productInterface'
+import React, { useContext } from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { CartContext } from '../_layout'
 
 const CartComponent = () => {
-  const [cart, setCart] = useState<Cart>(currentCart)
+  // * Context
+  const { cart } = useContext(CartContext) as CartContextInterface;
 
+  // * Display
   return (
     <SafeAreaView>
       <View className="w-full p-4" >
@@ -22,7 +24,7 @@ const CartComponent = () => {
       </View>
       <FlatList
         className="w-full h-full"
-        data={cart.activeItems}
+        data={cart}
         keyExtractor={item => String(item.productId)}
         numColumns={1}
         contentContainerStyle={{

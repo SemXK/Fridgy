@@ -20,8 +20,8 @@ export interface AuthResponse {
 }
 
 export abstract class AuthController extends Controller {
-  static currentUser: User | null;
-  static currentGuest: Guest | null;
+  static currentUser: User | undefined;
+  static currentGuest: Guest | undefined;
   static currentToken: string | null;
   static tokenType: string | undefined; // Maybe this isnt even needed
   static expiresIn: number | undefined; // Maybe this isnt even needed
@@ -114,7 +114,6 @@ export abstract class AuthController extends Controller {
         return await this.basicGetCall(`guest-session/${guestId}`).then((res: AxiosResponse<Guest>) => {
           if (res.status === 200) {
             this.currentGuest = res.data
-            console.log({createSessionWithToken: this.currentGuest})
           }
           else {
             // 2* api create guest 
@@ -127,6 +126,7 @@ export abstract class AuthController extends Controller {
       return this.currentGuest
     } 
     catch (err) {
+      // Caso che compare solo nei test: Tabella migrata
       await SecureStore.deleteItemAsync("guestId")
       console.log("Error getting guest id", err);
     }
