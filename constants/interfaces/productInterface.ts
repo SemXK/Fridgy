@@ -26,7 +26,7 @@ export interface CartContextInterface {
 // * Table interfaces
 export interface CartItemInterface {
   id: number;
-  product?: Product;
+  product: Product;
   productId: number;
   quantity: number;
 

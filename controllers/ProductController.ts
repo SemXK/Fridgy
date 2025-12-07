@@ -37,7 +37,6 @@ export abstract class ProductController extends Controller {
   static getCartItems = async (): Promise<CartItemInterface[] | AxiosError> => {
     return await this.authenticatedGetCall("products/get-cart")
     .then((res: AxiosResponse<CartItemInterface[]>) => {
-      console.log("Status", res.status)
       if (res.status === 200) {
         const cartList: CartItemInterface[] = (res as AxiosResponse).data;
         return cartList;

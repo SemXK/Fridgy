@@ -128,7 +128,7 @@ export abstract class AuthController extends Controller {
     catch (err) {
       // Caso che compare solo nei test: Tabella migrata
       await SecureStore.deleteItemAsync("guestId")
-      console.log("Error getting guest id", err);
+      console.log("Error getting guest id, guest id deleted", err);
     }
   }
   static sessionGetId = async (): Promise<string | null>  => {

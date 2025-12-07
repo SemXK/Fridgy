@@ -1,7 +1,10 @@
+import CartTotalView from '@/components/details/CartTotalView'
+import PaymentDetailComponent from '@/components/details/PaymentDetailComponent'
 import ProductCartItem from '@/components/details/ProductCartItem'
+import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import { CartContextInterface } from '@/constants/interfaces/productInterface'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CartContext } from '../_layout'
@@ -10,11 +13,32 @@ const CartComponent = () => {
   // * Context
   const { cart } = useContext(CartContext) as CartContextInterface;
 
+  // * States
+  const [cartTotal, setCartTotal] = useState<number>(0);
+  const [isPayingModalOpen, setIsPayingModalOpen] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    calculateCartPrice()
+  }, [cart])
+
+  // * Functions
+  const calculateCartPrice = () => {
+    let total = 0;
+    cart.forEach((ci) => {
+      total += ci.quantity * ci.product?.price
+    });
+    setCartTotal(total);
+  }
+
+
   // * Display
   return (
     <SafeAreaView>
-      <View className="w-full p-4" >
 
+      {/* Header */}
+      <View className="w-full " >
+        {/* <HomePageHeader /> */}
         <ThemedText
           darkModeDisabled
           label="Il mio carrello"
@@ -22,8 +46,10 @@ const CartComponent = () => {
           textStyle='text-4xl text-primary-500'
         />
       </View>
+
+      {/* Lista */}
       <FlatList
-        className="w-full h-full"
+        className="w-full h-4/5"
         data={cart}
         keyExtractor={item => String(item.productId)}
         numColumns={1}
@@ -48,6 +74,25 @@ const CartComponent = () => {
           </View>
         )}
       />
+
+      {/* Tasto acquista */}
+      <View className="h-1/5 border-t-2 border-white">
+        <CartTotalView 
+          total={cartTotal} 
+          onPress={() => {setIsPayingModalOpen(true)}}
+        />
+      </View>
+
+      {/* BottomSheet */}
+      {
+        isPayingModalOpen && 
+        <BottomSheetComponent
+        
+          height={0.8 }
+          onClose={() => setIsPayingModalOpen(false)}
+          ShownComponent={PaymentDetailComponent}
+        />
+      }
     </SafeAreaView>
   )
 }

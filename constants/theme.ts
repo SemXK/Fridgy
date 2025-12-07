@@ -25,7 +25,18 @@ export const secondaryColor = {
   "800": "#805c00",
   "900": "#4d3700",
 };
-
+export const darkColor = {
+  "50":  "#f5f5f7",
+  "100": "#e6e6e9",
+  "200": "#c8c8cc",
+  "300": "#a9a9b0",
+  "400": "#7c7c82",
+  "500": "#4f4f55",
+  "600": "#404046",
+  "700": "#303035",
+  "800": "#1f1f22",
+  "900": "#0f0f11",
+};
 // * Palette di colori in base al tema
 export const Colors = {
   light: {

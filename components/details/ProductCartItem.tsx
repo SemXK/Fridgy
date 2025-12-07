@@ -39,7 +39,7 @@ const ProductCartItem = (props: CartItem) => {
 
   // * Disaplay
   return (
-    <View className="relative h-28 flex flex-row w-full  bg-stone-100 dark:bg-stone-900 rounded-xl">
+    <View className="relative h-28 flex flex-row w-full  bg-stone-100 dark:bg-darkColor-900 rounded-xl">
 
       {/* Buttons */}
       <View className="absolute top-0 right-0 ">

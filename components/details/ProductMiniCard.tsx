@@ -35,7 +35,7 @@ const ProductMiniCard = (props: Props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.7} 
-      className="relative w-full h-full aspect-square bg-stone-100 dark:bg-stone-900 rounded-xl p-4 justify-start "
+      className="relative w-full h-full aspect-square bg-stone-100 dark:bg-darkColor-900 rounded-xl p-4 justify-start "
       onPress={props.onPress}
 
     >

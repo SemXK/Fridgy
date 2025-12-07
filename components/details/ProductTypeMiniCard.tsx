@@ -18,7 +18,7 @@ const ProductTypeMiniCard = (props: Props) => {
   // * Display
   return (
     <TouchableOpacity
-      className="relative w-24  bg-stone-100 dark:bg-stone-900 border-2 border-primary-500 rounded-xl p-2 justify-start "
+      className="relative w-24  bg-stone-100 dark:bg-darkColor-900 border-2 border-primary-500 rounded-xl p-2 justify-start "
       onPress={props.onPress}
     >
       {/* Descrizione Prodotto */}

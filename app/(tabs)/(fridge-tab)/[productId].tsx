@@ -102,7 +102,7 @@ const FridgeDetail = () => {
                   textStyle="text-2xl text-primary-500"
                   label="Storico acquisti"
                 />
-                <View className="w-full h-48 flex flex-row justify-center items-center rounded-lg border-2 border-primary-500/50 bg-stone-100 dark:bg-stone-900">
+                <View className="w-full h-48 flex flex-row justify-center items-center rounded-lg border-2 border-primary-500/50 bg-stone-100 dark:bg-darkColor-900">
                   <ThemedText
                     font="Nunito-ExtraLight"
                     label="Non implementato"
