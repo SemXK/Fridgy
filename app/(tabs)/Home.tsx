@@ -150,7 +150,9 @@ const HomePage = () => {
 
       {/* * Auth Header */}
       <HomePageHeader />
-
+      <View className="w-screen h-12 bg-indigo-900">
+        <ActivityIndicator animating size={24} color={primaryColor[500]} />
+      </View>
       {/* Filter */}
       <View className="p-4">
         <ThemedFormField

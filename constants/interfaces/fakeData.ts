@@ -1,7 +1,6 @@
-// import { CartItemInterface, Discount, Product, ProductType, } from "./productInterface";
-// import { User } from "./usersInterface";
+import { Discount, Product } from "./productInterface";
 
-// // * Fake Constants
+// * Fake Constants
 // export const currentUser: User = {
 //   id: 1,
 //   name: "Utente",
@@ -60,46 +59,28 @@
 //     type: "Carne",
 //   },
 // ];
-// export const discountList: Discount[] = [
-//   {
-//     id: 1,
-//     name: "Verdure e Ortaggi",
-//     image: require("../../assets/images/discountImages/vegetables.jpg"),
-//     discount: 10
-//   },
-//   {
-//     id: 2,
-//     name: "Dolci, Merendine e Snack",
-//     image: require("../../assets/images/discountImages/sweets.jpg"),
+export const discountList: Discount[] = [
+  {
+    id: 1,
+    name: "Verdure e Ortaggi",
+    image: require("../../assets/images/discountImages/vegetables.jpg"),
+    discount: 10
+  },
+  {
+    id: 2,
+    name: "Dolci, Merendine e Snack",
+    image: require("../../assets/images/discountImages/sweets.jpg"),
 
-//     discount: 30
-//   },
-//   {
-//     id: 3,
-//     name: "Pasta e Riso",
-//     image: require("../../assets/images/discountImages/pasta.jpg"),
-//     discount: 25
-//   }, 
-// ]
+    discount: 30
+  },
+  {
+    id: 3,
+    name: "Pasta e Riso",
+    image: require("../../assets/images/discountImages/pasta.jpg"),
+    discount: 25
+  }, 
+]
 
-// // % Implementata 
-// export const productList: Product[] = [];
+// % Implementata 
+export const productList: Product[] = [];
 
-// // * Variables
-// export let currentCart: CartItemInterface[] = [
-//   {
-//     productId: 1,
-//     quantity: 2,
-//     product: productList[0],
-//     userId: currentUser.id, 
-//   },
-//   {
-//     productId: 3,
-//     quantity: 2,
-//     product: productList[3],
-//     userId: currentUser.id, 
-//   },
-// ]
-// export function changeCurrentCart(newCart: any) {
-//   currentCart = newCart;
-// }
