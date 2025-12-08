@@ -20,7 +20,7 @@ export interface PaginatedResponse<T>{
 // * Context Interface
 export interface CartContextInterface {
   cart: CartItemInterface[];
-  setCart: React.Dispatch<React.SetStateAction<CartItemInterface[]>>
+  setCart?: React.Dispatch<React.SetStateAction<CartItemInterface[]>>
 }
 
 // * Table interfaces

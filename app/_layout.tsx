@@ -17,7 +17,7 @@ import './global.css';
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
 export const UserContext = createContext<AuthType>({});
-export const CartContext = createContext<CartContextInterface | undefined>(undefined);
+export const CartContext = createContext<CartContextInterface>({cart:[]});
 
 export default function RootLayout() {
   // * theme

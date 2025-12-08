@@ -81,7 +81,7 @@ export abstract class AuthController extends Controller {
       });
     }
     else {
-      throw new Error ("Unauthorized");
+      throw new Error ("Unauthorized s");
     }
   }
 

@@ -26,10 +26,12 @@ const CartComponent = () => {
   // * Functions
   const calculateCartPrice = () => {
     let total = 0;
-    cart.forEach((ci) => {
-      total += ci.quantity * ci.product?.price
-    });
-    setCartTotal(total);
+    if(cart) {
+      cart.forEach((ci) => {
+        total += ci.quantity * ci.product?.price
+      });
+      setCartTotal(total);
+    }
   }
 
 

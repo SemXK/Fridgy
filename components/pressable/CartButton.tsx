@@ -17,8 +17,10 @@ const CartButton = () => {
   // * lifecycle
   useEffect(() => {
     let count = 0;
-    cart.forEach(c => count += c.quantity);
-    setCartCount(count);
+    if(cart) {
+      cart.forEach(c => count += c.quantity);
+      setCartCount(count);
+    }
   }, [cart])
 
   // * Functions

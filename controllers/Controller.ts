@@ -50,7 +50,7 @@ export abstract class Controller {
     const token = await this.getAuthToken();
     const guestId = await AuthController.sessionGetId();
 
-    if (token) {
+    if (token || guestId) {
       try {
         return await axios.get(
           `${this.baseUrl}/${apiPath}`,
@@ -67,14 +67,14 @@ export abstract class Controller {
       }
     } 
     else {
-      throw new Error("Unauthorized");
+      throw new Error("AHAHAH", );
     }
   };
   static authenticatedPostCall = async (apiPath: string, payload: unknown) => {
     const token = await this.getAuthToken();
     const guestId = await AuthController.sessionGetId();
 
-    if (token) {
+    if (token || guestId) {
       try {
         // FIXED: axios.post expects (url, data, config)
         return await axios.post(
@@ -93,7 +93,7 @@ export abstract class Controller {
       }
     } 
     else {
-      throw new Error("Unauthorized");
+      throw new Error("Unauthorize sd");
     }
   };
 }
