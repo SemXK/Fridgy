@@ -37,6 +37,9 @@ const ProductCartItem = (props: CartItem) => {
     .catch(e => console.log(e.message))
   }
 
+  if(!product) {
+    return null;
+  }
   // * Disaplay
   return (
     <View className="relative h-28 flex flex-row w-full  bg-stone-100 dark:bg-darkColor-900 rounded-xl">
@@ -78,7 +81,7 @@ const ProductCartItem = (props: CartItem) => {
       {/* Image */}
       <UrlImage
         className="rounded-xl "
-        source={product.image}
+        source={product?.image}
         resizeMode="contain"
         height={100}
         width={100}

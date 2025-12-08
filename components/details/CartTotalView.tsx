@@ -22,7 +22,6 @@ const CartTotalView = (props: CartTotalInterface) => {
           font='Nunito-Bold' 
           textStyle='text-4xl'
           />
-
       </View>
 
       {/* Button */}

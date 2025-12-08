@@ -1,6 +1,7 @@
 import CartTotalView from '@/components/details/CartTotalView'
 import PaymentDetailComponent from '@/components/details/PaymentDetailComponent'
 import ProductCartItem from '@/components/details/ProductCartItem'
+import CartPageHeader from '@/components/headers/CartPageHeader'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import { CartContextInterface } from '@/constants/interfaces/productInterface'
@@ -38,13 +39,8 @@ const CartComponent = () => {
 
       {/* Header */}
       <View className="w-full " >
-        {/* <HomePageHeader /> */}
-        <ThemedText
-          darkModeDisabled
-          label="Il mio carrello"
-          font="Nunito-ExtraBold"
-          textStyle='text-4xl text-primary-500'
-        />
+        <CartPageHeader />
+
       </View>
 
       {/* Lista */}
@@ -53,6 +49,16 @@ const CartComponent = () => {
         data={cart}
         keyExtractor={item => String(item.productId)}
         numColumns={1}
+        ListEmptyComponent={
+        <View className="w-full h-full flex flex-row justify-center ">
+          <ThemedText 
+            darkModeDisabled 
+            font='Nunito-Italic'
+            textStyle='text-stone-400' 
+            label="Il tuo carrello è vuoto" 
+          />
+        </View>
+        }
         contentContainerStyle={{
           paddingHorizontal: 12, // padding on left/right of whole list
           paddingBottom: 100,
@@ -76,18 +82,22 @@ const CartComponent = () => {
       />
 
       {/* Tasto acquista */}
-      <View className="h-1/5 border-t-2 border-white">
-        <CartTotalView 
-          total={cartTotal} 
-          onPress={() => {setIsPayingModalOpen(true)}}
-        />
-      </View>
+      {
+        cartTotal ?
+          <View className="h-1/5 border-t-2 border-white">
+            <CartTotalView 
+              total={cartTotal} 
+              onPress={() => {setIsPayingModalOpen(true)}}
+            />
+          </View>
+        : 
+        null
+      }
 
       {/* BottomSheet */}
       {
         isPayingModalOpen && 
         <BottomSheetComponent
-        
           height={0.8 }
           onClose={() => setIsPayingModalOpen(false)}
           ShownComponent={PaymentDetailComponent}

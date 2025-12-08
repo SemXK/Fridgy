@@ -76,7 +76,7 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
           styles.sheet,
           { height: sheetHeight, transform: [{ translateY }] },
         ]}
-        className="bg-white"
+        className="bg-black"
         {...panResponder.panHandlers}
       >
         <View style={styles.header}>
