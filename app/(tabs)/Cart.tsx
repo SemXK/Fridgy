@@ -37,64 +37,68 @@ const CartComponent = () => {
 
   // * Display
   return (
-    <SafeAreaView>
+    <>
+      {/* Cart component */}
+      <SafeAreaView>
 
-      {/* Header */}
-      <View className="w-full " >
-        <CartPageHeader />
+        {/* Header */}
+        <View className="w-full " >
+          <CartPageHeader />
 
-      </View>
-
-      {/* Lista */}
-      <FlatList
-        className="w-full h-4/5"
-        data={cart}
-        keyExtractor={item => String(item.productId)}
-        numColumns={1}
-        ListEmptyComponent={
-        <View className="w-full h-full flex flex-row justify-center ">
-          <ThemedText 
-            darkModeDisabled 
-            font='Nunito-Italic'
-            textStyle='text-stone-400' 
-            label="Il tuo carrello è vuoto" 
-          />
         </View>
-        }
-        contentContainerStyle={{
-          paddingHorizontal: 12, // padding on left/right of whole list
-          paddingBottom: 100,
-          gap: 12
-        }}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              marginHorizontal: 6, // half of the gap, so two items sum to 12px
-              borderRadius: 40,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 1 },
-              shadowOpacity: 0.8,
-              shadowRadius: 3,
-              elevation: 4,
-            }}
-          >
-            <ProductCartItem cartItem={item} />
-          </View>
-        )}
-      />
 
-      {/* Tasto acquista */}
-      {
-        cartTotal ?
-          <View className="h-1/5 border-t-2 border-white">
-            <CartTotalView 
-              total={cartTotal} 
-              onPress={() => {setIsPayingModalOpen(true)}}
+        {/* Lista */}
+        <FlatList
+          className="w-full h-4/5"
+          data={cart}
+          keyExtractor={item => String(item.productId)}
+          numColumns={1}
+          ListEmptyComponent={
+          <View className="w-full h-full flex flex-row justify-center ">
+            <ThemedText 
+              darkModeDisabled 
+              font='Nunito-Italic'
+              textStyle='text-stone-400' 
+              label="Il tuo carrello è vuoto" 
             />
           </View>
-        : 
-        null
-      }
+          }
+          contentContainerStyle={{
+            paddingHorizontal: 12, // padding on left/right of whole list
+            paddingBottom: 100,
+            gap: 12
+          }}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                marginHorizontal: 6, // half of the gap, so two items sum to 12px
+                borderRadius: 40,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.8,
+                shadowRadius: 3,
+                elevation: 4,
+              }}
+            >
+              <ProductCartItem cartItem={item} />
+            </View>
+          )}
+        />
+
+        {/* Tasto acquista */}
+        {
+          cartTotal ?
+            <View className="h-1/5 border-t-2 border-darkColor-800">
+              <CartTotalView 
+                total={cartTotal} 
+                onPress={() => {setIsPayingModalOpen(true)}}
+              />
+            </View>
+          : 
+          null
+        }
+
+      </SafeAreaView>
 
       {/* BottomSheet */}
       {
@@ -105,7 +109,9 @@ const CartComponent = () => {
           ShownComponent={PaymentDetailComponent}
         />
       }
-    </SafeAreaView>
+
+    </>
+
   )
 }
 

@@ -10,8 +10,7 @@ import { Discount, Product, ProductType } from '@/constants/interfaces/productIn
 import { primaryColor } from '@/constants/theme';
 import { ProductController } from '@/controllers/ProductController';
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, FlatList, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
 import { UserContext } from '../_layout';
 const { height, width } = Dimensions.get("screen");
 
@@ -151,7 +150,9 @@ const HomePage = () => {
       {/* * Auth Header */}
       <HomePageHeader />
       <View className="w-screen h-12 bg-indigo-900">
-        <ActivityIndicator animating size={24} color={primaryColor[500]} />
+        <TouchableOpacity activeOpacity={.01}>
+          <ActivityIndicator animating size={24} color={primaryColor[500]} />
+        </TouchableOpacity>
       </View>
       {/* Filter */}
       <View className="p-4">

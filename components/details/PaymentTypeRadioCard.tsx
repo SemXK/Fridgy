@@ -10,11 +10,11 @@ interface PaymentRadioInterface {
 
 const PaymentTypeRadioCard = (props: PaymentRadioInterface) => {
   return (
-    <View className="flex flex-row gap-4 h-16 border-2 border-stone-500 rounded-lg p-2">
+    <View className="flex flex-row gap-4 h-20 border-2 border-stone-500 rounded-lg p-2">
       <UrlImage 
         className="aspect-square h-full self-center"
-        width={80}
-        height={80}
+        width={50}
+        height={50}
         resizeMode='contain'
         source={props.paymentType.logo}
       />

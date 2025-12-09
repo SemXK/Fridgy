@@ -13,13 +13,18 @@ import { Appearance, StatusBar } from 'react-native';
 import "react-native-gesture-handler";
 import './global.css';
 
+// * Animation unlocker
 
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
 export const UserContext = createContext<AuthType>({});
 export const CartContext = createContext<CartContextInterface>({cart:[]});
 
+// * BottomSheet portal
+export const BottomSheetContext = createContext<any>(() => {});
+
 export default function RootLayout() {
+
   // * theme
   const colorScheme = useColorScheme();
 
@@ -52,6 +57,14 @@ export default function RootLayout() {
   const [user, setUser] = useState<User | undefined>(undefined)
   const [guest, setGuest] = useState<Guest | undefined>(undefined)
   const [cart, setCart] = useState<CartItemInterface[]>([])
+
+  // * BottomSheet state
+  const [sheet, setSheet] = useState({
+    open: false,
+    component: null as any,
+    height: 0.6,
+    onClose: () => {}
+  });
 
   useEffect(() => {
     // # Momentaneamente non è obbligatorio
@@ -91,18 +104,28 @@ export default function RootLayout() {
         barStyle={Appearance.getColorScheme() === 'light' ? 'dark-content' : 'light-content'}
         backgroundColor={Appearance.getColorScheme() === 'light' ? 'white' : 'black'}
       />
-      <UserContext value={{user, guest}}>
-        <CartContext value={{cart, setCart}}>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
-            <Stack initialRouteName="(tabs)">
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
+      <BottomSheetContext.Provider value={setSheet}>
+        <UserContext value={{user, guest}}>
+          <CartContext value={{cart, setCart}}>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
-          </ThemeProvider>
-        </CartContext>
-      </UserContext>
+              <Stack initialRouteName="(tabs)">
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+
+              {sheet.open && (
+                <sheet.component
+                  height={sheet.height}
+                  onClose={() => sheet.onClose()}
+                />
+              )}
+
+            </ThemeProvider>
+          </CartContext>
+        </UserContext>
+      </BottomSheetContext.Provider>
     </>
   );
 }
