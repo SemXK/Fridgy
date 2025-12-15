@@ -2,6 +2,7 @@ import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/
 import { AuthType, Guest, User } from '@/constants/interfaces/usersInterface';
 import { AuthController } from '@/controllers/AuthController';
 import { ProductController } from '@/controllers/ProductController';
+import { StripeController } from '@/controllers/StripeController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { StripeProvider } from '@stripe/stripe-react-native';
@@ -56,6 +57,7 @@ export default function RootLayout() {
   const [user, setUser] = useState<User | undefined>(undefined)
   const [guest, setGuest] = useState<Guest | undefined>(undefined)
   const [cart, setCart] = useState<CartItemInterface[]>([])
+  const [stripePublicKey, setStripePublicKey] = useState<string>('')
 
   // * BottomSheet state
   const [sheet, setSheet] = useState({
@@ -85,6 +87,10 @@ export default function RootLayout() {
         setCart(res);
       }
     })
+    // 1* Stripe Public Key
+    StripeController.getPublicKey().then((key: string) => {
+      setStripePublicKey(key)
+    })
   }, [])
 
   // % Font loader
@@ -94,6 +100,11 @@ export default function RootLayout() {
 
   // % User Loader
   if(!user && !guest) {
+    return null
+  }
+
+  // % No Stripe Payment Keys
+  if(!stripePublicKey) {
     return null
   }
 
@@ -110,7 +121,7 @@ export default function RootLayout() {
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
               <StripeProvider
-                publishableKey={process.env.EXPO_PUBLIC_STRIPE_KEY as string}
+                publishableKey={stripePublicKey}
                 // merchantIdentifier="merchant.com.yourapp" // For Apple Pay
                 // urlScheme="yourapp://" // For redirects
                 >

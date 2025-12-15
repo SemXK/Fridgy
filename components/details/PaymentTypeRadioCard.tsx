@@ -1,7 +1,6 @@
 import { PaymentType } from '@/constants/interfaces/paymentInterface'
 import React from 'react'
-import { View } from 'react-native'
-import ThemedText from '../ui/ThemedText'
+import { TouchableOpacity } from 'react-native'
 import UrlImage from '../ui/UrlImage'
 
 interface PaymentRadioInterface {
@@ -10,7 +9,7 @@ interface PaymentRadioInterface {
 
 const PaymentTypeRadioCard = (props: PaymentRadioInterface) => {
   return (
-    <View className="flex flex-row gap-4 h-20 border-2 border-stone-500 rounded-lg p-2">
+    <TouchableOpacity className="flex flex-row gap-4 h-20 border-2 border-stone-500/10 rounded-lg p-2 mx-3">
       <UrlImage 
         className="aspect-square h-full self-center"
         width={50}
@@ -18,7 +17,8 @@ const PaymentTypeRadioCard = (props: PaymentRadioInterface) => {
         resizeMode='contain'
         source={props.paymentType.logo}
       />
-      <View className="flex flex-col gap-1 items-start">
+      {/* Titolo è+ iban */}
+      {/* <View className="flex flex-col gap-1 items-start">
         <ThemedText
           label={props.paymentType.name}
           font='Nunito-Bold'
@@ -29,8 +29,8 @@ const PaymentTypeRadioCard = (props: PaymentRadioInterface) => {
           label={props.paymentType.iban}
           textStyle='text-stone-400 text-sm'
         />
-      </View>
-    </View>
+      </View> */}
+    </TouchableOpacity>
   )
 }
 

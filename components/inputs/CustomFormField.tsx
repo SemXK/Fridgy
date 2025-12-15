@@ -10,12 +10,13 @@ interface CFF {
   label: string,
   secureTextEntry?: boolean,
   secureTextEntryChange?: (value: boolean) => void,
-  mode?: "flat" | "outlined"
+  mode?: "flat" | "outlined",
+  className?: string,
 }
 
-const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode }: CFF) => {
+const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode, className }: CFF) => {
   return (
-    <View className="relative ">
+    <View className="relative">
       <TextInput
         label={<Text className="text-primary-500 ">{label}</Text>}
         value={value}
@@ -28,9 +29,10 @@ const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secu
         textColor={Appearance.getColorScheme() === 'light' ? 'black' : 'white'}
         activeUnderlineColor={primaryColor[500]}
         outlineStyle={{ backgroundColor: 'transparent' }}
+        className={className}
         style={{
           borderRadius: 10,
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
         }}
         theme={{
           roundness: 10,
