@@ -4,6 +4,7 @@ import { AuthController } from '@/controllers/AuthController';
 import { ProductController } from '@/controllers/ProductController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import { AxiosError } from 'axios';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -12,8 +13,6 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Appearance, StatusBar } from 'react-native';
 import "react-native-gesture-handler";
 import './global.css';
-
-// * Animation unlocker
 
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
@@ -110,11 +109,20 @@ export default function RootLayout() {
           <CartContext value={{cart, setCart}}>
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
-              <Stack initialRouteName="(tabs)">
-                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              </Stack>
+              <StripeProvider
+                publishableKey={process.env.EXPO_PUBLIC_STRIPE_KEY as string}
+                // merchantIdentifier="merchant.com.yourapp" // For Apple Pay
+                // urlScheme="yourapp://" // For redirects
+                >
 
+                {/* Main stack */}
+                <Stack initialRouteName="(tabs)">
+                  <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                </Stack>
+              </StripeProvider>
+
+              {/* Global Bottomsheet */}
               {sheet.open && (
                 <sheet.component
                   height={sheet.height}
