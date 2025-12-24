@@ -11,11 +11,12 @@ export abstract class StripeController extends Controller {
     currency: string = "usd",
     metadata?: Record<string, any>
   ): Promise<SetupIntentResponse | AxiosError> => {
-    return await this.authenticatedPostCall("payments/create-payment-intent", {
+    const payload ={
       amount,
       currency,
       metadata
-    })
+    }
+    return await this.authenticatedPostCall("payments/create-payment-intent", payload)
     .then((res: AxiosResponse<SetupIntentResponse>) => {
       if (res.status === 200 || res.status === 201) {
         console.log("api", res)
@@ -28,7 +29,7 @@ export abstract class StripeController extends Controller {
     })
     .catch((e: any) => {
       if (e.isAxiosError) {
-        throw new AxiosError(e.message, "401");;
+        throw new AxiosError(e.message, "401");
       }
       return new AxiosError(e.message || "Payment intent creation failed");
     });

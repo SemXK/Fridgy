@@ -12,11 +12,12 @@ interface CFF {
   secureTextEntryChange?: (value: boolean) => void,
   mode?: "flat" | "outlined",
   className?: string,
+  textWidth?: string,
 }
 
-const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode, className }: CFF) => {
+const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode, className, textWidth }: CFF) => {
   return (
-    <View className="relative">
+    <View className={"relative " + textWidth} >
       <TextInput
         label={<Text className="text-primary-500 ">{label}</Text>}
         value={value}

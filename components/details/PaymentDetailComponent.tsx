@@ -19,6 +19,11 @@ const PaymentDetailComponent = () => {
   const [cvc, setCvc] = useState<string>('');
   const [savePayment, setSavePayment] = useState<boolean>(false)
 
+  // * payment functions
+  const handlePayment = async () => {
+
+  }
+
   // * lifecycle
   useEffect(() => {
     setLoading(true)
@@ -76,15 +81,18 @@ const PaymentDetailComponent = () => {
               label="Numero Carta"
             />
 
-            <View className="flex flex-row justify-between ">
+            <View className="flex flex-row justify-between w-full">
 
               <ThemedFormField
+                textWidth=' w-[48%]'
                 value={expiry}
                 setValue={setExpiry}
                 label="Scadenza"
               />
 
               <ThemedFormField
+                textWidth=' w-[48%]'
+
                 value={cvc}
                 setValue={setCvc}
                 label="CVC"
@@ -93,7 +101,7 @@ const PaymentDetailComponent = () => {
 
             {/* Tasto pagamento */}
             <PrimaryButton
-              onPress={() => {}}
+              onPress={handlePayment}
               buttonText='Procedi con il pagamento'
             />
           </View>
