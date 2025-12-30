@@ -1,7 +1,6 @@
 import axios from "axios";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
-import { AuthController } from "./AuthController";
 
 export abstract class Controller {
   static baseUrl: string = `${
@@ -10,7 +9,9 @@ export abstract class Controller {
     :
     process.env.EXPO_PUBLIC_EMULATOR_BACKEND_URL
   }`;
-
+  static sessionGetId = async (): Promise<string | null>  => {
+    return await SecureStore.getItemAsync("guestId") ;
+  }
   // * Secure store auth tokens
   protected static getAuthToken = async () => {
     const token = await SecureStore.getItemAsync("authToken");
@@ -48,7 +49,7 @@ export abstract class Controller {
   // * Authenticated API calls
   static authenticatedGetCall = async (apiPath: string) => {
     const token = await this.getAuthToken();
-    const guestId = await AuthController.sessionGetId();
+    const guestId = await this.sessionGetId();
 
     if (token || guestId) {
       try {
@@ -72,7 +73,7 @@ export abstract class Controller {
   };
   static authenticatedPostCall = async (apiPath: string, payload: unknown) => {
     const token = await this.getAuthToken();
-    const guestId = await AuthController.sessionGetId();
+    const guestId = await this.sessionGetId();
 
     if (token || guestId) {
       try {

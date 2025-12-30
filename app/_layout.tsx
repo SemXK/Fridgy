@@ -4,6 +4,7 @@ import { AuthController } from '@/controllers/AuthController';
 import { ProductController } from '@/controllers/ProductController';
 import { StripeController } from '@/controllers/StripeController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { getEcho } from '@/scripts/LaravelEcho';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { AxiosError } from 'axios';
@@ -81,16 +82,21 @@ export default function RootLayout() {
         setGuest(AuthController.currentGuest);
       })
     }
+
     // 1* Cart API
     ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {
       if (!(res instanceof AxiosError)) {
         setCart(res);
       }
     })
+
     // 1* Stripe Public Key
     StripeController.getPublicKey().then((key: string) => {
       setStripePublicKey(key)
     })
+
+    // 1* Websockets
+    getEcho();
   }, [])
 
   // % Font loader
@@ -148,3 +154,4 @@ export default function RootLayout() {
     </>
   );
 }
+

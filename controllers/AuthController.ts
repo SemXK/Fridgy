@@ -131,8 +131,6 @@ export abstract class AuthController extends Controller {
       console.log("Error getting guest id, guest id deleted", err);
     }
   }
-  static sessionGetId = async (): Promise<string | null>  => {
-    return await SecureStore.getItemAsync("guestId") ;
-  }
+
 
 }
