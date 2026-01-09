@@ -68,5 +68,13 @@ export interface Discount {
   discount: number;
   name: string;
   image?: ImageSourcePropType;
+}
 
+export interface Fridge {
+  id: number;
+  name: string;
+  description: string;
+  created_at: Date;
+  updated_at: Date;
+  product_list: Product[];
 }

@@ -16,7 +16,9 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const route = state.routes[state.index];
   const focusedChild = getFocusedRouteName(route);
   const isHome = route.name === "Home";
-  const isFridgeIndex = route.name === "(fridge-tab)" && focusedChild === "index";
+  // const isInventary = route.name === "Home";
+
+  const isFridgeIndex = route.name === "(fridge-tab)";
 
   if (!isHome && !isFridgeIndex) {
     return null;

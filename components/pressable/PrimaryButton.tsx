@@ -10,16 +10,17 @@ import ThemedText from '../ui/ThemedText';
 interface ButtonInterface {
   onPress: () => void,
   buttonText: string,
+  buttonColor?: string;
   className?: string,
   isLoading?: boolean,
   mode?: "text" | "elevated" | "outlined" | "contained" | "contained-tonal"
 }
 
-const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode }: ButtonInterface) => {
+const PrimaryButton = ({ onPress, buttonText, className, isLoading, mode, buttonColor }: ButtonInterface) => {
   return (
     <Button
       mode={mode || "outlined"}
-      buttonColor={primaryColor[500]}
+      buttonColor={buttonColor || primaryColor[500]}
       style={{
         height: 40,
         borderWidth: 0,

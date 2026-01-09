@@ -1,53 +1,93 @@
-import ProductMiniCard from "@/components/details/ProductMiniCard"
-import { productList } from "@/constants/interfaces/fakeData"
-import { Product } from "@/constants/interfaces/productInterface"
-import { router } from "expo-router"
-import React from "react"
-import { FlatList, View } from "react-native"
+import CreateNewFridgeComponent from "@/components/details/CreateNewFridgeComponent"
+import EmptyFridgeListComponent from "@/components/details/EmptyFridgeListComponent"
+import FridgeMiniCard from "@/components/details/FridgeMiniCard"
+import BottomSheetComponent from "@/components/ui/BottomSheet"
+import { Fridge } from "@/constants/interfaces/productInterface"
+import { primaryColor } from "@/constants/theme"
+import { ProductController } from "@/controllers/ProductController"
+import { AxiosError } from "axios"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, FlatList, View } from "react-native"
 import { useFridge } from "./_layout"
 
 const FridgeList = () => {
   const { filter } = useFridge()
 
-  const handlePress = (product: Product) => {
-    router.push(`/(fridge-tab)/${String(product.id)}`);
+  // * Functions
+  const getFridgeList = async () => {
+    setLoading(true)
+    await ProductController.getFridges().then((fl: Fridge[] | AxiosError) => {
+      if (!(fl instanceof AxiosError)) {
+        setFridgeList(fl)
+      }
+    })
+    .catch(e => {console.log(e)})
+    .finally(() => {setLoading(false)})
   }
+  const handleCloseModal = () => {
+    setNewFridgeModal(false)
+    getFridgeList()
+  }
+  // * States
+  const [loading, setLoading] = useState<boolean>(false)
+  const [fridgeList, setFridgeList] = useState<Fridge[]>([])
+  const [newFridgeModal, setNewFridgeModal] = useState<boolean>(false);
+
+  // * Effects
+  useEffect(() => {
+    getFridgeList()
+  }, [])
 
   return (
-    <FlatList
-      className="w-full h-full"
-      data={productList.filter(p => p.name.includes(filter))}
-      keyExtractor={item => String(item.id)}
-      numColumns={2}
-      contentContainerStyle={{
-        paddingHorizontal: 12, // padding on left/right of whole list
-        paddingBottom: 100,
-      }}
-      columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 12 }} // row spacing
-      renderItem={({ item }) => (
-        <View
-          style={{
-            flex: 1,
-            aspectRatio: 1,
-            marginHorizontal: 6, // half of the gap, so two items sum to 12px
-            backgroundColor: 'white',
-            borderRadius: 12,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.15,
-            shadowRadius: 3,
-            elevation: 2,
-          }}
-        >
-          <ProductMiniCard
-            onPress={() => handlePress(item)}
-            product={item}
-          />
+    <>
+    {
+      loading ?
+        <View className="w-full flex flex-row justify-center">
+          <ActivityIndicator animating size={24} color={primaryColor[500]} />
         </View>
-      )}
-    />
+        :
+        <FlatList
+          className="w-full h-full"
+          data={fridgeList}
+          keyExtractor={item => String(item.id)}
+          numColumns={2}
+          contentContainerStyle={{
+            paddingHorizontal: 12,
+            paddingBottom: 100,
+          }}
+          ListEmptyComponent={() => <EmptyFridgeListComponent onPress={() => setNewFridgeModal(true)}/>}
+          columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 12 }} 
+          renderItem={({ item }) => (
+            <View
+              style={{
+                flex: 1,
+                aspectRatio: 1,
+                marginHorizontal: 6, 
+                backgroundColor: 'white',
+                borderRadius: 12,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.15,
+                shadowRadius: 3,
+                elevation: 2,
+              }}
+            >
+              <FridgeMiniCard fridge={item}/>
+            </View>
+          )}
+        />
+      }
 
-
+      {/* BottomSheet */}
+      {
+        newFridgeModal && 
+        <BottomSheetComponent
+          height={0.6}
+          onClose={() => handleCloseModal()}
+          ShownComponent={CreateNewFridgeComponent}
+        />
+      }
+    </>
   )
 }
 

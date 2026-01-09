@@ -1,4 +1,4 @@
-import { CartItemInterface, PaginatedResponse, Product, ProductType } from "@/constants/interfaces/productInterface";
+import { CartItemInterface, Fridge, PaginatedResponse, Product, ProductType } from "@/constants/interfaces/productInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -78,6 +78,39 @@ export abstract class ProductController extends Controller {
     })
     .catch((e) => {
       return e as AxiosError
+    })
+  };
+
+  // % Inventario
+  static getFridges = async (): Promise<Fridge[] | AxiosError> => {
+    return await this.authenticatedGetCall("products/get-fridges")
+    .then((res: AxiosResponse<CartItemInterface[]>) => {
+      if (res.status === 200) {
+        const fridgeList = (res as AxiosResponse).data;
+        return fridgeList.fridges;
+      }
+      else if (res.status === 401) {
+        throw new AxiosError("Invalid Credentials");
+      }
+      return new AxiosError("Unexpected response status: " + res.status);
+    })
+    .catch((e) => {
+      throw e as AxiosError
+    })
+  };
+  static createFridge = async (name: string, description: string): Promise<boolean| AxiosError> => {
+    return await this.authenticatedPostCall("products/create-fridge", {name, description})
+    .then((res: AxiosResponse<CartItemInterface[]>) => {
+      if (res.status === 200) {
+        return true
+      }
+      else if (res.status === 401) {
+        throw new AxiosError("Invalid Credentials");
+      }
+      return new AxiosError("Unexpected response status: " + res.status);
+    })
+    .catch((e) => {
+      throw e as AxiosError
     })
   };
 }

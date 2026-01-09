@@ -142,9 +142,9 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
 
         {/* Content area */}
         <View style={styles.content}>
-          <ShownComponent />
+          <ShownComponent onClose={() => closeSheet()}/>
         </View>
-      </Animated.View>
+      </Animated.View> 
     </View>
   );
 };

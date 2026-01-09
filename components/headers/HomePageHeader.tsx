@@ -8,7 +8,7 @@ const HomePageHeader = () => {
   // * Context
 
   return (
-    <View className="flex flex-row justify-between p-4">
+    <View className="flex flex-row justify-between px-4 h-8">
       <MenuButton />
       <View className="flex flex-row">
         <NotificationButton />

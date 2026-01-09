@@ -1,3 +1,4 @@
+import HomePageHeader from '@/components/headers/HomePageHeader'
 import ThemedFormField from '@/components/inputs/CustomFormField'
 import CartButton from '@/components/pressable/CartButton'
 import ThemedText from '@/components/ui/ThemedText'
@@ -35,8 +36,9 @@ const FridgeLayout = () => {
   // * Display
   return (
     <FridgeContext.Provider value={{ filter, setFilter, openDetail, closeDetail }}>
-
       <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black ">
+        {/* * Auth Header */}
+        <HomePageHeader />
 
         {/* Header */}
         {
@@ -78,7 +80,6 @@ const FridgeLayout = () => {
               <CartButton />
             </View>
         }
-
 
         {/* Children Components */}
         <View className="mt-42">

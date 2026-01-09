@@ -13,6 +13,7 @@ import { ProductController } from '@/controllers/ProductController';
 import { getEcho } from '@/scripts/LaravelEcho';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from '../_layout';
 
 
@@ -172,7 +173,7 @@ const HomePage = () => {
 
   // * Display
   return (
-    <View className="h-full py-2">
+    <SafeAreaView className="h-full ">
 
       {/* * Auth Header */}
       <HomePageHeader />
@@ -276,7 +277,7 @@ const HomePage = () => {
   
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 
 }
