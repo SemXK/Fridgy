@@ -10,7 +10,7 @@ import { Discount, Product, ProductType } from '@/constants/interfaces/productIn
 import { primaryColor } from '@/constants/theme';
 import { ProductController } from '@/controllers/ProductController';
 
-import { getEcho } from '@/scripts/LaravelEcho';
+import { WebsocketHandlerClass } from '@/scripts/LaravelEcho';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -50,25 +50,15 @@ const HomePage = () => {
     let channel: any;
 
     (async () => {
-      console.log("WSS init" )
-      const echo = await getEcho();
-      echo.connector.pusher.connection.bind('state_change', (states: any) => {
-        console.log('Pusher state:', states.current);
-      });
-      echo.connector.pusher.connection.bind('error', (err: any) => {
-        console.log('Pusher error', err);
-      });
-
-
+      const echo = await WebsocketHandlerClass.getEcho();
       channel = echo.channel('payment-confirmation')
-        .listen('.PaymentCompletion', (e: any) => {
-          console.log('WS event received:', e);
-        });
-
+      .listen('.PaymentCompletion', (e: any) => {
+        console.log('WS event received:', e);
+      });
     })();
 
     return () => {
-      channel?.stopListening('PaymentCompletion');
+      channel?.stopListening('.PaymentCompletion');
     };
 
 
