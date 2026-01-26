@@ -50,30 +50,16 @@ const FridgeList = () => {
           className="w-full h-full"
           data={fridgeList}
           keyExtractor={item => String(item.id)}
-          numColumns={2}
+          numColumns={1}
           contentContainerStyle={{
             paddingHorizontal: 12,
             paddingBottom: 100,
+            gap: 64
           }}
+          
           ListEmptyComponent={() => <EmptyFridgeListComponent onPress={() => setNewFridgeModal(true)}/>}
-          columnWrapperStyle={{ justifyContent: 'space-between', marginBottom: 12 }} 
           renderItem={({ item }) => (
-            <View
-              style={{
-                flex: 1,
-                aspectRatio: 1,
-                marginHorizontal: 6, 
-                backgroundColor: 'white',
-                borderRadius: 12,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.15,
-                shadowRadius: 3,
-                elevation: 2,
-              }}
-            >
               <FridgeMiniCard fridge={item}/>
-            </View>
           )}
         />
       }

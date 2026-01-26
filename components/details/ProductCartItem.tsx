@@ -20,21 +20,29 @@ const ProductCartItem = (props: CartItem) => {
   // * Function
   const addItem = (e: GestureResponderEvent) => {
     e.stopPropagation();
-    const productId = props.cartItem.productId;
-    ProductController.addItemToCart(productId)
-    .then((res) => {
-      setCart(res as CartItemInterface[])
-    })
-    .catch(e => console.log(e.message))
+    if(setCart) {
+      const productId = props.cartItem.productId;
+
+      ProductController.addItemToCart(productId)
+      .then((res) => {
+        setCart(res as CartItemInterface[])
+      })
+      .catch(e => console.log(e.message))
+
+    }
   }
   const removeItem = (e: GestureResponderEvent) => {
     e.stopPropagation();
-    const productId = props.cartItem.productId;
-    ProductController.removeItemFromCart(productId)
-    .then((res) => {
-      setCart(res as CartItemInterface[])
-    })
-    .catch(e => console.log(e.message))
+    if(setCart) {
+      const productId = props.cartItem.productId;
+
+      ProductController.removeItemFromCart(productId)
+      .then((res) => {
+        setCart(res as CartItemInterface[])
+      })
+      .catch(e => console.log(e.message))
+
+    }
   }
 
   if(!product) {
@@ -88,16 +96,21 @@ const ProductCartItem = (props: CartItem) => {
       />
 
       {/* Description */}
-      <View className="p-4">
+      <View className="p-4 w-[60%]">
         <ThemedText
+          numberOfLines={1}
           darkModeDisabled
           font="Nunito-ExtraBold"
-          textStyle="text-2xl text-primary-500"
+          textStyle="text-2xl text-primary-500 "
           label={product.name}
         />
         <View className="flex flex-row " >
           <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
           <ThemedText label={`${props.cartItem.quantity}`} />
+        </View>
+        <View className="flex flex-row " >
+          <ThemedText darkModeDisabled label='Prezzo unità: ' font='Nunito-Italic' textStyle='color-primary-500' />
+          <ThemedText label={`${props.cartItem.product?.price} €`} />
         </View>
 
       </View>

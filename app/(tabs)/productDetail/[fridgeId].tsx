@@ -7,7 +7,7 @@ import { primaryColor } from "@/constants/theme"
 import { router, useLocalSearchParams } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { Image, Text, View } from "react-native"
-import { useFridge } from "./_layout"
+import { useFridge } from "../(fridge-tab)/_layout"
 
 
 const FridgeDetail = () => {
@@ -41,7 +41,7 @@ const FridgeDetail = () => {
           <>
             <View className="h-[20%]">
               <Image
-                source={currentProduct.image}
+                source={currentProduct.image as any}
                 resizeMode="contain"
                 style={{
                   alignSelf: "center",
@@ -62,7 +62,7 @@ const FridgeDetail = () => {
                   textStyle="text-4xl text-primary-500"
                   label={currentProduct.name}
                 />
-                <View className="flex flex-row " >
+                {/* <View className="flex flex-row " >
                   <View
                     className='flex flex-row flex-wrap gap-1'>
                     {currentProduct.foodTypes.map((type) => {
@@ -76,7 +76,7 @@ const FridgeDetail = () => {
                       )
                     })}
                   </View>
-                </View>
+                </View> */}
               </View>
 
               {/* Descrizione Prodotto */}

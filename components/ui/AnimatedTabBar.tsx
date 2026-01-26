@@ -80,7 +80,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
               transition={{ type: 'timing', duration: 250 }}
             >
               <MaterialCommunityIcons
-                name={iconName}
+                name={iconName as any}
                 size={24}
                 color={isFocused ? 'white' : primaryColor[200]}
               />

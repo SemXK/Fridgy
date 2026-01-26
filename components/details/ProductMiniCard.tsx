@@ -26,7 +26,9 @@ const ProductMiniCard = (props: Props) => {
     const productId = props.product.id;
     ProductController.addItemToCart(productId)
     .then((res) => {
-      setCart(res as CartItemInterface[])
+      if(setCart) {
+        setCart(res as CartItemInterface[])
+      }
     })
     .catch(e => console.log(e.message))
   } 

@@ -20,6 +20,7 @@ const CartComponent = () => {
 
 
   useEffect(() => {
+    console.log("Cart Init", cart)
     calculateCartPrice()
   }, [cart])
 
@@ -44,7 +45,6 @@ const CartComponent = () => {
         {/* Header */}
         <View className="w-full " >
           <CartPageHeader />
-
         </View>
 
         {/* Lista */}
@@ -87,10 +87,10 @@ const CartComponent = () => {
 
         {/* Tasto acquista */}
         {
-          cartTotal ?
+          true ?
             <View className="h-1/5 border-t-2 border-darkColor-800">
               <CartTotalView 
-                total={cartTotal} 
+                total={cartTotal || 0} 
                 onPress={() => {setIsPayingModalOpen(true)}}
               />
             </View>
