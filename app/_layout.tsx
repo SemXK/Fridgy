@@ -85,7 +85,6 @@ export default function RootLayout() {
 
     // 1* Cart API
     ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {
-      console.log("Res", res)
       if (!(res instanceof AxiosError)) {
         setCart(res);
       }

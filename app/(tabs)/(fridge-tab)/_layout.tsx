@@ -38,11 +38,12 @@ const FridgeLayout = () => {
     <FridgeContext.Provider value={{ filter, setFilter, openDetail, closeDetail }}>
       <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black ">
         {/* * Auth Header */}
-        <HomePageHeader />
 
-        {/* Header */}
+        {/* Header con tasti sopra */}
         {
           !intoDetail ?
+          <View>
+              <HomePageHeader />
             <View className="w-full p-4" >
 
               <ThemedText
@@ -59,6 +60,7 @@ const FridgeLayout = () => {
                 label="Cerca..."
               />
             </View>
+          </View>
             :
             <View className="w-full flex flex-row justify-between px-4">
               <TouchableOpacity

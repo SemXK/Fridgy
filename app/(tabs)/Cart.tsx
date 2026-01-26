@@ -20,7 +20,6 @@ const CartComponent = () => {
 
 
   useEffect(() => {
-    console.log("Cart Init", cart)
     calculateCartPrice()
   }, [cart])
 

@@ -13,7 +13,8 @@ const FridgeMiniCard = (props: FMCInterface) => {
   // * functions
   const handlePressDetail = ()  => {
     // router.navigate(['(tabs)/(fridge-tab)/', props.fridge.id])
-    router.navigate(`/(tabs)/productDetail/${props.fridge.id}`);
+    const url: any = `/(tabs)/(fridge-tab)/${String(props.fridge.id)}`
+    router.navigate(url);
   }
 
   // * display
