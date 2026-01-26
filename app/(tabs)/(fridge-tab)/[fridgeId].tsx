@@ -25,9 +25,28 @@ const FridgeDetail = () => {
   // % Functions
   const handleLikedProduct = () => { }
   return (
-    <View className="relative h-full flex flex-col justify-between">
-      <ThemedText label="Carrello"/>
+    <View className="relative h-full bg-primary-900">
 
+      {/* Descrizione principale Frigo */}
+      <View className="bg-primary-800">
+        <ThemedText font='Nunito-ExtraBold' textStyle='text-4xl'  label="Nome Carrello" />
+        <ThemedText font='Nunito-ExtraBold'   label="Descrizione Carrello" />
+        <View className="flex flex-row gap-2">
+          <ThemedText font='Nunito-ExtraBold'  label="Ultima Modifica: " />
+          <ThemedText font='Nunito-Italic'  label="Oggi" />
+
+        </View>
+      </View>
+
+      {/* Grafico + Elenco tipi prodotto */}
+      <View className="bg-primary-700 h-1/3">
+
+      </View>
+
+      {/* Elenco Prodotti */}
+      <View className="bg-primary-600 h-full">
+
+      </View>
     </View>
   )
 }
