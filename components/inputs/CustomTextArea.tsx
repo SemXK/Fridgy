@@ -1,7 +1,8 @@
 import { primaryColor } from '@/constants/theme';
 import React from 'react';
-import { Appearance, Text, View } from 'react-native';
+import { Appearance, Keyboard, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import ThemedText from '../ui/ThemedText';
 
 interface CFFTextArea {
   value: string;
@@ -25,7 +26,14 @@ const ThemedTextArea = ({
   return (
     <View className={'relative ' + (textWidth || '')}>
       <TextInput
-        label={<Text className="text-primary-500">{label}</Text>}
+        label={
+          <ThemedText 
+            label={label}
+            darkModeDisabled
+            textStyle='text-primary-500'
+          />
+        // <Text className="text-primary-500">{label}</Text>
+      }
         value={value}
         onChangeText={setValue}
         mode={mode || 'outlined'}
@@ -43,8 +51,9 @@ const ThemedTextArea = ({
           backgroundColor: 'transparent',
           minHeight: numberOfLines * 24,
         }}
+        onBlur={() => Keyboard.dismiss()} 
         contentStyle={{
-          textAlignVertical: 'top', // important for Android
+          textAlignVertical: 'top',
         }}
         theme={{
           roundness: 10,

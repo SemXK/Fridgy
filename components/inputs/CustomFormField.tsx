@@ -1,11 +1,11 @@
 import { primaryColor } from '@/constants/theme';
 import React from 'react';
-import { Appearance, Text, TouchableOpacity, View } from 'react-native';
+import { Appearance, KeyboardTypeOptions, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, TextInput } from 'react-native-paper';
 
 
 interface CFF {
-  value: string,
+  value: string | number,
   setValue: (value: string) => void,
   label: string,
   secureTextEntry?: boolean,
@@ -13,14 +13,29 @@ interface CFF {
   mode?: "flat" | "outlined",
   className?: string,
   textWidth?: string,
+  multiline?: boolean,
+  keyboardType?: KeyboardTypeOptions
 }
 
-const ThemedFormField = ({ value, setValue, label, secureTextEntry = false, secureTextEntryChange, mode, className, textWidth }: CFF) => {
+const ThemedFormField = ({ 
+  value, 
+  setValue, 
+  label, 
+  secureTextEntry = false, 
+  secureTextEntryChange, 
+  mode, 
+  className, 
+  textWidth, 
+  multiline,
+  keyboardType
+}: CFF) => {
   return (
     <View className={"relative " + textWidth} >
       <TextInput
         label={<Text className="text-primary-500 ">{label}</Text>}
-        value={value}
+        value={value as string}
+        keyboardType={keyboardType}
+        multiline={multiline}
         onChangeText={setValue}
         mode={mode || 'outlined'}
         secureTextEntry={secureTextEntry}

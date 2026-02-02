@@ -4,16 +4,17 @@ import { AuthController } from '@/controllers/AuthController';
 import { ProductController } from '@/controllers/ProductController';
 import { StripeController } from '@/controllers/StripeController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { getEcho } from '@/scripts/LaravelEcho';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { AxiosError } from 'axios';
+import Constants from "expo-constants";
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useState } from 'react';
 import { Appearance, StatusBar } from 'react-native';
 import "react-native-gesture-handler";
+import { Provider as PaperProvider } from 'react-native-paper';
 import './global.css';
 
 // % Default startup functions
@@ -76,6 +77,7 @@ export default function RootLayout() {
     //     setUser(userResponse);
     //   })
     // }
+    console.log(Constants.deviceName)
     // 1* Guest API (per ora gli utenti sono tutti guest)
     if(!guest) {
       AuthController.sessionInit().then((res) => {
@@ -96,7 +98,7 @@ export default function RootLayout() {
     })
 
     // 1* Websockets
-    getEcho();
+    // getEcho();
   }, [])
 
   // % Font loader
@@ -125,28 +127,30 @@ export default function RootLayout() {
         <UserContext value={{user, guest}}>
           <CartContext value={{cart, setCart}}>
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <PaperProvider>
 
-              <StripeProvider
-                publishableKey={stripePublicKey}
-                // merchantIdentifier="merchant.com.yourapp" // For Apple Pay
-                // urlScheme="yourapp://" // For redirects
-                >
+                <StripeProvider
+                  publishableKey={stripePublicKey}
+                  // merchantIdentifier="merchant.com.yourapp" // For Apple Pay
+                  // urlScheme="yourapp://" // For redirects
+                  >
 
-                {/* Main stack */}
-                <Stack initialRouteName="(tabs)">
-                  <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                </Stack>
-              </StripeProvider>
+                  {/* Main stack */}
+                  <Stack initialRouteName="(tabs)">
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  </Stack>
+                </StripeProvider>
 
-              {/* Global Bottomsheet */}
-              {sheet.open && (
-                <sheet.component
-                  height={sheet.height}
-                  onClose={() => sheet.onClose()}
-                />
-              )}
+                {/* Global Bottomsheet */}
+                {sheet.open && (
+                  <sheet.component
+                    height={sheet.height}
+                    onClose={() => sheet.onClose()}
+                  />
+                )}
 
+              </PaperProvider>
             </ThemeProvider>
           </CartContext>
         </UserContext>

@@ -1,3 +1,4 @@
+import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
 import ThemedText from "@/components/ui/ThemedText"
 import { Product } from "@/constants/interfaces/productInterface"
 import { useLocalSearchParams } from "expo-router"
@@ -40,7 +41,7 @@ const FridgeDetail = () => {
 
       {/* Grafico + Elenco tipi prodotto */}
       <View className="bg-primary-700 h-1/3">
-
+        <FridgeGraphDetail />
       </View>
 
       {/* Elenco Prodotti */}

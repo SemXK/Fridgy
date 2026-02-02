@@ -79,11 +79,11 @@ const ProductMiniCard = (props: Props) => {
       {/* Descrizione Prodotto */}
       <View className="flex flex-row " >
         <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
-        {/* <ThemedText label={`${props.product.quantity}`} /> */}
+        <ThemedText label={`${props.product.quantity} `} />
       </View>
       <View className="flex flex-row " >
         <ThemedText darkModeDisabled label='Prezzo: ' font='Nunito-Italic' textStyle='color-primary-500' />
-        <ThemedText label={`${props.product.price}`} />
+        <ThemedText label={`${props.product.price} €`} />
       </View>
 
       {/* Tipo di prodotto */}

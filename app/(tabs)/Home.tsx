@@ -173,7 +173,7 @@ const HomePage = () => {
 
   // * Display
   return (
-    <SafeAreaView className="h-full ">
+    <SafeAreaView className="h-full">
 
       {/* * Auth Header */}
       <HomePageHeader />

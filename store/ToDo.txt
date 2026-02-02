@@ -1,6 +1,7 @@
-[] Elenco frigoriferi
-[] Dettaglio frigoriferi
+[x] Elenco frigoriferi
 [] Aggiunta alimenti
+
+[] Dettaglio frigoriferi
 [] Filtri alimenti
 [] Registrazione spese (grafico con date e soldi spesi)
 [] Registrazione variazione prezzi alimenti

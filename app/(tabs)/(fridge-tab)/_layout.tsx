@@ -43,16 +43,8 @@ const FridgeLayout = () => {
         {
           !intoDetail ?
           <View>
-              <HomePageHeader />
+              <HomePageHeader title="Il mio inventario"/>
             <View className="w-full p-4" >
-
-              <ThemedText
-                darkModeDisabled
-                label="Il mio inventario"
-                font="Nunito-ExtraBold"
-                textStyle='text-4xl text-primary-500 '
-              />
-
               {/* Inupt filter */}
               <ThemedFormField
                 value={filter}

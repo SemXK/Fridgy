@@ -1,4 +1,3 @@
-import { primaryColor } from '@/constants/theme'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
@@ -11,6 +10,7 @@ interface ButtonInterface {
     color: string,
     size: number
   },
+  iconComponent?: React.Component,
   className?: string,
   isLoading?: boolean,
   mode?: "text" | "elevated" | "outlined" | "contained" | "contained-tonal"
@@ -19,21 +19,16 @@ interface ButtonInterface {
 const PrimaryIconButton = ({ onPress, iconSpecs, className, isLoading, mode }: ButtonInterface) => {
   return (
     <Button
-      mode="outlined"
-      style={{
-        borderWidth: 2,
-        borderColor: primaryColor[500],
-      }}
-
+      mode="text"
       disabled={isLoading}
-      textColor='white'
       onPress={onPress}
-      className={className}
+      className="mx-0 px-0 w-[10%]"
     >
       {
         isLoading ?
           <ActivityIndicator size={16} color="#ffffff" />
           :
+          
           <Ionicons
             {...iconSpecs}
           />

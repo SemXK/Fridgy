@@ -17,10 +17,11 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const focusedChild = getFocusedRouteName(route);
   const isHome = route.name === "Home";
   const isProductDetail = route.name === "productDetail";
-
   const isFridgeIndex = route.name === "(fridge-tab)";
+  const isProductCreation = route.name === "ProductCreation";
 
-  if (!isHome && !isFridgeIndex && !isProductDetail) {
+
+  if (!isHome && !isFridgeIndex && !isProductDetail && !isProductCreation) {
     return null;
   }
 
@@ -29,7 +30,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
       style={{
         width: "70%",
         position: 'absolute',
-        bottom: 12,
+        bottom: 0,
         margin: 10,
         flexDirection: 'row',
         alignSelf: 'center',
@@ -59,8 +60,9 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         };
 
         const icons: Record<string, string> = {
-          'Home': 'home-outline',
+          'Home': 'home',
           '(fridge-tab)': 'fridge-outline',
+          'ProductCreation':'camera'
         };
 
         const iconName = icons[route.name] || 'circle-outline';

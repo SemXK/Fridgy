@@ -11,7 +11,7 @@ const BackButton = () => {
       activeOpacity={.1}
       >
       <IconButton
-        icon="arrow-left"
+        icon="chevron-back"
         size={20}
         iconColor={primaryColor[500]}
       />

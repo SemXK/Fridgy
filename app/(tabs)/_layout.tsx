@@ -37,6 +37,13 @@ export default function TabLayout() {
           href:null
         }}
       />
+      <Tabs.Screen
+        name="ProductCreation"
+        options={{
+          title: 'Crea un prodotto',
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }

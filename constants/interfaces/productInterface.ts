@@ -50,8 +50,8 @@ export interface Product {
   image: string;
   description: string;
   brand: string;
-  quantiy: number;
-  uam: string;
+  quantity: number;
+  uma: string;
   itemsNumber?: number;
 
   price: number;
@@ -69,7 +69,6 @@ export interface Discount {
   name: string;
   image?: ImageSourcePropType;
 }
-
 export interface Fridge {
   id: number;
   name: string;
@@ -77,4 +76,16 @@ export interface Fridge {
   created_at: Date;
   updated_at: Date;
   product_list: Product[];
+}
+
+// * Payload
+export interface CreateProductPayload {
+  name: string,
+  description: string,
+  brandId: string,
+  quantity: string,
+  uma: string | number,
+  price: string,
+  taxPercent: number,
+  image: string,
 }

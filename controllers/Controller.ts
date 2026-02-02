@@ -1,5 +1,5 @@
 import axios from "axios";
-import Constants from "expo-constants";
+import Constants from 'expo-constants';
 import * as SecureStore from "expo-secure-store";
 
 export abstract class Controller {

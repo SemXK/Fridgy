@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import BackButton from '../pressable/BackButton';
-import MenuButton from '../pressable/MenuButton';
 import NotificationButton from '../pressable/NotificationButton';
 
 const CartPageHeader = () => {
@@ -12,7 +11,7 @@ const CartPageHeader = () => {
       <View className="flex flex-row gap-0 items-center justify-start">
         <View className="flex flex-row gap-0 items-center justify-start">
           <BackButton />
-          <MenuButton />
+          {/* <MenuButton /> */}
         </View>
         {/* <ThemedText
           darkModeDisabled
