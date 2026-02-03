@@ -12,7 +12,15 @@ interface ImageUploader {
 
 export default function FileUploader(props: ImageUploader) {
   const {image, setImage} = props;
+  const mediaOptions = {
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    quality: 1,
+    allowsEditing: true,
+    exif: false,
+    base64: true
+  }
 
+  // * Functions
   const requestPermissions = async () => {
     const cameraPerm = await ImagePicker.requestCameraPermissionsAsync();
     const mediaPerm = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -26,14 +34,6 @@ export default function FileUploader(props: ImageUploader) {
     }
     return true;
   };
-  const mediaOptions = {
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 1,
-    allowsEditing: true,
-    exif: false,
-    base64: true
-
-  }
   const pickFromGallery = async () => {
     if (!(await requestPermissions())) return;
 
@@ -43,7 +43,6 @@ export default function FileUploader(props: ImageUploader) {
       setImage(result.assets[0]);
     }
   };
-
   const takePhoto = async () => {
     if (!(await requestPermissions())) return;
 

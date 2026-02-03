@@ -5,7 +5,7 @@ import ThemedTextArea from '@/components/inputs/CustomTextArea'
 import PrimaryButton from '@/components/pressable/PrimaryButton'
 import FileUploader from '@/components/thirdParty/FileUploader'
 import { buildBase64Image } from '@/constants/functions'
-import { CreateProductPayload, Product } from '@/constants/interfaces/productInterface'
+import { CreateProductPayload } from '@/constants/interfaces/productInterface'
 import { PERCENTUALI_IVA, UNITA_DI_MISURA } from '@/constants/options'
 import { ProductController } from '@/controllers/ProductController'
 import { AxiosError } from 'axios'
@@ -38,16 +38,7 @@ const ProductCreation = () => {
 
   // * States
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null)
-  const [productForm, setProductForm] = useState<CreateProductPayload>({
-    name: '',
-    description: '',
-    brandId: '',
-    quantity: '',
-    uma: 0,
-    price: '',
-    taxPercent: 0,
-    image: '',
-  })
+  const [productForm, setProductForm] = useState<CreateProductPayload>(initialState)
 
   // * Functions
   const handleSubmit = async () => {
@@ -58,9 +49,13 @@ const ProductCreation = () => {
       uma: UNITA_DI_MISURA[productForm.uma as number],
       image: buildBase64Image(image as ImagePicker.ImagePickerAsset)
     };
-    const product: Product | AxiosError<unknown, any> = await ProductController.createProduct(payload) 
+    // const product: Product | AxiosError<unknown, any> = 
+    const product: any =
+    await ProductController.createProduct(payload)
+    .then((p) => console.log(p))
+    .catch(e => {console.log({msg: e.message})}) 
 
-
+    console.log({product})
     // 1* Creazione con successo
     if(!(product instanceof AxiosError)) {
       console.log({newproduct: product})

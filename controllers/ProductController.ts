@@ -31,10 +31,12 @@ export abstract class ProductController extends Controller {
       }
       return new AxiosError("Unexpected response status: " + res.status);
     })
+    .catch((e) => {return e})
   };
   static createProduct = async(product: CreateProductPayload): Promise<Product | AxiosError> => {
     return await this.basicPostCall("products/set-product", product)
     .then((res: AxiosResponse<Product>) => {
+      console.log(res)
       if (res.status === 200) {
         return res.data
       }
