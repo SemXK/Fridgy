@@ -7,7 +7,6 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { AxiosError } from 'axios';
-import Constants from "expo-constants";
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -77,7 +76,6 @@ export default function RootLayout() {
     //     setUser(userResponse);
     //   })
     // }
-    console.log(Constants.deviceName)
     // 1* Guest API (per ora gli utenti sono tutti guest)
     if(!guest) {
       AuthController.sessionInit().then((res) => {

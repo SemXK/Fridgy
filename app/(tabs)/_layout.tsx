@@ -44,6 +44,15 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="[productId]"
+        options={{
+          title: 'Dettaglio Prodotto',
+          headerShown: false,
+          href:null
+
+        }}
+      />
     </Tabs>
   );
 }

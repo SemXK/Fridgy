@@ -13,14 +13,13 @@ function getFocusedRouteName(route: any): string {
 }
 
 export default function AnimatedTabBar({ state, descriptors, navigation }: any) {
+  // * list the routes with tab bar displayed
   const route = state.routes[state.index];
   const focusedChild = getFocusedRouteName(route);
   const isHome = route.name === "Home";
   const isProductDetail = route.name === "productDetail";
   const isFridgeIndex = route.name === "(fridge-tab)";
   const isProductCreation = route.name === "ProductCreation";
-
-
   if (!isHome && !isFridgeIndex && !isProductDetail && !isProductCreation) {
     return null;
   }

@@ -49,7 +49,7 @@ export interface Product {
   name: string;
   image: string;
   description: string;
-  brand: string;
+  brand: Brand;
   quantity: number;
   uma: string;
   itemsNumber?: number;
@@ -77,7 +77,10 @@ export interface Fridge {
   updated_at: Date;
   product_list: Product[];
 }
-
+export interface Brand {
+  id: number;
+  name: string
+}
 // * Payload
 export interface CreateProductPayload {
   name: string,

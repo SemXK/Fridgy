@@ -2,6 +2,7 @@ import { CartContext } from '@/app/_layout';
 import { CartContextInterface, CartItemInterface, Product } from '@/constants/interfaces/productInterface';
 import { ProductController } from '@/controllers/ProductController';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import React, { useContext } from 'react';
 import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
@@ -22,7 +23,13 @@ const ProductMiniCard = (props: Props) => {
   const handleFavouriteClick = (e: GestureResponderEvent, product: Product) => {
     e.stopPropagation();
   }
-  const addProductToCart = async () => {
+  const addProductToCart = async (e: GestureResponderEvent) => {
+    e.stopPropagation()
+
+    Haptics.notificationAsync(
+      Haptics.NotificationFeedbackType.Success
+    )
+
     const productId = props.product.id;
     ProductController.addItemToCart(productId)
     .then((res) => {
@@ -108,16 +115,13 @@ const ProductMiniCard = (props: Props) => {
       </View> */}
 
       {/* Azioni Prodotto */}
-      <View
-        onTouchEnd={addProductToCart}
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={(e) => addProductToCart(e)}
         className="absolute bottom-0 right-0 rounded-tl-2xl rounded-br-2xl bg-primary-500 p-2"
       >
-        <Ionicons
-          name="add"
-          size={26}
-          color="white"
-        />
-      </View>
+        <Ionicons name="add" size={26} color="white" />
+      </TouchableOpacity>
 
     </TouchableOpacity>
   ) 

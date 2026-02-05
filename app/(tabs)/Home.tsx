@@ -11,6 +11,7 @@ import { primaryColor } from '@/constants/theme';
 import { ProductController } from '@/controllers/ProductController';
 
 import { getEcho } from '@/scripts/LaravelEcho';
+import { router } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -108,7 +109,9 @@ const HomePage = () => {
  
   // * Press Functions
   const productTypePress = (productType: ProductType) => {}
-  const popularProductPress = (product: Product) => {}
+  const popularProductPress = (product: Product) => {
+    router.navigate(`/(tabs)/${product.id}`)
+  }
   const discountPress = (discount: Discount) => {}
 
   // * Sections
@@ -168,7 +171,6 @@ const HomePage = () => {
         />
       )
     },
-
   ];
 
   // * Display
@@ -240,7 +242,7 @@ const HomePage = () => {
               </View>
               :
               <FlatList
-                data={item.data} 
+                data={item.data as any} 
                 horizontal
                 initialNumToRender={5}
                 maxToRenderPerBatch={5}

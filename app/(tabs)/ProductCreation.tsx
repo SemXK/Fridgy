@@ -52,10 +52,8 @@ const ProductCreation = () => {
     // const product: Product | AxiosError<unknown, any> = 
     const product: any =
     await ProductController.createProduct(payload)
-    .then((p) => console.log(p))
     .catch(e => {console.log({msg: e.message})}) 
 
-    console.log({product})
     // 1* Creazione con successo
     if(!(product instanceof AxiosError)) {
       console.log({newproduct: product})

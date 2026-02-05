@@ -36,7 +36,6 @@ export abstract class ProductController extends Controller {
   static createProduct = async(product: CreateProductPayload): Promise<Product | AxiosError> => {
     return await this.basicPostCall("products/set-product", product)
     .then((res: AxiosResponse<Product>) => {
-      console.log(res)
       if (res.status === 200) {
         return res.data
       }
@@ -46,6 +45,15 @@ export abstract class ProductController extends Controller {
       return new AxiosError("Unexpected response status: " + res.status);
     })
   };
+  static getProduct = async(productId: number | string): Promise<Product | AxiosError> => {
+    return await this.basicGetCall(`products/get-product/${productId}`)
+    .then((res: AxiosResponse<Product>) => {
+      if (res.status === 200) {
+        return res.data
+      }
+      return new AxiosError("Unexpected response status: " + res.status);
+    })
+  }
 
 
   // % Cart
