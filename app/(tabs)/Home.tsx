@@ -8,7 +8,7 @@ import ThemedText from '@/components/ui/ThemedText';
 import { discountList } from '@/constants/interfaces/fakeData';
 import { Discount, Product, ProductType } from '@/constants/interfaces/productInterface';
 import { primaryColor } from '@/constants/theme';
-import { ProductController } from '@/controllers/ProductController';
+import { ProductController, ProductListHomePageResponse } from '@/controllers/ProductController';
 
 import { getEcho } from '@/scripts/LaravelEcho';
 import { router } from 'expo-router';
@@ -37,7 +37,9 @@ const HomePage = () => {
   const [showSnackbar, setShowSnackbar] = useState<string>("");
 
   // * Variables State
-  const [productList, setProductList] = useState<Product[]>([])
+  const [popularProductList, setPopularProductList] = useState<Product[]>([])
+  const [latestProductList, setLatestProductList] = useState<Product[]>([])
+
   const [productTypeList, setProductTypeList] = useState<ProductType[]>([])
   const [filter, setFilter] = useState<string>("");
   const [filterLoading, setFilterLoading] = useState<boolean>(false)
@@ -89,7 +91,9 @@ const HomePage = () => {
     await ProductController
       .getShopProducts(filter)
       .then((res) => {
-        setProductList(res as Product[])
+        const response = res as ProductListHomePageResponse
+        setPopularProductList(response.popularProducts.data)
+        setLatestProductList(response.latestProducts.data)
         setFilterLoading(false)
       })
       .catch(e => {
@@ -106,7 +110,7 @@ const HomePage = () => {
         setShowSnackbar(e.message)
       })
   }
- 
+
   // * Press Functions
   const productTypePress = (productType: ProductType) => {}
   const popularProductPress = (product: Product) => {
@@ -142,13 +146,13 @@ const HomePage = () => {
       )
     },    
     {
-      key: "favorites",
-      title: "I Tuoi Preferiti",
+      key: "latest",
+      title: "Ultime Uscite",
       loading: filterLoading,
 
       height: 200,
       width: 200,
-      data: productList,
+      data: latestProductList,
       renderCard: (item: Product) => (
         <ProductMiniCard
           onPress={() => popularProductPress(item)}
@@ -163,7 +167,7 @@ const HomePage = () => {
       title: "Prodotti Popolari",
       height: 200,
       width: 200,
-      data: productList,
+      data: popularProductList,
       renderCard: (item: Product) => (
         <ProductMiniCard
           onPress={() => popularProductPress(item)}

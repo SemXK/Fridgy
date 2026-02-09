@@ -2,9 +2,12 @@ import { CartItemInterface, CreateProductPayload, Fridge, PaginatedResponse, Pro
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
+export interface ProductListHomePageResponse {
+  latestProducts: PaginatedResponse<Product>;
+  popularProducts: PaginatedResponse<Product>;
+}
 
 export abstract class ProductController extends Controller {
-  static shopProducts: Product[] = [];
 
   // % Tipi prodotto
   static getProductTypes = async (): Promise<ProductType[] | AxiosError> => {
@@ -18,13 +21,14 @@ export abstract class ProductController extends Controller {
   };
 
   // % Prodotti
-  static getShopProducts = async (textQuery?: string): Promise<Product[] | AxiosError> => {
+  static getShopProducts = async (textQuery?: string): Promise<ProductListHomePageResponse | AxiosError> => {
     return await this.basicPostCall("products/shop-products", {textQuery})
     .then((res: AxiosResponse<Product[]>) => {
       if (res.status === 200) {
-        const paginatedResponse: PaginatedResponse<Product> = (res as AxiosResponse).data;
-        this.shopProducts = paginatedResponse.data;
-        return paginatedResponse.data as Product[];
+
+        const paginatedResponse: ProductListHomePageResponse = (res as AxiosResponse).data;
+        return paginatedResponse;
+
       }
       else if (res.status === 401) {
         throw new AxiosError("Invalid Credentials");
