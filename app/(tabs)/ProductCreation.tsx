@@ -2,15 +2,17 @@ import HomePageHeader from '@/components/headers/HomePageHeader'
 import ThemedFormField from '@/components/inputs/CustomFormField'
 import ThemedSelectField from '@/components/inputs/CustomSelect'
 import ThemedTextArea from '@/components/inputs/CustomTextArea'
+import CustomNativeSelect from '@/components/inputs/CustonNativeSelect'
 import PrimaryButton from '@/components/pressable/PrimaryButton'
 import FileUploader from '@/components/thirdParty/FileUploader'
 import { buildBase64Image } from '@/constants/functions'
-import { CreateProductPayload } from '@/constants/interfaces/productInterface'
+import { Brand, CreateProductPayload } from '@/constants/interfaces/productInterface'
 import { PERCENTUALI_IVA, UNITA_DI_MISURA } from '@/constants/options'
+import { FieldController } from '@/controllers/FeldController'
 import { ProductController } from '@/controllers/ProductController'
-import { AxiosError } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import * as ImagePicker from "expo-image-picker"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -24,7 +26,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const initialState: CreateProductPayload = {
     name: '',
     description: '',
-    brandId: '',
+    brandId: 0,
     quantity: '',
     uma: '',
     price: '',
@@ -39,6 +41,22 @@ const ProductCreation = () => {
   // * States
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null)
   const [productForm, setProductForm] = useState<CreateProductPayload>(initialState)
+  const [brandList, setBrandList] = useState<Brand[]>([])
+
+  // * Functions
+  const getBrandList = async() => {
+    await FieldController.getBrandList().then((res)=> {
+      const response = res as AxiosResponse<Brand[]> 
+      setBrandList(response.data);
+    })
+  }
+
+  // * Effects
+  useEffect(() => {
+    getBrandList()
+  }, [])
+
+
 
   // * Functions
   const handleSubmit = async () => {
@@ -67,6 +85,7 @@ const ProductCreation = () => {
     setLoadingPreview(false)
   }
 
+  // * Display
   return (
     <SafeAreaView className="flex-1">
       <KeyboardAvoidingView
@@ -112,6 +131,15 @@ const ProductCreation = () => {
                     uma: val as number
                   })
                 }
+              />
+
+              <CustomNativeSelect
+                value={productForm.brandId}
+                onValueChange={(val: number) =>
+                  setProductForm({ ...productForm, brandId: val })
+                }
+                placeholder="Select a fruit"
+                options={brandList.map(b => { return {label: b.name, value: b.id}})}
               />
 
               {/* Input quantità (prodotto) */}

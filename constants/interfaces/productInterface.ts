@@ -84,7 +84,7 @@ export interface Brand {
 export interface CreateProductPayload {
   name: string,
   description: string,
-  brandId: string,
+  brandId: number,
   quantity: string,
   uma: string | number,
   price: string,

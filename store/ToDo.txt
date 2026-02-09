@@ -3,8 +3,10 @@
 [x] Dettaglio alimenti
 [x] Storico prezzi alimenti
 
+[] Creazione marche prodotti
 [] Dettaglio frigoriferi
 [] Acquisizione alimenti
+
 
 [] Filtri alimenti
 [] Registrazione spese (grafico con date e soldi spesi)
@@ -17,4 +19,5 @@
 Bug Noti
 
 [] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano
+[] TouchableOpacity di react native ha le animazioni bloccate
 

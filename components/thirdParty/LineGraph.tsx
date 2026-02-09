@@ -99,7 +99,7 @@ const LineGraph: FC<LineGraphProps> = ({
     else {
       setGraphValid(false)
       return {
-        points: 0,
+        points: [{x: 0, y: 0}],
         linePath: 0,
         areaPath: 0,
         min: 0,
@@ -158,11 +158,11 @@ const LineGraph: FC<LineGraphProps> = ({
           })}
 
           {/* Area */}
-          <Path d={areaPath} fill="url(#areaGradient)" />
+          <Path d={areaPath as string} fill="url(#areaGradient)" />
 
           {/* Line */}
           <Path
-            d={linePath}
+            d={linePath as string}
             fill="none"
             stroke="url(#lineGradient)"
             strokeWidth={strokeWidth}
