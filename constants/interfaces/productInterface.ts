@@ -39,10 +39,9 @@ export interface ProductType {
 export interface Receipt {
   id: number;
   price: number;
-  discount: number;
-  quantityBought: number;
-  created_at: Date;
-  updated_at: Date;
+  productId: number;
+  created_at: string;  
+  updated_at: string;
 }
 export interface Product {
   id: number;
@@ -58,10 +57,10 @@ export interface Product {
   pricePerUma?: number;
   taxPercent: number;
 
-  // priceHistory: Receipt[];
+  prices: Receipt[];
   productTypes: ProductType[];
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 export interface Discount {
   id: number;
