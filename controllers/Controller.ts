@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import Constants from 'expo-constants';
 import * as SecureStore from "expo-secure-store";
 
@@ -37,11 +37,16 @@ export abstract class Controller {
       throw error;
     }
   };
-  static basicPostCall = async (apiPath: string, data: unknown) => {
+  static basicPostCall = async (
+    apiPath: string,
+    data: unknown,
+    config?: AxiosRequestConfig
+  ) => {
     try {
-      return await axios.post(`${this.baseUrl}/${apiPath}`, data);
-    } 
-    catch (error: any) {
+      return await axios.post(`${this.baseUrl}/${apiPath}`, data, {
+        ...config,
+      });
+    } catch (error: any) {
       throw error;
     }
   };

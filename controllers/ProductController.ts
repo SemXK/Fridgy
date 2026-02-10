@@ -1,4 +1,4 @@
-import { CartItemInterface, CreateProductPayload, Fridge, PaginatedResponse, Product, ProductType } from "@/constants/interfaces/productInterface";
+import { CartItemInterface, Fridge, PaginatedResponse, Product, ProductType } from "@/constants/interfaces/productInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -37,18 +37,13 @@ export abstract class ProductController extends Controller {
     })
     .catch((e) => {return e})
   };
-  static createProduct = async(product: CreateProductPayload): Promise<Product | AxiosError> => {
-    return await this.basicPostCall("products/set-product", product)
-    .then((res: AxiosResponse<Product>) => {
-      if (res.status === 200) {
-        return res.data
-      }
-      else if (res.status === 401) {
-        throw new AxiosError("Invalid Credentials");
-      }
-      return new AxiosError("Unexpected response status: " + res.status);
-    })
-  };
+static createProduct = async (formData: FormData): Promise<Product> => {
+  const response = await this.basicPostCall("products/set-product", formData);
+  if (response.status === 200) return response.data;
+  else if (response.status === 401) throw new AxiosError("Invalid Credentials");
+  else throw new AxiosError("Unexpected response status: " + response.status);
+};
+
   static getProduct = async(productId: number | string): Promise<Product | AxiosError> => {
     return await this.basicGetCall(`products/get-product/${productId}`)
     .then((res: AxiosResponse<Product>) => {

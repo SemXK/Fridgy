@@ -17,7 +17,7 @@ export default function FileUploader(props: ImageUploader) {
     quality: 1,
     allowsEditing: true,
     exif: false,
-    base64: true
+    base64: false
   }
 
   // * Functions
