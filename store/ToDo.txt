@@ -2,22 +2,25 @@
 [x] Aggiunta alimenti
 [x] Dettaglio alimenti
 [x] Storico prezzi alimenti
+[x] Registrazione spese (grafico con date e soldi spesi)
+[x] Modifica prodotti
 
+[] Acquisto alimenti
 [] Creazione marche prodotti
 [] Dettaglio frigoriferi
-[] Acquisizione alimenti
-
 [] Snackbar Component
+
 [] Filtri alimenti
-[] Registrazione spese (grafico con date e soldi spesi)
 [] Registrazione variazione prezzi alimenti
 
 [] API per prezzi live su alimenti ()
 [] API per sconti live ()
 [] Pagina per sezioni sconti ()
 
-Bug Noti
 
+Bug Noti
 [] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano
 [] TouchableOpacity di react native ha le animazioni bloccate
+[] Tutti Gli input hanno la label bloccata se inseriti in un BottomSheetComponent
+[] Durante la modifica dell'immagine di un prodotto, la modifica non viene presa durante il primo render del componente
 

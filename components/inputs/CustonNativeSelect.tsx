@@ -52,8 +52,7 @@ const NativeSelect = ({
       {/* Inactive Select Display */}
       <TouchableOpacity style={styles.button} onPress={openPicker}>
         <ThemedText
-          textStyle="text-primary-500 text-xl align-center"
-          darkModeDisabled
+          textStyle=" text-xl align-center"
           label={selectedLabel || placeholder}
         />
         {/* <Text >{selectedLabel || placeholder}</Text> */}

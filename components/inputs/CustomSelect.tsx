@@ -24,7 +24,6 @@ return (
   backgroundColor="transparent"
   style={{
     borderRadius: 10,
-    borderWidth: 1,
     // borderColor: primaryColor[500],
     backgroundColor: 'transparent',
   }}

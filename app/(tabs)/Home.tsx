@@ -78,9 +78,7 @@ const HomePage = () => {
   }, []);
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (filter) {
-        getShopItems();
-      }
+      getShopItems();
     }, 1000);
     return () => clearTimeout(handler);
   }, [filter]);

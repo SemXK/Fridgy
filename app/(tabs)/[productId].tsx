@@ -1,6 +1,8 @@
+import EditProductComponent from '@/components/details/EditProductComponent'
 import ProductDetailHeader from '@/components/headers/ProductDetailHeader'
 import PrimaryButton from '@/components/pressable/PrimaryButton'
 import LineGraph, { DataPoint } from '@/components/thirdParty/LineGraph'
+import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import UrlImage from '@/components/ui/UrlImage'
 import { CartContextInterface, CartItemInterface, Product } from '@/constants/interfaces/productInterface'
@@ -19,11 +21,12 @@ const ProductDetail = () => {
   const { setCart } = useContext(CartContext) as CartContextInterface;
   
   // * Params
-    const { productId } = useLocalSearchParams<{ productId: string }>()
+  const { productId } = useLocalSearchParams<{ productId: string }>()
   
   // * States
   const [loading, setLoading] = useState<boolean>(false)
   const [product, setProduct] = useState<Product | null> (null)
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // * Effects
   useFocusEffect(
@@ -31,7 +34,6 @@ const ProductDetail = () => {
       setLoading(true)
       getProductDetail(productId)
       setLoading(false)
-
       return () => {
         setProduct(null)
       }
@@ -42,6 +44,7 @@ const ProductDetail = () => {
   const getProductDetail = async(productId: string) => {
     const productDetail = await ProductController.getProduct(productId)
     if (productDetail && 'id' in productDetail) {
+      console.log({productDetail: productDetail.image})
       setProduct(productDetail)
     }
   } 
@@ -59,7 +62,7 @@ const ProductDetail = () => {
     .catch(e => console.log(e.message))
   }
   const editProduct = () => {
-    
+    setIsEditing(true)
   }
   const formatPrices = (product: Product): DataPoint[] => {
     if(product.prices.length) {
@@ -67,8 +70,8 @@ const ProductDetail = () => {
         const day = new Date(p.created_at).getDate()
         const month = new Date(p.created_at).getMonth()
 
-        const formattedDay = day > 10 ? day : `0${day}`
-        const formattedMonth = month > 10 ? day : `0${month}`
+        const formattedDay = day > 9 ? day : `0${day}`
+        const formattedMonth = month > 9 ? day : `0${month}`
 
         return {
           labelX: `${formattedDay}/${formattedMonth}`,
@@ -79,149 +82,172 @@ const ProductDetail = () => {
     return []
 
   }
+  const handleEditForm = () => {
+    console.log({product: product?.image})
+    setLoading(true)
+    setIsEditing(false)
+    getProductDetail(productId)
+
+    setLoading(false)
+    console.log({newProduct: product?.image})
+
+  }
 
   if(!product) {
     return null
   }
 
   return (
-    <SafeAreaView className="px-4 relative">
+    <>
+      <SafeAreaView className="px-4 relative">
 
-      {/* * Product Header */}
-      <ProductDetailHeader />
+        {/* * Product Header */}
+        <ProductDetailHeader />
 
-      <ScrollView className="h-[90%] mb-4 py-8">
-        {
-          loading ?
-          <View className="w-full flex flex-row justify-center">
-            <ActivityIndicator animating size={24} color={primaryColor[500]} />
-          </View>
-          :
-          <View>
-            <View className="flex gap-8">
-              {/* Image */}
-              <UrlImage
-                source={product.image}
-                className="self-center"
-                width={250}
-                height={250}
-                resizeMode="contain"
-              />
-
-              {/* Main Description */}
-              <View>
-                <View className="flex flex-row justify-between items-center">
-
-                  <ThemedText 
-                    label={product.name}
-                    textStyle='text-primary-500 text-3xl'
-                    font='Nunito-ExtraBold'
-                    darkModeDisabled
-                  />
-                  <TouchableOpacity onPress={editProduct} >
-                    <FontAwesome6 name="edit" size={14} color={primaryColor[500]} />
-                  </TouchableOpacity>
-
-                </View>
-
-                <View className="flex flex-row gap-2">
-                  <ThemedText 
-                    label='Marca:'
-                    darkModeDisabled
-                    textStyle='text-xl text-primary-500'
-                    font='Nunito-Bold'
-                  />
-                  <ThemedText 
-                    label={product.brand.name}
-                    textStyle='text-xl'
-                    font='Nunito-Light'
-                  />
-                </View>
-
-                <View className="flex flex-row gap-2">
-                  <ThemedText 
-                    label='Quantità:'
-                    darkModeDisabled
-                    textStyle='text-xl text-primary-500'
-                    font='Nunito-Bold'
-                  />
-                  <ThemedText 
-                    label={product.quantity + " " + product.uma}
-                    textStyle='text-xl'
-                    font='Nunito-Light'
-                  />
-                </View>
-
-
-              </View>
-
-              {/* Row Product Info */}
-              <View className="flex flex-row justify-around  items-center">
-
-                {/* Rating */}
-                <View className="flex flex-row gap-2 items-center">
-                  <FontAwesome6 name="star" size={14} color="orange" />
-                  <ThemedText 
-                  label="4.5"
-                  />
-                </View>
-
-                {/* Cal */}
-                <View className="flex flex-row gap-2 items-center">
-                  <FontAwesome6 name="fire" size={14} color={primaryColor[500]} />
-                  <ThemedText 
-                  label="400 cal"
-                  />
-                </View>
-
-                {/* Price */}
-                <View className="flex flex-row gap-2 items-center">
-                  <Ionicons name="pricetag" size={14} color={primaryColor[500]} />
-                  <ThemedText 
-                  label={product.price + '€'}
-                  />
-                </View>
-
-              </View>
-
-              {/* Secondary Description */}
-              <View>
-                <ThemedText 
-                  label='Descrizione'
-                  darkModeDisabled
-                  textStyle='text-2xl text-primary-500'
-                  font='Nunito-Bold'
+        <ScrollView className="h-[90%] mb-4 py-8" showsVerticalScrollIndicator={false}>
+          {
+            loading ?
+            <View className="w-full flex flex-row justify-center">
+              <ActivityIndicator animating size={24} color={primaryColor[500]} />
+            </View>
+            :
+            <View>
+              <View className="flex gap-8">
+                {/* Image */}
+                <UrlImage
+                  source={product.image}
+                  className="self-center"
+                  width={250}
+                  height={250}
+                  resizeMode="contain"
                 />
-                <ThemedText 
-                  label={product.description || 'Nessuna descrizione rilasciata per il prodotto'}
-                  textStyle='text-lg'
-                />
-              </View>
 
-                {/* Prices Graph */}
+                {/* Main Description */}
+                <View>
+                  <View className="flex flex-row justify-between items-center">
+
+                    <ThemedText 
+                      label={product.name}
+                      textStyle='text-primary-500 text-3xl'
+                      font='Nunito-ExtraBold'
+                      darkModeDisabled
+                    />
+                    <TouchableOpacity onPress={editProduct} >
+                      <FontAwesome6 name="edit" size={24} color={primaryColor[500]} />
+                    </TouchableOpacity>
+
+                  </View>
+
+                  <View className="flex flex-row gap-2">
+                    <ThemedText 
+                      label='Marca:'
+                      darkModeDisabled
+                      textStyle='text-xl text-primary-500'
+                      font='Nunito-Bold'
+                    />
+                    <ThemedText 
+                      label={product.brand.name}
+                      textStyle='text-xl'
+                      font='Nunito-Light'
+                    />
+                  </View>
+
+                  <View className="flex flex-row gap-2">
+                    <ThemedText 
+                      label='Quantità:'
+                      darkModeDisabled
+                      textStyle='text-xl text-primary-500'
+                      font='Nunito-Bold'
+                    />
+                    <ThemedText 
+                      label={product.quantity + " " + product.uma}
+                      textStyle='text-xl'
+                      font='Nunito-Light'
+                    />
+                  </View>
+
+
+                </View>
+
+                {/* Row Product Info */}
+                <View className="flex flex-row justify-around  items-center">
+
+                  {/* Rating */}
+                  <View className="flex flex-row gap-2 items-center">
+                    <FontAwesome6 name="star" size={14} color="orange" />
+                    <ThemedText 
+                    label="4.5"
+                    />
+                  </View>
+
+                  {/* Cal */}
+                  <View className="flex flex-row gap-2 items-center">
+                    <FontAwesome6 name="fire" size={14} color={primaryColor[500]} />
+                    <ThemedText 
+                    label="400 cal"
+                    />
+                  </View>
+
+                  {/* Price */}
+                  <View className="flex flex-row gap-2 items-center">
+                    <Ionicons name="pricetag" size={14} color={primaryColor[500]} />
+                    <ThemedText 
+                    label={product.price + '€'}
+                    />
+                  </View>
+
+                </View>
+
+                {/* Secondary Description */}
                 <View>
                   <ThemedText 
-                    label='Storico Prezzi'
+                    label='Descrizione'
                     darkModeDisabled
                     textStyle='text-2xl text-primary-500'
                     font='Nunito-Bold'
                   />
-                  <LineGraph data={formatPrices(product)} />
+                  <ThemedText 
+                    label={product.description || 'Nessuna descrizione rilasciata per il prodotto'}
+                    textStyle='text-lg'
+                  />
                 </View>
 
-            </View>
+                  {/* Prices Graph */}
+                  <View>
+                    <ThemedText 
+                      label='Storico Prezzi'
+                      darkModeDisabled
+                      textStyle='text-2xl text-primary-500'
+                      font='Nunito-Bold'
+                    />
+                    <LineGraph data={formatPrices(product)} />
+                  </View>
 
-          </View>
-        }
-      </ScrollView>
-      {/* Add to cart Button */}
-      <View className="self-center w-1/2">
-        <PrimaryButton
-          buttonText='Aggiungi al carrello'
-          onPress={addToCart}
-          />
-      </View>
-    </SafeAreaView>
+              </View>
+
+            </View>
+          }
+        </ScrollView>
+        {/* Add to cart Button */}
+        <View className="self-center w-1/2">
+          <PrimaryButton
+            buttonText='Aggiungi al carrello'
+            onPress={addToCart}
+            />
+        </View>
+      </SafeAreaView>
+
+      {/* BottomSheet */}
+      {
+        isEditing && 
+        <BottomSheetComponent
+          height={0.8 }
+          onClose={() => setIsEditing(false)}
+          ShownComponent={() => { return<EditProductComponent onClose={handleEditForm} product={product}/>}}
+        />
+      }
+
+    </>
   )
 }
 

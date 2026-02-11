@@ -1,4 +1,3 @@
-import { darkColor } from '@/constants/theme';
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { Appearance, Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native';
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    backgroundColor: Appearance.getColorScheme() === 'light' ? 'white' : darkColor[800],
+    backgroundColor: Appearance.getColorScheme() === 'light' ? 'white' : 'black',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',

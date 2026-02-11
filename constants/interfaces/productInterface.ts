@@ -50,8 +50,9 @@ export interface Product {
   description: string;
   brand: Brand;
   quantity: number;
-  uma: string;
+  uma: string | number;
   itemsNumber?: number;
+  brandId: number;
 
   price: number;
   pricePerUma?: number;
@@ -82,6 +83,7 @@ export interface Brand {
 }
 // * Payload
 export interface CreateProductPayload {
+  id?: number;
   name: string,
   description: string,
   brandId: number,

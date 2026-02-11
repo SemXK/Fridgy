@@ -37,12 +37,20 @@ export abstract class ProductController extends Controller {
     })
     .catch((e) => {return e})
   };
-static createProduct = async (formData: FormData): Promise<Product> => {
-  const response = await this.basicPostCall("products/set-product", formData);
-  if (response.status === 200) return response.data;
-  else if (response.status === 401) throw new AxiosError("Invalid Credentials");
-  else throw new AxiosError("Unexpected response status: " + response.status);
-};
+  /**
+   * Creates (id = undefined) or edits a product
+   * @param formData 
+   * @returns the product created / edited
+   */
+  static setProduct = async (formData: FormData): Promise<Product> => {
+    const response = await this.basicPostCall("products/set-product", formData);
+    if (response.status === 200) return response.data;
+    else if (response.status === 401) throw new AxiosError("Invalid Credentials");
+    else{
+      console.log(response)
+      throw new AxiosError("Unexpected response status: " + response.status)
+    };
+  };
 
   static getProduct = async(productId: number | string): Promise<Product | AxiosError> => {
     return await this.basicGetCall(`products/get-product/${productId}`)
@@ -53,7 +61,6 @@ static createProduct = async (formData: FormData): Promise<Product> => {
       return new AxiosError("Unexpected response status: " + res.status);
     })
   }
-
 
   // % Cart
   static getCartItems = async (): Promise<CartItemInterface[] | AxiosError> => {
