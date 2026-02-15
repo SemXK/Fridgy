@@ -12,9 +12,10 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useState } from 'react';
 import { Appearance, StatusBar } from 'react-native';
-import "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from 'react-native-paper';
 import './global.css';
+
 
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
@@ -124,6 +125,8 @@ export default function RootLayout() {
       <BottomSheetContext.Provider value={setSheet}>
         <UserContext value={{user, guest}}>
           <CartContext value={{cart, setCart}}>
+            <GestureHandlerRootView>
+
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
               <PaperProvider>
 
@@ -150,6 +153,9 @@ export default function RootLayout() {
 
               </PaperProvider>
             </ThemeProvider>
+
+            </GestureHandlerRootView>
+
           </CartContext>
         </UserContext>
       </BottomSheetContext.Provider>

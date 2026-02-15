@@ -46,34 +46,34 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
       runOnJS(onClose)();
     });
   };
-  const findClosestSnapPoint = (currentY: number, velocityY: number) => {
-    'worklet';
-    const snapPositions = snapPoints.map(point => SCREEN_HEIGHT * (1 - point));
+  // const findClosestSnapPoint = (currentY: number, velocityY: number) => {
+  //   'worklet';
+  //   const snapPositions = snapPoints.map(point => SCREEN_HEIGHT * (1 - point));
     
-    // Add closing point (below screen)
-    snapPositions.push(SCREEN_HEIGHT * 1.1);
+  //   // Add closing point (below screen)
+  //   snapPositions.push(SCREEN_HEIGHT * 1.1);
     
-    let closestPoint = snapPositions[0];
-    let minDistance = Math.abs(currentY - closestPoint);
+  //   let closestPoint = snapPositions[0];
+  //   let minDistance = Math.abs(currentY - closestPoint);
     
-    // Bias towards closing if swiping down fast
-    const velocityThreshold = 1.0;
-    const isFastDownSwipe = velocityY > velocityThreshold;
+  //   // Bias towards closing if swiping down fast
+  //   const velocityThreshold = 1.0;
+  //   const isFastDownSwipe = velocityY > velocityThreshold;
     
-    if (isFastDownSwipe && currentY > SCREEN_HEIGHT * 0.2) {
-      return SCREEN_HEIGHT * 1.1; // Close the sheet
-    }
+  //   if (isFastDownSwipe && currentY > SCREEN_HEIGHT * 0.2) {
+  //     return SCREEN_HEIGHT * 1.1; // Close the sheet
+  //   }
     
-    for (const point of snapPositions) {
-      const distance = Math.abs(currentY - point);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestPoint = point;
-      }
-    }
+  //   for (const point of snapPositions) {
+  //     const distance = Math.abs(currentY - point);
+  //     if (distance < minDistance) {
+  //       minDistance = distance;
+  //       closestPoint = point;
+  //     }
+  //   }
     
-    return closestPoint;
-  };
+  //   return closestPoint;
+  // };
   const handleRelease = (vy: number) => {
     'worklet';
     const currentY = translateY.value;

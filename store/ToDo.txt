@@ -4,11 +4,11 @@
 [x] Storico prezzi alimenti
 [x] Registrazione spese (grafico con date e soldi spesi)
 [x] Modifica prodotti
-
+[] Snackbar Component
 [] Acquisto alimenti
+
 [] Creazione marche prodotti
 [] Dettaglio frigoriferi
-[] Snackbar Component
 
 [] Filtri alimenti
 [] Registrazione variazione prezzi alimenti

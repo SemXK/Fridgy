@@ -10,8 +10,8 @@ import { Discount, Product, ProductType } from '@/constants/interfaces/productIn
 import { primaryColor } from '@/constants/theme';
 import { ProductController, ProductListHomePageResponse } from '@/controllers/ProductController';
 
+import TopSnackbar from '@/components/ui/SnackbacComponent';
 import { getEcho } from '@/scripts/LaravelEcho';
-import { router } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -34,7 +34,7 @@ const HomePage = () => {
   const user = useContext(UserContext);
 
   // * Display State
-  const [showSnackbar, setShowSnackbar] = useState<string>("");
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   // * Variables State
   const [popularProductList, setPopularProductList] = useState<Product[]>([])
@@ -95,7 +95,7 @@ const HomePage = () => {
         setFilterLoading(false)
       })
       .catch(e => {
-        setShowSnackbar(e.message)
+        setShowSnackbar(true)
       })
   }
   const getProductTypes = async () => {
@@ -112,7 +112,9 @@ const HomePage = () => {
   // * Press Functions
   const productTypePress = (productType: ProductType) => {}
   const popularProductPress = (product: Product) => {
-    router.navigate(`/(tabs)/${product.id}`)
+    // router.navigate(`/(tabs)/${product.id}`)
+    // console.log("Show Snackbar") 
+    setShowSnackbar(true)
   }
   const discountPress = (discount: Discount) => {}
 
@@ -177,7 +179,9 @@ const HomePage = () => {
 
   // * Display
   return (
-    <SafeAreaView className="h-full">
+    <SafeAreaView className="flex-1">
+
+
 
       {/* * Auth Header */}
       <HomePageHeader />
@@ -221,6 +225,12 @@ const HomePage = () => {
           },
         ]}
       /> */}
+
+      <TopSnackbar
+        visible={showSnackbar}
+        message="This is a top snackbar!"
+        onHide={() => setShowSnackbar(false)}
+      />
 
       {/* * Lista di liste  */}
       <FlatList

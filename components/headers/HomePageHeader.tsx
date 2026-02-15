@@ -13,7 +13,7 @@ const HomePageHeader = (props: HomePageInterface) => {
   // * Context
 
   return (
-    <View className="flex flex-row justify-between items-center h-8">
+  <View className="flex flex-row justify-between items-center px-4 py-3">
       <View className="flex flex-row  items-center">
         <MenuButton/>
         {props.title && 
