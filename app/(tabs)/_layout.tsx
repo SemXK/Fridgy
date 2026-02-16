@@ -1,31 +1,66 @@
+import AnimatedTabBar from '@/components/ui/AnimatedTabBar';
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        tabBarHideOnKeyboard: true,
+      }}
+      tabBar={(props) => <AnimatedTabBar {...props} />}
+    >
       <Tabs.Screen
-        name="index"
+        name="Home"
         options={{
           title: 'Home',
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
         }}
       />
-      {/* <Tabs.Screen
-        name="explore"
+      <Tabs.Screen
+        name="(fridge-tab)"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Il tuo frigo',
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
         }}
-      /> */}
+      />
+      <Tabs.Screen
+        name="Cart"
+        options={{
+          title: 'Il tuo carrello',
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+          href:null
+        }}
+      />
+      <Tabs.Screen
+        name="ProductCreation"
+        options={{
+          title: 'Crea un prodotto',
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="[productId]"
+        options={{
+          title: 'Dettaglio Prodotto',
+          headerShown: false,
+          href:null
+
+        }}
+      />
     </Tabs>
   );
 }
+
+
+// <MaterialCommunityIcons
+//   className=" text-primary-600"
+//   name="fridge-outline"
+//   size={64}
+//   color={primaryColor[500]}
+//   />

@@ -17,10 +17,11 @@
 [] API per sconti live ()
 [] Pagina per sezioni sconti ()
 
+Bug Risolti
+[x] TouchableOpacity di react native ha le animazioni bloccate
+[x] Tutti Gli input hanno la label bloccata se inseriti in un BottomSheetComponent
 
 Bug Noti
 [] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano
-[] TouchableOpacity di react native ha le animazioni bloccate
-[] Tutti Gli input hanno la label bloccata se inseriti in un BottomSheetComponent
 [] Durante la modifica dell'immagine di un prodotto, la modifica non viene presa durante il primo render del componente
 
