@@ -12,12 +12,12 @@ import ThemedText from "./ThemedText";
 
 const { width } = Dimensions.get("window");
 
-interface TopSnackbarProps {
+export interface TopSnackbarProps {
   visible: boolean;
   message: string;
-  onHide?: () => void;
+  onHide: () => void;
   duration?: number;
-  status?: SnackbarStatus
+  status?: SnackbarStatus;
 }
 
 

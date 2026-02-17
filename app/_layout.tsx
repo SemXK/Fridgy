@@ -4,6 +4,7 @@ import { AuthController } from '@/controllers/AuthController';
 import { ProductController } from '@/controllers/ProductController';
 import { StripeController } from '@/controllers/StripeController';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { getEcho } from '@/scripts/LaravelEcho';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { AxiosError } from 'axios';
@@ -26,7 +27,6 @@ export const CartContext = createContext<CartContextInterface>({cart:[]});
 export const BottomSheetContext = createContext<any>(() => {});
 
 export default function RootLayout() {
-
   // * theme
   const colorScheme = useColorScheme();
 
@@ -97,7 +97,28 @@ export default function RootLayout() {
     })
 
     // 1* Websockets
-    // getEcho();
+    let channel: any;
+    (async () => {
+      console.log("WSS init" )
+      const echo = await getEcho();
+      echo.connector.pusher.connection.bind('state_change', (states: any) => {
+        console.log('Pusher state:', states.current);
+      });
+      echo.connector.pusher.connection.bind('error', (err: any) => {
+        console.log('Pusher error', err);
+      });
+
+
+      channel = echo.channel('payment-confirmation')
+        .listen('.PaymentCompletion', (e: any) => {
+          console.log('WS event received:', e);
+        });
+
+    })();
+    return () => {
+      channel?.stopListening('PaymentCompletion');
+    };
+
   }, [])
 
   // % Font loader

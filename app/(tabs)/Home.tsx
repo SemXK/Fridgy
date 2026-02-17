@@ -12,7 +12,7 @@ import { ProductController, ProductListHomePageResponse } from '@/controllers/Pr
 
 import TopSnackbar from '@/components/ui/SnackbacComponent';
 import { SnackbarStatus } from '@/constants/enums/common';
-import { getEcho } from '@/scripts/LaravelEcho';
+import { router } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -51,29 +51,6 @@ const HomePage = () => {
     getProductTypes()
     getShopItems()
 
-    let channel: any;
-
-    (async () => {
-      console.log("WSS init" )
-      const echo = await getEcho();
-      echo.connector.pusher.connection.bind('state_change', (states: any) => {
-        console.log('Pusher state:', states.current);
-      });
-      echo.connector.pusher.connection.bind('error', (err: any) => {
-        console.log('Pusher error', err);
-      });
-
-
-      channel = echo.channel('payment-confirmation')
-        .listen('.PaymentCompletion', (e: any) => {
-          console.log('WS event received:', e);
-        });
-
-    })();
-
-    return () => {
-      channel?.stopListening('PaymentCompletion');
-    };
 
 
   }, []);
@@ -113,9 +90,8 @@ const HomePage = () => {
   // * Press Functions
   const productTypePress = (productType: ProductType) => {}
   const popularProductPress = (product: Product) => {
-    // router.navigate(`/(tabs)/${product.id}`)
+    router.navigate(`/(tabs)/${product.id}`)
     // console.log("Show Snackbar") 
-    setShowSnackbar(true)
   }
   const discountPress = (discount: Discount) => {}
 

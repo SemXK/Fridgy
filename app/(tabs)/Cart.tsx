@@ -1,12 +1,14 @@
 import CartTotalView from '@/components/details/CartTotalView'
-import PaymentDetailComponent from '@/components/details/PaymentDetailComponent'
 import ProductCartItem from '@/components/details/ProductCartItem'
 import CartPageHeader from '@/components/headers/CartPageHeader'
-import BottomSheetComponent from '@/components/ui/BottomSheet'
+import TopSnackbar from '@/components/ui/SnackbacComponent'
 import ThemedText from '@/components/ui/ThemedText'
+import { SnackbarStatus } from '@/constants/enums/common'
 import { CartContextInterface } from '@/constants/interfaces/productInterface'
+import { StripeController } from '@/controllers/StripeController'
+import { initPaymentSheet, presentPaymentSheet } from '@stripe/stripe-react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { ActivityIndicator, FlatList, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CartContext } from '../_layout'
 
@@ -16,7 +18,8 @@ const CartComponent = () => {
 
   // * States
   const [cartTotal, setCartTotal] = useState<number>(0);
-  const [isPayingModalOpen, setIsPayingModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false)
+  const [snackbarMessage, setSnackbarMessage] = useState<string>('');
 
 
   useEffect(() => {
@@ -33,11 +36,63 @@ const CartComponent = () => {
       setCartTotal(total);
     }
   }
+  const stripeSheetInit = async () => {
+    setLoading(true);
+    try {
+      // * Crea PaymentIntent lato backend
+      const res: any = await StripeController.createPaymentIntent(cartTotal * 100, 'eur');
+      const { clientSecret } = res;
+      if (!clientSecret) {
+        setSnackbarMessage('Pagamenti Momentaneamente non disponibili');
+        return;
+      }
 
+      // * Inizializza PaymentSheet
+      const { error: initError } = await initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: 'SORDI',
+        allowsDelayedPaymentMethods: false,
+        style: 'automatic',
+        returnURL: process.env.EXPO_PUBLIC_REDIRECT_TO_CART
+
+      });
+
+      if (initError) {
+        setSnackbarMessage(initError.message);
+        return;
+      }
+
+      // * Mostra PaymentSheet
+      const ans = await presentPaymentSheet();
+      console.log({ ans });
+      if (ans.error) {
+        // utente chiude sheet
+        if (ans.error.code === 'Canceled') {
+          setSnackbarMessage('Hai annullato il pagamento');
+        }
+        return;
+      }
+
+    } 
+    catch (err: any) {
+      setSnackbarMessage('Qualcosa è andato storto');
+    } 
+    finally {
+      setLoading(false);
+    }
+  }
 
   // * Display
   return (
     <>
+      {/* Snackbar */}
+      <TopSnackbar
+        visible={!!snackbarMessage}
+        message={snackbarMessage}
+        onHide={() => setSnackbarMessage('')}
+        status={SnackbarStatus.Warning}
+      />
+
       {/* Cart component */}
       <SafeAreaView>
 
@@ -86,29 +141,23 @@ const CartComponent = () => {
 
         {/* Tasto acquista */}
         {
-          true ?
+          cartTotal ?
             <View className="h-1/5 border-t-2 border-darkColor-800">
-              <CartTotalView 
-                total={cartTotal || 0} 
-                onPress={() => {setIsPayingModalOpen(true)}}
-              />
+              {
+                !loading ?
+                <CartTotalView 
+                  total={cartTotal || 0} 
+                  onPress={stripeSheetInit}
+                />
+                :
+                <ActivityIndicator size="large"  />
+              }
             </View>
           : 
           null
         }
 
       </SafeAreaView>
-
-      {/* BottomSheet */}
-      {
-        isPayingModalOpen && 
-        <BottomSheetComponent
-          height={0.8 }
-          onClose={() => setIsPayingModalOpen(false)}
-          ShownComponent={PaymentDetailComponent}
-        />
-      }
-
     </>
 
   )

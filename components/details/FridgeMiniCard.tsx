@@ -1,4 +1,6 @@
 import { Fridge } from '@/constants/interfaces/productInterface';
+import { primaryColor } from '@/constants/theme';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
@@ -20,25 +22,38 @@ const FridgeMiniCard = (props: FMCInterface) => {
   // * display
   return (
     <View className="bg-primary-600 pt-4 rounded-xl h-48 relative">
+      {/* Title */}
       <View className="px-4 pb-2">
-        <ThemedText font='Nunito-ExtraBold' textStyle='text-xl'  label={props.fridge.name} />
+        <ThemedText font='Nunito-ExtraBold' textStyle='text-2xl'  label={props.fridge.name} />
       </View>
+
+      {/* Info Fridge */}
       <View className="bg-stone-100 dark:bg-darkColor-900 h-48 p-2  rounded-lg">
-        <ThemedText   label={props.fridge.description} />
 
-        {/* Descrizione */}
         <View className="flex flex-row">
-          <ThemedText  textStyle=''  label="Ultima Modifica: " />
-          <ThemedText font='Nunito-ExtraLight' textStyle=''  label={ new Date(props.fridge.updated_at).toLocaleDateString('it-IT')} />
+          <MaterialCommunityIcons
+            name="fridge-outline"
+            size={80}
+            color={primaryColor[500]}
+          />
+          <View className="flex">
+            <ThemedText textStyle='text-xl' label={props.fridge.description} />
+            {/* Descrizione */}
+            <View className="flex flex-row items-center">
+              <ThemedText  textStyle='text-xl'  label="Ultima Modifica: " />
+              <ThemedText font='Nunito-ExtraLight' textStyle=''  label={ new Date(props.fridge.updated_at).toLocaleDateString('it-IT')} />
+            </View>
+          </View>
+
         </View>
 
-      {/* Actions */}
-      <View className="absolute bottom-0 flex flex-row justify-end gap-2 w-full border-t-2 p-4 border-primary-500/10">
+        {/* Actions */}
+        <View className="absolute bottom-0 flex flex-row justify-end gap-2 w-full border-t-2 p-4 border-primary-500/10">
 
-        <View className="w-1/3">
-          <PrimaryButton onPress={handlePressDetail} buttonText="Dettaglio" />
+          <View className="w-1/3">
+            <PrimaryButton onPress={handlePressDetail} buttonText="Dettaglio" />
+          </View>
         </View>
-      </View>
 
       </View>
 

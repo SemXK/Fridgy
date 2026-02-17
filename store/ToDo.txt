@@ -24,4 +24,4 @@ Bug Risolti
 Bug Noti
 [] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano
 [] Durante la modifica dell'immagine di un prodotto, la modifica non viene presa durante il primo render del componente
-
+[] Creazione mercato: la tastiera copre il modale
