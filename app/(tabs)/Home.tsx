@@ -11,6 +11,7 @@ import { primaryColor } from '@/constants/theme';
 import { ProductController, ProductListHomePageResponse } from '@/controllers/ProductController';
 
 import TopSnackbar from '@/components/ui/SnackbacComponent';
+import { SnackbarStatus } from '@/constants/enums/common';
 import { getEcho } from '@/scripts/LaravelEcho';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
@@ -230,6 +231,7 @@ const HomePage = () => {
         visible={showSnackbar}
         message="This is a top snackbar!"
         onHide={() => setShowSnackbar(false)}
+        status={SnackbarStatus.Warning}
       />
 
       {/* * Lista di liste  */}

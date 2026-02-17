@@ -4,7 +4,7 @@
 [x] Storico prezzi alimenti
 [x] Registrazione spese (grafico con date e soldi spesi)
 [x] Modifica prodotti
-[] Snackbar Component
+[x] Snackbar Component
 [] Acquisto alimenti
 
 [] Creazione marche prodotti
