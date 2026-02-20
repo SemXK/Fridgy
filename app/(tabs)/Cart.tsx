@@ -1,6 +1,8 @@
+import AssignProductToFridgeDetail from '@/components/details/AssignProductToFridgeDetail'
 import CartTotalView from '@/components/details/CartTotalView'
 import ProductCartItem from '@/components/details/ProductCartItem'
 import CartPageHeader from '@/components/headers/CartPageHeader'
+import BottomSheetComponent from '@/components/ui/BottomSheet'
 import TopSnackbar from '@/components/ui/SnackbacComponent'
 import ThemedText from '@/components/ui/ThemedText'
 import { SnackbarStatus } from '@/constants/enums/common'
@@ -20,7 +22,7 @@ const CartComponent = () => {
   const [cartTotal, setCartTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false)
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
-
+  const [isDisplayingProducts, setIsDisplayingProducts] = useState<boolean>(false);
 
   useEffect(() => {
     calculateCartPrice()
@@ -64,7 +66,6 @@ const CartComponent = () => {
 
       // * Mostra PaymentSheet
       const ans = await presentPaymentSheet();
-      console.log({ ans });
       if (ans.error) {
         // utente chiude sheet
         if (ans.error.code === 'Canceled') {
@@ -73,6 +74,7 @@ const CartComponent = () => {
         return;
       }
 
+      // * Pagamento con successo
     } 
     catch (err: any) {
       setSnackbarMessage('Qualcosa è andato storto');
@@ -81,7 +83,12 @@ const CartComponent = () => {
       setLoading(false);
     }
   }
+  // const stripeSheetInit = () => {
+  //   setIsDisplayingProducts(true)
+  // }
+  const assignProductsToFridge = async() => {
 
+  }
   // * Display
   return (
     <>
@@ -156,6 +163,16 @@ const CartComponent = () => {
           : 
           null
         }
+
+      {/* Assegnazione prodotti post acquisto */}
+      {
+        isDisplayingProducts && 
+        <BottomSheetComponent
+          height={0.8}
+          onClose={assignProductsToFridge}
+          ShownComponent={AssignProductToFridgeDetail}
+        />
+      }
 
       </SafeAreaView>
     </>
