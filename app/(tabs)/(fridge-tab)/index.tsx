@@ -1,8 +1,10 @@
 import CreateNewFridgeComponent from "@/components/details/CreateNewFridgeComponent"
 import EmptyFridgeListComponent from "@/components/details/EmptyFridgeListComponent"
 import FridgeMiniCard from "@/components/details/FridgeMiniCard"
+import UnassignedProductDetail from "@/components/details/UnassignedProductDetail"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
-import { Fridge } from "@/constants/interfaces/productInterface"
+import ThemedText from "@/components/ui/ThemedText"
+import { Fridge, UnassignedProduct } from "@/constants/interfaces/productInterface"
 import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
 import { AxiosError } from "axios"
@@ -24,6 +26,16 @@ const FridgeList = () => {
     .catch(e => {console.log(e)})
     .finally(() => {setLoading(false)})
   }
+  const getUnassignedProducts = async () => {
+    setLoading(true)
+    await ProductController.getUnassignedProducts().then((pl: UnassignedProduct[] | AxiosError) => {
+      if (!(pl instanceof AxiosError)) {
+        setUnassignedProducts(pl)
+      }
+    })
+    .catch(e => {console.log(e)})
+    .finally(() => {setLoading(false)})
+  }
   const handleCloseModal = () => {
     setNewFridgeModal(false)
     getFridgeList()
@@ -31,11 +43,13 @@ const FridgeList = () => {
   // * States
   const [loading, setLoading] = useState<boolean>(false)
   const [fridgeList, setFridgeList] = useState<Fridge[]>([])
+  const [unassignedProducts, setUnassignedProducts] = useState<UnassignedProduct[]>([])
   const [newFridgeModal, setNewFridgeModal] = useState<boolean>(false);
 
   // * Effects
   useEffect(() => {
     getFridgeList()
+    getUnassignedProducts()
   }, [])
 
   return (
@@ -43,25 +57,45 @@ const FridgeList = () => {
     {
       loading ?
         <View className="w-full flex flex-row justify-center">
-          <ActivityIndicator animating size={24} color={primaryColor[500]} />
+          <ActivityIndicator animating size={24} color={primaryColor[500]}  />
         </View>
         :
-        <FlatList
-          className="w-full h-full"
-          data={fridgeList}
-          keyExtractor={item => String(item.id)}
-          numColumns={1}
-          contentContainerStyle={{
-            paddingHorizontal: 12,
-            paddingBottom: 100,
-            gap: 64
-          }}
-          
-          ListEmptyComponent={() => <EmptyFridgeListComponent onPress={() => setNewFridgeModal(true)}/>}
-          renderItem={({ item }) => (
-              <FridgeMiniCard fridge={item}/>
-          )}
-        />
+        <View className="px-4 relative">  
+          <ThemedText label="Prodotti da assengare"  font="Nunito-Bold"  darkModeDisabled textStyle="text-primary-500 text-2xl"/>
+          <FlatList
+            className="w-screen"
+            data={unassignedProducts}
+            keyExtractor={item => String(item.id)}
+            numColumns={4}
+            contentContainerStyle={{
+              paddingBottom: 100,
+            }}
+            columnWrapperStyle={{
+              gap: 12,
+            }}
+            renderItem={({ item }) => (
+                <UnassignedProductDetail unassignedProduct={item} />
+            )}
+          />
+
+          <ThemedText label="I mien frigoriferi" darkModeDisabled font="Nunito-Bold" textStyle="text-primary-500 text-2xl"/>
+
+          <FlatList
+            data={fridgeList}
+            keyExtractor={item => String(item.id)}
+            numColumns={1}
+            contentContainerStyle={{
+              paddingBottom: 100,
+              gap: 64,
+            }}
+            ListEmptyComponent={() => <EmptyFridgeListComponent onPress={() => setNewFridgeModal(true)}/>}
+            renderItem={({ item }) => (
+                <FridgeMiniCard fridge={item}/>
+            )}
+          />
+        </View>
+
+
       }
 
       {/* BottomSheet */}

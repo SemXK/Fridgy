@@ -5,8 +5,8 @@ import { Image, ImageResizeMode, ImageStyle, StyleProp } from 'react-native';
 
 interface UrlImageProps {
   source: string; 
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   resizeMode?: ImageResizeMode;
   style?: StyleProp<ImageStyle>;
   className?: string;
@@ -18,7 +18,7 @@ interface UrlImageProps {
     process.env.EXPO_PUBLIC_EMULATOR_ASSETS_URL
   }`;
 
-const UrlImage = ({ source, width, height, resizeMode = 'contain', style, className }: UrlImageProps) => {
+const UrlImage = ({ source, width = 50, height = 50, resizeMode = 'contain', style, className }: UrlImageProps) => {
   const [imageUri, setImageUri] = useState<string>("")
   useEffect(() => {
     setImageUri(`${baseUrl}/${source}`)

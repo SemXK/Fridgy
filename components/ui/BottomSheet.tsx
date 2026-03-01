@@ -10,7 +10,7 @@ import Animated, {
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export interface BottomSheetProps {
+interface BottomSheetProps {
   onClose: () => void;
   height?: number; // fraction of screen, 0-1
   ShownComponent: React.ComponentType<any>;
