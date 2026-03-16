@@ -1,3 +1,4 @@
+import { PaymentContextInterface } from '@/constants/interfaces/paymentInterface';
 import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/productInterface';
 import { AuthType, Guest, User } from '@/constants/interfaces/usersInterface';
 import { AuthController } from '@/controllers/AuthController';
@@ -21,7 +22,13 @@ import '../global.css';
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
 export const UserContext = createContext<AuthType>({});
-export const CartContext = createContext<CartContextInterface>({cart:[]});
+export const CartContext = createContext<CartContextInterface>({
+  cart: [],
+  setCart: function (value: React.SetStateAction<CartItemInterface[]>): void {
+    throw new Error('Function not implemented.');
+  }
+});
+export const PaymentWebsocketContext = createContext<PaymentContextInterface>({paymentChannel: null});
 
 // * BottomSheet portal
 export const BottomSheetContext = createContext<any>(() => {});
@@ -60,7 +67,7 @@ export default function RootLayout() {
   const [guest, setGuest] = useState<Guest | undefined>(undefined)
   const [cart, setCart] = useState<CartItemInterface[]>([])
   const [stripePublicKey, setStripePublicKey] = useState<string>('')
-
+  const [paymentChannel, setPaymentChannel] = useState<any>(false)
   // * BottomSheet state
   const [sheet, setSheet] = useState({
     open: false,
@@ -97,26 +104,30 @@ export default function RootLayout() {
     })
 
     // 1* Websockets
-    let channel: any;
-    (async () => {
-      console.log("WSS init" )
-      const echo = await getEcho();
-      echo.connector.pusher.connection.bind('state_change', (states: any) => {
-        console.log('Pusher state:', states.current);
-      });
-      echo.connector.pusher.connection.bind('error', (err: any) => {
-        console.log('Pusher error', err);
-      });
-
-
-      channel = echo.channel('payment-confirmation')
-        .listen('.PaymentCompletion', (e: any) => {
-          console.log('WS event received:', e);
+    if(!paymentChannel) {
+      (async () => {
+        console.log("WSS init" )
+        const echo = await getEcho();
+        echo.connector.pusher.connection.bind('state_change', (states: any) => {
+          console.log('Pusher state:', states.current);
         });
+        echo.connector.pusher.connection.bind('error', (err: any) => {
+          console.log('Pusher error', err);
+        });
+        
+        setPaymentChannel(echo.channel('payment-confirmation'));
+          // .listen('.PaymentCompletion', (e: any) => {
+          //   console.log('WS event received:', e);
+          // })
 
-    })();
+  
+      })();
+    }
     return () => {
-      channel?.stopListening('PaymentCompletion');
+      if(paymentChannel) {
+        paymentChannel?.stopListening('PaymentCompletion');
+        setPaymentChannel(null)
+      }
     };
 
   }, [])
@@ -146,35 +157,38 @@ export default function RootLayout() {
       <BottomSheetContext.Provider value={setSheet}>
         <UserContext value={{user, guest}}>
           <CartContext value={{cart, setCart}}>
-            <GestureHandlerRootView>
+            <PaymentWebsocketContext value={{paymentChannel, setPaymentChannel}}>
 
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <PaperProvider>
+              <GestureHandlerRootView>
 
-                <StripeProvider
-                  publishableKey={stripePublicKey}
-                  >
+              <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <PaperProvider>
 
-                  {/* Main stack */}
-                  <Stack initialRouteName="(tabs)">
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                  </Stack>
-                </StripeProvider>
+                  <StripeProvider
+                    publishableKey={stripePublicKey}
+                    >
 
-                {/* Global Bottomsheet */}
-                {sheet.open && (
-                  <sheet.component
-                    height={sheet.height}
-                    onClose={() => sheet.onClose()}
-                  />
-                )}
+                    {/* Main stack */}
+                    <Stack initialRouteName="(tabs)">
+                      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    </Stack>
+                  </StripeProvider>
 
-              </PaperProvider>
-            </ThemeProvider>
+                  {/* Global Bottomsheet */}
+                  {sheet.open && (
+                    <sheet.component
+                      height={sheet.height}
+                      onClose={() => sheet.onClose()}
+                    />
+                  )}
 
-            </GestureHandlerRootView>
+                </PaperProvider>
+              </ThemeProvider>
 
+              </GestureHandlerRootView>
+
+            </PaymentWebsocketContext>
           </CartContext>
         </UserContext>
       </BottomSheetContext.Provider>

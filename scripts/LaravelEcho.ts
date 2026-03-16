@@ -1,6 +1,14 @@
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
 let echoInstance: any;
 
-export async function getEcho() {
+interface EchoChannelInterface {
+  broadcaster: string;
+  client: Pusher;
+}
+
+export async function getEcho(): Promise<Echo<any>> {
   if (echoInstance) return echoInstance;
 
   const Echo = (await import("laravel-echo")).default;

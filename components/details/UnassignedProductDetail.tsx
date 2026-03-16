@@ -22,49 +22,45 @@ interface UPD {
 }
 
 const UnassignedProductDetail = (props: UPD) => {
+
+  // * Animation states
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
-  const isDragging = useSharedValue(false)
+  const isDragging = useSharedValue<number>(0)
   const contextX = useSharedValue(0)
   const contextY = useSharedValue(0)
 
-  // Function to check if current position is over any fridge
   const checkDragOverFridges = (x: number, y: number) => {
     'worklet'
-    // This will be called from the UI thread, but we need to find fridge elements
-    // We'll use scheduleOnRN to call a function that checks DOM/frame positions
     if (props.onDragOverFridge) {
       console.log({x, y})
     }
   }
-
-  // Wrap haptic in scheduleOnRN since it can't be called from UI thread
   const triggerHaptic = () => {
     Haptics.notificationAsync(
       Haptics.NotificationFeedbackType.Success
     )
   }
 
-  // Long press gesture with haptic feedback
+  // * Gesture afunctions
   const longPressGesture = Gesture.LongPress()
     .minDuration(300) // 500ms long press
-    .onStart(() => {
+    .onStart((e) => {
       scheduleOnRN(triggerHaptic)
-      isDragging.value = true
-    })
-    .onEnd(() => {
-      isDragging.value = false
+      isDragging.value = props.unassignedProduct.id
+      console.log("Now Dragging: ", isDragging.value)
     })
 
-  // Drag gesture
+
+
   const dragGesture = Gesture.Pan()
-    .onStart(() => {
-      console.log("pan start ")
+    .onStart((e) => {
+      console.log("Current dragged item: ", isDragging.value)
       contextX.value = translateX.value
       contextY.value = translateY.value
     })
     .onUpdate((event) => {
-      if (isDragging.value || true) {
+      if (props.unassignedProduct.id === isDragging.value) {
         translateX.value = contextX.value + event.translationX
         translateY.value = contextY.value + event.translationY
         
@@ -78,7 +74,7 @@ const UnassignedProductDetail = (props: UPD) => {
     })
     .onEnd(() => {
       if (isDragging.value) {
-        // Return to original position with spring animation
+        console.log("Current dragged item end: ", isDragging.value)
         translateX.value = withSpring(0, {
           damping: 15,
           stiffness: 150,
@@ -87,13 +83,14 @@ const UnassignedProductDetail = (props: UPD) => {
           damping: 15,
           stiffness: 150,
         })
-        isDragging.value = false
+        isDragging.value = 0
       }
     })
 
-  // Use Sequence instead of Race for better control
+  
   const composedGesture = Gesture.Race(longPressGesture, dragGesture)
 
+  // * Animation functions
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: translateX.value },
@@ -106,7 +103,7 @@ const UnassignedProductDetail = (props: UPD) => {
 
   return (
     <GestureDetector gesture={composedGesture}>
-      <Animated.View style={animatedStyle} className="relative w-[20%]">
+      <Animated.View style={animatedStyle} className="relative w-[22%]">
 
         <TouchableOpacity 
           activeOpacity={0.7}

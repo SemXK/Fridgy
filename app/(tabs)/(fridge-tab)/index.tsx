@@ -7,13 +7,12 @@ import ThemedText from "@/components/ui/ThemedText"
 import { Fridge, UnassignedProduct } from "@/constants/interfaces/productInterface"
 import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
+import { useFocusEffect } from "@react-navigation/native"
 import { AxiosError } from "axios"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
-import { useFridge } from "./_layout"
 
 const FridgeList = () => {
-  const { filter } = useFridge()
 
   // * Functions
   const getFridgeList = async () => {
@@ -40,6 +39,7 @@ const FridgeList = () => {
     setNewFridgeModal(false)
     getFridgeList()
   }
+
   // * States
   const [loading, setLoading] = useState<boolean>(false)
   const [fridgeList, setFridgeList] = useState<Fridge[]>([])
@@ -47,9 +47,13 @@ const FridgeList = () => {
   const [newFridgeModal, setNewFridgeModal] = useState<boolean>(false);
 
   // * Effects
+  useFocusEffect(
+    useCallback(() => {
+      getUnassignedProducts()
+    }, [])
+  )
   useEffect(() => {
     getFridgeList()
-    getUnassignedProducts()
   }, [])
 
   return (
@@ -60,9 +64,12 @@ const FridgeList = () => {
           <ActivityIndicator animating size={24} color={primaryColor[500]}  />
         </View>
         :
-        <View className="px-4 relative">  
+        <View className="px-4 h-screen relative">  
           <ThemedText label="Prodotti da assengare"  font="Nunito-Bold"  darkModeDisabled textStyle="text-primary-500 text-2xl"/>
-          <FlatList
+          <View className="flex flex-row flex-wrap justify-stasrt gap-4 mb-4">
+            {unassignedProducts.map((prod) => <UnassignedProductDetail key={prod.id} unassignedProduct={prod} />)}
+          </View>
+          {/* <FlatList
             className="w-screen"
             data={unassignedProducts}
             keyExtractor={item => String(item.id)}
@@ -73,10 +80,13 @@ const FridgeList = () => {
             columnWrapperStyle={{
               gap: 12,
             }}
+            style={{
+              zIndex: 999
+            }}
             renderItem={({ item }) => (
                 <UnassignedProductDetail unassignedProduct={item} />
             )}
-          />
+          /> */}
 
           <ThemedText label="I mien frigoriferi" darkModeDisabled font="Nunito-Bold" textStyle="text-primary-500 text-2xl"/>
 
