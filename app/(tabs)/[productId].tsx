@@ -83,14 +83,10 @@ const ProductDetail = () => {
 
   }
   const handleEditForm = () => {
-    console.log({product: product?.image})
     setLoading(true)
     setIsEditing(false)
     getProductDetail(productId)
-
     setLoading(false)
-    console.log({newProduct: product?.image})
-
   }
 
   if(!product) {
@@ -228,6 +224,7 @@ const ProductDetail = () => {
             </View>
           }
         </ScrollView>
+
         {/* Add to cart Button */}
         <View className="self-center w-1/2">
           <PrimaryButton

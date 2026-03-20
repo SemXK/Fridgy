@@ -10,7 +10,6 @@ import ThemedSelectField from '../inputs/CustomSelect';
 
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import FileUploader from '@/components/thirdParty/FileUploader';
-import { ProductController } from '@/controllers/ProductController';
 import ThemedFormField from '../inputs/CustomFormField';
 import ThemedTextArea from '../inputs/CustomTextArea';
 
@@ -44,7 +43,7 @@ const EditProductComponent = (props: EditProuctInterface) => {
       formData.append("id", String(productForm.id));
       formData.append("name", productForm.name);
       formData.append("description", productForm.description);
-      formData.append("price", String(parseFloat(productForm.price)));
+      formData.append("price", String(parseFloat(productForm.price.replace(',', '.'))));
       formData.append("taxPercent",PERCENTUALI_IVA[productForm.taxPercent].replace("%", ''));
       formData.append("brandId", String(productForm.brandId));
       formData.append("quantity", productForm.quantity);
@@ -59,9 +58,9 @@ const EditProductComponent = (props: EditProuctInterface) => {
   
         formData.append("image", file as any);
       }
-  
+
       try {
-        const newProduct = await ProductController.setProduct(formData);
+        await ProductController.setProduct(formData);
         setImage(null);
         props.onClose()
       } 

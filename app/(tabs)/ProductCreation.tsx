@@ -55,11 +55,12 @@ const ProductCreation = () => {
     const formData = new FormData();
     formData.append("name", productForm.name);
     formData.append("description", productForm.description);
-    formData.append("price", String(parseFloat(productForm.price)));
+    formData.append("price", String(parseFloat(productForm.price.replace(',', '.'))));
     formData.append("taxPercent",PERCENTUALI_IVA[productForm.taxPercent].replace("%", ''));
     formData.append("brandId", String(productForm.brandId));
     formData.append("quantity", productForm.quantity);
     formData.append("uma", UNITA_DI_MISURA[productForm.uma as number]);
+
 
     if (image) {
       const file = {
@@ -72,7 +73,7 @@ const ProductCreation = () => {
     }
 
     try {
-      const newProd = await ProductController.setProduct(formData);
+      await ProductController.setProduct(formData);
       setProductForm(initialState);
       setImage(null);
     } 

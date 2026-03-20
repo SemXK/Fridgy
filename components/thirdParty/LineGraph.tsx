@@ -40,7 +40,7 @@ const LineGraph: FC<LineGraphProps> = ({
   gradientTo = primaryColor[900],
   showDots = true,
   yTicks = Math.min(data.length, 4),
-  priceFormatter = (v) => `${Math.round(v)} €`,
+  priceFormatter = (v) => `${v} €`,
 }) => {
 
   // * State
@@ -137,9 +137,8 @@ const LineGraph: FC<LineGraphProps> = ({
 
           {/* Y-axis labels */}
           {Array.from({ length: yTicks + 1 }).map((_, i) => {
-            const value =
+            const value = 
               min + ((max - min) / yTicks) * (yTicks - i);
-
             const y =
               padding + (chartHeight / yTicks) * i;
 
