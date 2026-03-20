@@ -64,8 +64,15 @@ const FridgeList = () => {
           <ActivityIndicator animating size={24} color={primaryColor[500]}  />
         </View>
         :
-        <View className="px-4 h-screen relative">  
-          <ThemedText label="Prodotti da assengare"  font="Nunito-Bold"  darkModeDisabled textStyle="text-primary-500 text-2xl"/>
+        <View className="px-4  mb-16 relative">  
+        { 
+          unassignedProducts.length ? 
+            <ThemedText label="Prodotti da assengare"  font="Nunito-Bold"  darkModeDisabled textStyle="text-primary-500 text-2xl"/>
+            :
+            null
+        }
+
+          {/* Product list */}
           <View className="flex flex-row flex-wrap justify-stasrt gap-4 mb-4">
             {unassignedProducts.map((prod) => <UnassignedProductDetail key={prod.id} unassignedProduct={prod} />)}
           </View>
