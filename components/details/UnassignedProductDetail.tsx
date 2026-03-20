@@ -96,7 +96,7 @@ const UnassignedProductDetail = (props: UPD) => {
       { translateX: translateX.value },
       { translateY: translateY.value },
     ],
-    zIndex: isDragging.value ? 9999 : 1,
+    // zIndex: isDragging.value ? 9999 : 1,
     elevation: isDragging.value ? 20 : 1,
     // Don't use absolute positioning as it breaks the layout
   }))

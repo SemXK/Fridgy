@@ -22,8 +22,8 @@ Bug Risolti
 [x] Tutti Gli input hanno la label bloccata se inseriti in un BottomSheetComponent
 [x] Acquistare prodotti non svuota il carrello e i prodotto non compaiono nell'intentario (manca aggiornamento degli stati)
 [x] Acquistando prodotti già posseduti, viene creato un nuovo oggetto con lo stesso prodotto, i prodotti non si sommano
+[x] Creazione carrello: la tastiera copre il modale
 
 Bug Noti
 [] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano
 [] Durante la modifica dell'immagine di un prodotto, la modifica non viene presa durante il primo render del componente
-[] Creazione carrello: la tastiera copre il modale

@@ -30,29 +30,29 @@ const CreateNewFridgeComponent = (props: CNFCInterface) => {
 
   // * Display
   return (
-    <View className="flex flex-col justify-between gap-4 p-4 ">
 
-      {/* Text Inputs */}
-      <View className="flex flex-col gap-4">
+      <View className="flex flex-col justify-between gap-4 p-4 ">
+
+        {/* Text Inputs */}
+        <View className="flex flex-col gap-4">
 
 
-        <ThemedFormField
-          value={name}
-          setValue={setName}
-          label="Nome"
-        />
-        <ThemedTextArea
-          value={description}
-          setValue={setDescription}
-          label="Descrizione"
-        />      
+          <ThemedFormField
+            value={name}
+            setValue={setName}
+            label="Nome"
+          />
+          <ThemedTextArea
+            value={description}
+            setValue={setDescription}
+            label="Descrizione"
+          />      
+        </View>
+
+        {/* Actions */}
+        <PrimaryButton onPress={handleCreateFridge} buttonText="Crea Frigorifero"/>
+
       </View>
-
-
-      {/* Actions */}
-      <PrimaryButton onPress={handleCreateFridge} buttonText="Crea Frigorifero"/>
-
-    </View>
   )
 }
 
