@@ -7,7 +7,7 @@
 [x] Snackbar Component
 [x] Acquisto alimenti
 [x] Eliminazione frigoriferi 
-[] Assegnazione prodotti nel frigo
+[x] Assegnazione prodotti nel frigo
 
 [] Dettaglio frigoriferi
 [] Miglorare lo stile del modale per la cancellazione
