@@ -6,10 +6,12 @@
 [x] Modifica prodotti
 [x] Snackbar Component
 [x] Acquisto alimenti
+[x] Eliminazione frigoriferi 
 [] Assegnazione prodotti nel frigo
 
-[] Creazione marche prodotti
 [] Dettaglio frigoriferi
+[] Miglorare lo stile del modale per la cancellazione
+[] Creazione marche prodotti
 
 [] Filtri alimenti
 [] Registrazione variazione prezzi alimenti

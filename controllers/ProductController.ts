@@ -137,11 +137,55 @@ export abstract class ProductController extends Controller {
         throw e as AxiosError;
       });
   };
+  static getFridgeDetail = async (fridgeId: number): Promise<Fridge | AxiosError> => {
+    return await this.authenticatedGetCall(`products/get-fridge-detail/${fridgeId}`)
+      .then((res: AxiosResponse<Fridge>) => {
+        if (res.status === 200) {
+          const fridge = (res as AxiosResponse).data;
+          return fridge;
+        } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
   static createFridge = async (name: string, description: string): Promise<boolean | AxiosError> => {
     return await this.authenticatedPostCall("products/create-fridge", { name, description })
       .then((res: AxiosResponse<CartItemInterface[]>) => {
         if (res.status === 200) {
           return true;
+        } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  static deleteFridge = async (fridgeId: number): Promise<boolean | AxiosError> => {
+    return await this.authenticatedDeleteCall(`products/delete-fridge/${fridgeId}`)
+      .then((res: AxiosResponse<CartItemInterface[]>) => {
+        if (res.status === 200) {
+          return true;
+        } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  static assignProductToFridge = async (fridgeId: number, productId: number, quantity?: number): Promise<string | AxiosError> => {
+    return await this.authenticatedPostCall(`products/assign-to-fridge`, { fridgeId, productId, quantity })
+      .then((res: AxiosResponse<Fridge>) => {
+        if (res.status === 200) {
+          const fridge = (res as AxiosResponse).data;
+          return fridge;
         } else if (res.status === 401) {
           throw new AxiosError("Invalid Credentials");
         }

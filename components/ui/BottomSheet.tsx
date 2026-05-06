@@ -120,6 +120,7 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
   }));
   const backdropStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
+
   }));
 
 
@@ -128,12 +129,12 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
 
   return (
     <View style={StyleSheet.absoluteFill}>
-      <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]}>
+      <Animated.View style={[StyleSheet.absoluteFill, backdropStyle, {zIndex: 998}]}>
         <BlurView intensity={50} tint="default" style={styles.blurBackground} />
         <Pressable style={StyleSheet.absoluteFill} onPress={closeSheet} />
       </Animated.View>
 
-      <Animated.View style={[styles.sheet, { height: sheetHeight }, animatedStyle]}>
+      <Animated.View style={[styles.sheet, { height: sheetHeight, zIndex: 999 }, animatedStyle]}>
         {/* Header with grabber */}
         <View style={styles.header} {...panResponder.panHandlers}>
           <View style={styles.grabber} />

@@ -2,29 +2,63 @@ import { Fridge } from '@/constants/interfaces/productInterface';
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React from 'react';
-import { View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import PrimaryButton from '../pressable/PrimaryButton';
+import PrimaryIconButton from '../pressable/PrimaryIconButton';
 import ThemedText from '../ui/ThemedText';
 
 interface FMCInterface {
   fridge: Fridge;
+  callbackFunction?: () => void;
 }
 const FridgeMiniCard = (props: FMCInterface) => {
 
+  // * Static states
+  const [showModal, setShowModal] = useState<boolean>(false)
+  
   // * functions
   const handlePressDetail = ()  => {
-    // router.navigate(['(tabs)/(fridge-tab)/', props.fridge.id])
     const url: any = `/(tabs)/(fridge-tab)/${String(props.fridge.id)}`
     router.navigate(url);
+  }
+  const deleteFridge = async () => {
+    const fridgeId = props.fridge.id;
+    setShowModal(true)
+    // ProductController.deleteFridge(fridgeId).then(() => {
+    //   props.callbackFunction?.()
+    // })
+    // .catch(e => {console.log(e.message)})
   }
 
   // * display
   return (
     <View className="bg-primary-600 pt-4 rounded-xl h-48 relative">
+
+      {/* Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setShowModal(!showModal);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setShowModal(!showModal)}>
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       {/* Title */}
-      <View className="px-4 pb-2">
+      <View className="px-4 flex flex-row justify-between items-center -top-2" >
         <ThemedText font='Nunito-ExtraBold' textStyle='text-2xl'  label={props.fridge.name} />
+        <PrimaryIconButton iconSpecs={{name: 'delete-forever', color: 'white', size: 24}} onPress={deleteFridge}/>
       </View>
 
       {/* Info Fridge */}
@@ -64,7 +98,48 @@ const FridgeMiniCard = (props: FMCInterface) => {
 
 export default FridgeMiniCard
 
-
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+});
 // 1! Ombre (per dopo)
 // style={{
 //   marginHorizontal: 6, 

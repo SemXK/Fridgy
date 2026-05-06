@@ -9,6 +9,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
+        animation: 'shift'
       }}
       tabBar={(props) => <AnimatedTabBar {...props} />}
     >

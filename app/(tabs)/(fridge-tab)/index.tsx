@@ -2,6 +2,7 @@ import CreateNewFridgeComponent from "@/components/details/CreateNewFridgeCompon
 import EmptyFridgeListComponent from "@/components/details/EmptyFridgeListComponent"
 import FridgeMiniCard from "@/components/details/FridgeMiniCard"
 import UnassignedProductDetail from "@/components/details/UnassignedProductDetail"
+import HomePageHeader from "@/components/headers/HomePageHeader"
 import PrimaryIconButton from "@/components/pressable/PrimaryIconButton"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
 import ThemedText from "@/components/ui/ThemedText"
@@ -10,12 +11,16 @@ import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
 import { useFocusEffect } from "@react-navigation/native"
 import { AxiosError } from "axios"
-import React, { useCallback, useEffect, useState } from "react"
+import * as Haptics from 'expo-haptics'
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 
 
 const FridgeList = () => {
-
+  // * References
+  const fridgeVerticalHeights = useRef<{y: number,height: number, fridgeId: number}[]>([]);
+  const fridgeListVerticalPosition = useRef<number>(300); // VVertical start position of the flatlist that contains the list of fridges, needs to be loaded dinamically 
+  const currentHoldingFridge = useRef<number | undefined>(undefined)
   // * Functions
   const getFridgeList = async () => {
     setLoading(true)
@@ -41,7 +46,33 @@ const FridgeList = () => {
     setNewFridgeModal(false)
     getFridgeList()
   }
+  const itemDragEvent = (x: number, y: number) => {
+    const holdingFridge = fridgeVerticalHeights.current.find(f => {return y >= f.y && y <= f.y + f.height})
+    if(holdingFridge) {
+      currentHoldingFridge.current = holdingFridge.fridgeId
+      Haptics.notificationAsync(
+        Haptics.NotificationFeedbackType.Success
+      )
+    }
+    else {
+      currentHoldingFridge.current = undefined
+    }
+    // console.log("item Dragging", y,fridgeListVerticalPosition.current, fridgeVerticalHeights.current[0])
 
+  }
+  const assignProductToFridge = async (productId: number) => {
+    const fridgeId = currentHoldingFridge.current;
+    if(fridgeId) {
+      console.log({fridgeId: currentHoldingFridge.current, productId})
+      await ProductController.assignProductToFridge(
+        fridgeId,
+        productId
+      ).then((res) => {
+        getFridgeList()
+        getUnassignedProducts()
+      })
+    }
+  } 
   // * States
   const [loading, setLoading] = useState<boolean>(false)
   const [fridgeList, setFridgeList] = useState<Fridge[]>([])
@@ -60,6 +91,8 @@ const FridgeList = () => {
 
   return (
     <View className="h-full">
+      <HomePageHeader title="Il mio inventario"/> 
+
     {
       loading ?
         <View className="w-full flex flex-row justify-center">
@@ -76,35 +109,32 @@ const FridgeList = () => {
 
           {/* Product list */}
             <View className="flex flex-row flex-wrap justify-start gap-4 mb-4">
-              {unassignedProducts.map((prod) => <UnassignedProductDetail key={prod.id} unassignedProduct={prod} />)}
+              {unassignedProducts.map((prod) => <UnassignedProductDetail 
+                key={prod.id} 
+                unassignedProduct={prod} 
+                onDragOverFridge={itemDragEvent} 
+                onDropOnFridge={assignProductToFridge}
+                />
+              )}
             </View>
 
           {/* Fridge List */}
           <View className="relative">
-
             <View className="flex flex-row justify-between items-center mb-4">
               <ThemedText label="I mien frigoriferi" darkModeDisabled font="Nunito-Bold" textStyle="text-primary-500 text-2xl"/>
-              <PrimaryIconButton iconSpecs={{name: 'add', color: primaryColor[500], size: 24}} onPress={() => setNewFridgeModal(true)}/>
+              <PrimaryIconButton iconSpecs={{name: 'delete', color: primaryColor[500], size: 24}} onPress={() => setNewFridgeModal(true)}/>
             </View>
-            {/* <LinearGradient
-              className="fixed"
-              colors={[
-                Appearance.getColorScheme() !== 'dark' ? 'black' : 'white',
-                'transparent'
-              ]} 
-              style={{
-                top:10,
-                height: 60,
-                zIndex: 10,
-              }}
-              pointerEvents="none"
-            /> */}
           </View>
 
           <FlatList
             data={fridgeList}
             keyExtractor={item => String(item.id)}
             numColumns={1}
+            onLayout={(layout) => {
+              fridgeVerticalHeights.current = []
+              // console.log(layout)
+              // fridgeListVerticalPosition.current = layout.nativeEvent.layout.y
+            }}
             style={{ flex: 1 }}
             contentContainerStyle={{
               paddingBottom: 160,
@@ -112,7 +142,21 @@ const FridgeList = () => {
             }}
             ListEmptyComponent={() => <EmptyFridgeListComponent onPress={() => setNewFridgeModal(true)}/>}
             renderItem={({ item }) => (
-                <FridgeMiniCard fridge={item}/>
+            <View
+              onLayout={(event) => {
+                const { y, height } = event.nativeEvent.layout;
+
+                // 1* needed for the drag and release animation of products to assing to fridge
+                fridgeVerticalHeights.current[fridgeVerticalHeights.current.length] = { 
+                  y: fridgeListVerticalPosition.current + fridgeVerticalHeights.current.length * height, 
+                  height, 
+                  fridgeId: item.id 
+                }
+
+              }}
+            >
+              <FridgeMiniCard fridge={item} callbackFunction={getFridgeList} />
+            </View>
             )}
           />
         </View>
