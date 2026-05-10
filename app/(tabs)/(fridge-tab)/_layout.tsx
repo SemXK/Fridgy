@@ -1,7 +1,5 @@
 import { Slot } from 'expo-router'
 import React, { createContext, useContext, useState } from 'react'
-import { View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 // ? Context
 const FridgeContext = createContext<{
@@ -30,16 +28,14 @@ const FridgeLayout = () => {
   // * Display
   return (
     <FridgeContext.Provider value={{ filter, setFilter, openDetail, closeDetail }}>
-      <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black ">
+      {/* <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black "> */}
         {/* * Auth Header */}
         {/* <HomePageHeader title="Il mio inventario"/> */}
 
         {/* Children Components */}
-        <View className="mt-42">
-          <Slot />
-        </View>
+        <Slot />
 
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </FridgeContext.Provider>
 
   )

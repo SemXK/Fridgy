@@ -8,8 +8,8 @@
 [x] Acquisto alimenti
 [x] Eliminazione frigoriferi 
 [x] Assegnazione prodotti nel frigo
-
 [] Dettaglio frigoriferi
+
 [] Miglorare lo stile del modale per la cancellazione
 [] Creazione marche prodotti
 

@@ -20,7 +20,7 @@ interface UPD {
   onDragPosition?: any,
 }
 
-const UnassignedProductDetail = (props: UPD) => {
+const AnimatedUnassignedProductDetail = (props: UPD) => {
 
   // * Animation states
   const translateX = useSharedValue(0)
@@ -40,14 +40,13 @@ const UnassignedProductDetail = (props: UPD) => {
     'worklet'
     if (props.onDropOnFridge) {
       scheduleOnRN(props.onDropOnFridge, props.unassignedProduct.id)
-      
     }
   }
 
 
   // * Gesture afunctions
   const dragGesture = Gesture.Pan()
-    .onStart((e) => {
+    .onStart(() => {
       contextX.value = translateX.value
       contextY.value = translateY.value
     })
@@ -75,7 +74,6 @@ const UnassignedProductDetail = (props: UPD) => {
         checkDropOnFridge()
     })
 
-  
   // * Animation functions
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -107,4 +105,4 @@ const UnassignedProductDetail = (props: UPD) => {
   )
 }
 
-export default UnassignedProductDetail
+export default AnimatedUnassignedProductDetail

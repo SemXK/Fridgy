@@ -61,6 +61,13 @@ export interface Product {
   productTypes: ProductType[];
   created_at: string;
   updated_at: string;
+
+  // * Pivot Tables
+  pivot?: {
+    fridgeId: number;
+    productId: number;
+    quantity: number;
+  };
 }
 export interface Discount {
   id: number;

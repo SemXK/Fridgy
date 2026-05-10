@@ -1,7 +1,7 @@
 import CreateNewFridgeComponent from "@/components/details/CreateNewFridgeComponent"
 import EmptyFridgeListComponent from "@/components/details/EmptyFridgeListComponent"
 import FridgeMiniCard from "@/components/details/FridgeMiniCard"
-import UnassignedProductDetail from "@/components/details/UnassignedProductDetail"
+import AnimatedUnassignedProductDetail from "@/components/details/UnassignedProductDetail"
 import HomePageHeader from "@/components/headers/HomePageHeader"
 import PrimaryIconButton from "@/components/pressable/PrimaryIconButton"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
@@ -14,6 +14,7 @@ import { AxiosError } from "axios"
 import * as Haptics from 'expo-haptics'
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 
 const FridgeList = () => {
@@ -90,7 +91,7 @@ const FridgeList = () => {
   }, [])
 
   return (
-    <View className="h-full">
+    <SafeAreaView >
       <HomePageHeader title="Il mio inventario"/> 
 
     {
@@ -109,7 +110,7 @@ const FridgeList = () => {
 
           {/* Product list */}
             <View className="flex flex-row flex-wrap justify-start gap-4 mb-4">
-              {unassignedProducts.map((prod) => <UnassignedProductDetail 
+              {unassignedProducts.map((prod) => <AnimatedUnassignedProductDetail 
                 key={prod.id} 
                 unassignedProduct={prod} 
                 onDragOverFridge={itemDragEvent} 
@@ -172,7 +173,7 @@ const FridgeList = () => {
           ShownComponent={CreateNewFridgeComponent}
         />
     }
-    </View>
+    </SafeAreaView>
   )
 }
 
