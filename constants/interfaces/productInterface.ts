@@ -33,6 +33,7 @@ export interface CartItemInterface {
 export interface ProductType {
   id: number;
   image: string;
+  color: string; //used in graphs
   type: string; // latticini, carne, verdure ec...
 }
 export interface Receipt {

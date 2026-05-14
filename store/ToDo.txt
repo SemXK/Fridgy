@@ -9,10 +9,14 @@
 [x] Eliminazione frigoriferi 
 [x] Assegnazione prodotti nel frigo
 [] Dettaglio frigoriferi
+  [ ] Grafico Tipologie prodotti
+  [ ] Grafico Marche Preferithe
+  [ ] Grafico Spese Effettuate
+  [ ] Modifica Frigo
+  [ ] Eliminazione Frigo
 
-[] Miglorare lo stile del modale per la cancellazione
+
 [] Creazione marche prodotti
-
 [] Filtri alimenti
 [] Registrazione variazione prezzi alimenti
 

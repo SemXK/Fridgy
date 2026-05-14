@@ -45,8 +45,9 @@ const FridgeDetail = () => {
   // * Functions
   const getFridgeDetail = async () => {
     await ProductController.getFridgeDetail(Number(fridgeId))
-    .then((res) =>  {
-      setFridgeDetail(res as unknown as Fridge)
+    .then((res) =>  { 
+      const fridge = res as Fridge
+      setFridgeDetail(fridge)
     })
     .catch((e) => {
       router.back()
@@ -76,15 +77,16 @@ const FridgeDetail = () => {
     }
   }
 
+
   // * Display
   return (
     <SafeAreaView className="flex-1">
       {
       fridgeDetail ? 
           
-        <View className="mb-8 flex-1">
+        <View className="mb-8 flex-1 p-2 gap-2">
           {/* Descrizione principale Frigo */}
-          <View className="">
+          <View >
             <CartPageHeader />
 
             <ThemedText font='Nunito-ExtraBold' darkModeDisabled textStyle="text-4xl text-primary-500"  label={fridgeDetail.name} />
@@ -96,17 +98,17 @@ const FridgeDetail = () => {
           </View>
 
           {/* Grafico + Elenco tipi prodotto */}
-          <View className="bg-primary-700 h-32">
-            <FridgeGraphDetail />
+          <View className="h-[40%] w-screen mb-4 ">
+            <FridgeGraphDetail productList={fridgeDetail.product_list}/>
           </View>
 
           {/* Elenco Prodotti product_list*/}
-          <View className="flex-1 p-4 gap-4">
+          <View className="flex-1  gap-4">
             {/* Row per azioni / display */}
             <View className="flex flex-row justify-between">
               
               {/* Row Azioni */}
-              <View className="flex flex-row gap-4">
+              <View className="flex flex-row gap-4 ">
                 <TouchableOpacity>
                   <MaterialIcons 
                     name="menu-book"
@@ -186,7 +188,7 @@ const FridgeDetail = () => {
                       marginBottom: 16,
                     },
                 ]}>
-                    <AssignedProductToFridgeDetail product={item} />
+                    <AssignedProductToFridgeDetail product={item} itemsPerColumns={columnsOfProducts} />
                   </Animated.View>
                 )}
               />
