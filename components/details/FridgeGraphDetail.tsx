@@ -5,19 +5,6 @@ import { StyleSheet, Text, View } from "react-native";
 import { PieChart, pieDataItem } from "react-native-gifted-charts";
 import PagerView from 'react-native-pager-view';
 import ThemedText from "../ui/ThemedText";
-
-// const pieData = [
-//   {
-//     value: 49,
-//     color: '#009FFF',
-//     gradientCenterColor: '#006DFF',
-//     focused: true,
-//   },
-//   {value: 40, color: '#93FCF8'},
-//   {value: 16, color: '#BDB2FA'},
-//   {value: 3, color: '#FFA5BA'},
-// ];
-
 interface FGD {
   productList: Product[]
 }
@@ -26,9 +13,11 @@ const FridgeGraphDetail = ({productList}: FGD) => {
 
   // * States
   const [graphData, setGraphData] = useState<pieDataItem[]>([])
+  const [focusedProductType, setFocusedProductType] = useState<pieDataItem | undefined>(undefined)
+  const [totalProductTypes, setTotalProductTypes] = useState<number>(0)
 
   // $ Memoized Functions
-  const createProductTypeGraph = useMemo(() => {
+  useMemo(() => {
 
     // 1$ Fetch all productTypes
     const pieDataItems: pieDataItem[] = []
@@ -49,7 +38,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
           pieDataItems.push({
             text: prodType.type,
             value: product.pivot?.quantity as number,
-            color: prodType.color
+            color: prodType.color,
           })
         }
 
@@ -58,16 +47,21 @@ const FridgeGraphDetail = ({productList}: FGD) => {
 
     // 1$ Save Graph Data
     setGraphData(pieDataItems)
-
+    let currentTotalItems = 0
+    pieDataItems.map((pieItem) => {
+      currentTotalItems += pieItem.value
+    })
+    setTotalProductTypes(currentTotalItems)
   }, [])
 
-
-  
   // * Functions
   const handlePageChange = (event:any) => {
-    console.log(Object.keys(event), event.nativeEvent.position)
+    // console.log(Object.keys(event), event.nativeEvent.position)
+    console.log("click")
+
   }
 
+  // * Display
   return (
     <View style={styles.container}>
       <PagerView style={styles.container} initialPage={0} onPageScroll={handlePageChange}>
@@ -86,21 +80,30 @@ const FridgeGraphDetail = ({productList}: FGD) => {
               <ThemedText font="Nunito-ExtraBold" label="Tipologia Prodotto"  />
               <View style={{padding: 20, alignItems: 'center'}}>
                 <PieChart
+                  focusOnPress
+                  onPress={(item: pieDataItem) => setFocusedProductType(item)}
                   data={graphData}
                   donut
-                  showGradient
                   sectionAutoFocus
-                  radius={90}
-                  innerRadius={60}
-                  innerCircleColor={'#232B5D'}
+                  radius={110}
+                  innerRadius={80}
+                  innerCircleColor={darkColor[800]}
                   centerLabelComponent={() => {
                     return (
                       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Text
-                          style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
-                          47%
-                        </Text>
-                        <Text style={{fontSize: 14, color: 'white'}}>Excellent</Text>
+                        {focusedProductType && 
+                          <>
+                            {/* <Text
+                              style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
+                               {Math.round(focusedProductType.value * 100 / totalProductTypes) }%
+                            </Text> */}
+                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedProductType.text as string} />
+                            <View>
+                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedProductType.value + " Prodotti"} />
+                              {/* <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} /> */}
+                            </View>
+                          </>
+                        }
                       </View>
                     );
                   }}
