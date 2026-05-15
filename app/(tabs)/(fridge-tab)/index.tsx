@@ -3,25 +3,26 @@ import EmptyFridgeListComponent from "@/components/details/EmptyFridgeListCompon
 import FridgeMiniCard from "@/components/details/FridgeMiniCard"
 import AnimatedUnassignedProductDetail from "@/components/details/UnassignedProductDetail"
 import HomePageHeader from "@/components/headers/HomePageHeader"
-import PrimaryIconButton from "@/components/pressable/PrimaryIconButton"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
 import ThemedText from "@/components/ui/ThemedText"
 import { Fridge, UnassignedProduct } from "@/constants/interfaces/productInterface"
 import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
+import { MaterialIcons } from "@expo/vector-icons"
 import { useFocusEffect } from "@react-navigation/native"
 import { AxiosError } from "axios"
 import * as Haptics from 'expo-haptics'
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { ActivityIndicator, FlatList, View } from "react-native"
+import { ActivityIndicator, FlatList, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 
 const FridgeList = () => {
   // * References
   const fridgeVerticalHeights = useRef<{y: number,height: number, fridgeId: number}[]>([]);
-  const fridgeListVerticalPosition = useRef<number>(300); // VVertical start position of the flatlist that contains the list of fridges, needs to be loaded dinamically 
-  const currentHoldingFridge = useRef<number | undefined>(undefined)
+  const fridgeListVerticalPosition = useRef<number>(300); // Vertical start position of the flatlist that contains the list of fridges, needs to be loaded dinamically 
+  const currentHoldingFridge = useRef<number | undefined>(undefined);
+
   // * Functions
   const getFridgeList = async () => {
     setLoading(true)
@@ -61,17 +62,18 @@ const FridgeList = () => {
     // console.log("item Dragging", y,fridgeListVerticalPosition.current, fridgeVerticalHeights.current[0])
 
   }
-  const assignProductToFridge = async (productId: number) => {
+  const assignProductToFridge = async (unsignedProductId: number) => {
     const fridgeId = currentHoldingFridge.current;
     if(fridgeId) {
-      console.log({fridgeId: currentHoldingFridge.current, productId})
+      console.log({ fridgeId: currentHoldingFridge.current, unsignedProductId })
       await ProductController.assignProductToFridge(
         fridgeId,
-        productId
-      ).then((res) => {
+        unsignedProductId
+      ).then(() => {
         getFridgeList()
         getUnassignedProducts()
       })
+      .catch(e => console.log(e))
     }
   } 
   // * States
@@ -122,8 +124,14 @@ const FridgeList = () => {
           {/* Fridge List */}
           <View className="relative">
             <View className="flex flex-row justify-between items-center mb-4">
-              <ThemedText label="I mien frigoriferi" darkModeDisabled font="Nunito-Bold" textStyle="text-primary-500 text-2xl"/>
-              <PrimaryIconButton iconSpecs={{name: 'delete', color: primaryColor[500], size: 24}} onPress={() => setNewFridgeModal(true)}/>
+              <ThemedText label="I miei frigoriferi" darkModeDisabled font="Nunito-Bold" textStyle="text-primary-500 text-2xl"/>
+              <TouchableOpacity onPress={() => setNewFridgeModal(true)} >
+                  <MaterialIcons
+                    name="add"
+                    size={24}
+                    color={primaryColor[500]}
+                  />
+                </TouchableOpacity>
             </View>
           </View>
 
@@ -168,7 +176,7 @@ const FridgeList = () => {
       {
         newFridgeModal && 
         <BottomSheetComponent
-          height={0.8}
+          height={1}
           onClose={() => handleCloseModal()}
           ShownComponent={CreateNewFridgeComponent}
         />

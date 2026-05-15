@@ -55,6 +55,7 @@ const FridgeMiniCard = (props: FMCInterface) => {
           </View>
         </View>
       </Modal>
+
       {/* Title */}
       <View className="px-4 flex flex-row justify-between items-center -top-2" >
         <ThemedText font='Nunito-ExtraBold' textStyle='text-2xl'  label={props.fridge.name} />
@@ -71,11 +72,11 @@ const FridgeMiniCard = (props: FMCInterface) => {
             color={primaryColor[500]}
           />
           <View className="flex">
-            <ThemedText textStyle='text-xl' label={props.fridge.description} />
+            <ThemedText textStyle='text-xl' label={props.fridge.description || 'Nessuna descrizione'} />
             {/* Descrizione */}
             <View className="flex flex-row items-center">
-              <ThemedText  textStyle='text-xl'  label="Ultima Modifica: " />
-              <ThemedText font='Nunito-ExtraLight' textStyle=''  label={ new Date(props.fridge.updated_at).toLocaleDateString('it-IT')} />
+              <ThemedText   label="Ultima Modifica: " />
+              <ThemedText font='Nunito-ExtraLight'  label={ new Date(props.fridge.updated_at).toLocaleDateString('it-IT')} />
             </View>
           </View>
 

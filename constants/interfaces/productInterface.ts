@@ -98,6 +98,15 @@ export interface UnassignedProduct {
   created_at: Date;
   updated_at: Date;
 }
+export interface ProductAcquisitionRecord {
+  paymentMethod: string;
+  paidAmount: number;
+  quantity: number;
+  productId: number;
+  product: Product;
+  created_at: Date;
+  updated_at: Date;
+}
 // * Payload
 export interface CreateProductPayload {
   id?: number;

@@ -32,30 +32,31 @@ const AssignedProductToFridgeDetail = (props: {product: Product, itemsPerColumns
           style={{
             justifyContent: props.itemsPerColumns === 4 ? 'center' : 'flex-start' ,
           }}
-          className="rounded-xl h-24 flex gap-12 flex-row items-center justify-center bg-darkColor-800"
+          className="rounded-xl h-24 w-full flex gap-4 flex-row items-center justify-center bg-darkColor-800 px-2"
         >
-          <UrlImage source={props.product.image} resizeMode='contain' />
+          <View >
+            <UrlImage source={props.product.image} resizeMode='contain' />
+          </View>
           {
             props.itemsPerColumns !== 4 &&
             <Animated.View 
               style={[productOpacityStyle]}
-              className="flex items-start"
+              className="flex items-start flex-1"
               >
               <ThemedText
                 darkModeDisabled
                 font="Nunito-ExtraBold"
-                textStyle=" text-primary-500 text-center text-2xl"
+                textStyle=" text-primary-500 line-clamp-1  text-center text-xl"
                 label={props.product.name}
               />
             {
               props.itemsPerColumns === 1 &&
               <ThemedText
                 font="Nunito-Light"
+                textStyle='text-balance line-clamp-2'
                 label={props.product.description || 'Nessuna descrizione al prodotto'}
               />
               }
-
-
             </Animated.View>
           }
 

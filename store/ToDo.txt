@@ -9,8 +9,8 @@
 [x] Eliminazione frigoriferi 
 [x] Assegnazione prodotti nel frigo
 [] Dettaglio frigoriferi
-  [ ] Grafico Tipologie prodotti
-  [ ] Grafico Marche Preferithe
+  [x] Grafico Composizione Inventario
+  [x] Grafico Marche Preferithe
   [ ] Grafico Spese Effettuate
   [ ] Modifica Frigo
   [ ] Eliminazione Frigo
@@ -33,4 +33,4 @@ Bug Risolti
 
 Bug Noti
 [] Durante la modifica dell'immagine di un prodotto, la modifica non viene presa durante il primo render del componente
-[] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano
+[] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano (Error getting guest id, guest id deleted [AxiosError: Request failed with status code 404])

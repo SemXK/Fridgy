@@ -17,7 +17,7 @@ const CreateNewFridgeComponent = (props: CNFCInterface) => {
 
   // * Functions
   const handleCreateFridge = async () => {
-    if(name && description){
+    if(name){
       await ProductController.createFridge(name, description)
       .then((res) => {
         if(res) {

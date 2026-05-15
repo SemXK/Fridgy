@@ -11,12 +11,17 @@ interface FGD {
 
 const FridgeGraphDetail = ({productList}: FGD) => {
 
-  // * States
-  const [graphData, setGraphData] = useState<pieDataItem[]>([])
+  // * Graph States
+  const [productTypeGraphData, setProductTypeGraph] = useState<pieDataItem[]>([])
+  const [brandGraphData, setBrandGraphData] = useState<pieDataItem[]>([])
+
   const [focusedProductType, setFocusedProductType] = useState<pieDataItem | undefined>(undefined)
   const [totalProductTypes, setTotalProductTypes] = useState<number>(0)
 
-  // $ Memoized Functions
+  const [focusedBrand, setFocusedBrand] = useState<pieDataItem | undefined>(undefined)
+  const [totalBrands, setTotalBrands] = useState<number>(0)
+
+  // $ Memoized Product Type Function 
   useMemo(() => {
 
     // 1$ Fetch all productTypes
@@ -46,7 +51,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
     });
 
     // 1$ Save Graph Data
-    setGraphData(pieDataItems)
+    setProductTypeGraph(pieDataItems)
     let currentTotalItems = 0
     pieDataItems.map((pieItem) => {
       currentTotalItems += pieItem.value
@@ -54,10 +59,39 @@ const FridgeGraphDetail = ({productList}: FGD) => {
     setTotalProductTypes(currentTotalItems)
   }, [])
 
+  // $ Memoized Brand Function 
+  useMemo(() => {
+    // 1$ Fetch all brand
+    const pieDataItems: pieDataItem[] = []
+    productList.map((product: Product) => {
+
+      // 2$ Fetch brand in graph array
+      const currentGraphItem = pieDataItems.find(item => item.text === product.brand.name)
+
+      // 3$ Product already in the graph array
+      if(currentGraphItem) {
+        currentGraphItem.value += product.pivot?.quantity as number
+      }
+
+      // 3$ new Product for the graph array
+      else {
+        pieDataItems.push({
+          text: product.brand.name,
+          value: product.pivot?.quantity as number,
+        })
+      }
+
+    });
+
+    // 1$ Save Graph Data
+    setBrandGraphData(pieDataItems)
+    const currentTotalItems = pieDataItems.reduce((sum, pieItem) => sum + (pieItem.value || 0), 0)
+    setTotalBrands(currentTotalItems)
+  }, [])
+
   // * Functions
   const handlePageChange = (event:any) => {
-    // console.log(Object.keys(event), event.nativeEvent.position)
-    console.log("click")
+    // console.log("click")
 
   }
 
@@ -69,20 +103,20 @@ const FridgeGraphDetail = ({productList}: FGD) => {
         {/* Pie Chart */}
         <View key="1">
           {/* <Text>Product Type Chart (Meat, Milk...)</Text> */}
-
             <View
               style={{
+                height:'100%',
                 padding: 16,
                 marginRight: 10,
                 borderRadius: 20,
                 backgroundColor: darkColor[800],
               }}>
-              <ThemedText font="Nunito-ExtraBold" label="Tipologia Prodotto"  />
-              <View style={{padding: 20, alignItems: 'center'}}>
+              <ThemedText font="Nunito-ExtraBold" label="Composizione Inventario"  />
+              <View style={{ alignItems: 'center'}}>
                 <PieChart
                   focusOnPress
-                  onPress={(item: pieDataItem) => setFocusedProductType(item)}
-                  data={graphData}
+                  onPress={(item: pieDataItem) => setFocusedProductType(focusedProductType === item ? undefined : item)}
+                  data={productTypeGraphData}
                   donut
                   sectionAutoFocus
                   radius={110}
@@ -98,9 +132,9 @@ const FridgeGraphDetail = ({productList}: FGD) => {
                                {Math.round(focusedProductType.value * 100 / totalProductTypes) }%
                             </Text> */}
                             <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedProductType.text as string} />
-                            <View>
+                            <View className="flex flex-row gap-4">
                               <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedProductType.value + " Prodotti"} />
-                              {/* <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} /> */}
+                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} />
                             </View>
                           </>
                         }
@@ -109,17 +143,92 @@ const FridgeGraphDetail = ({productList}: FGD) => {
                   }}
                 />
               </View>
-              {/* {renderLegendComponent()} */}
             </View>
         </View>
 
-
-
         <View  key="2">
-          <Text>Product Type</Text>
+          <View
+            style={{
+              height:'100%',
+              padding: 16,
+              marginRight: 10,
+              borderRadius: 20,
+              backgroundColor: darkColor[800],
+            }}>
+            <ThemedText font="Nunito-ExtraBold" label="Marche Prodotti"  />
+            <View style={{ alignItems: 'center'}}>
+              <PieChart
+                focusOnPress
+                onPress={(item: pieDataItem) => setFocusedBrand(focusedBrand === item ? undefined : item)}
+
+                data={brandGraphData}
+                donut
+                sectionAutoFocus
+                radius={110}
+                innerRadius={80}
+                innerCircleColor={darkColor[800]}
+                centerLabelComponent={() => {
+                  return (
+                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                      {focusedBrand && 
+                        <>
+                          {/* <Text
+                            style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
+                              {Math.round(focusedProductType.value * 100 / totalProductTypes) }%
+                          </Text> */}
+                          <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedBrand.text as string} />
+                          <View className="flex flex-row gap-4">
+                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedBrand.value + " Prodotti"} />
+                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedBrand.value * 100 / totalBrands) + "%"} />
+                          </View>
+                        </>
+                      }
+                    </View>
+                  );
+                }}
+              />
+            </View>
+          </View>
         </View>
+
         <View  key="3">
-          <Text>Brand Type</Text>
+            <View
+              style={{
+                height:'100%',
+                padding: 16,
+                marginRight: 10,
+                borderRadius: 20,
+                backgroundColor: darkColor[800],
+              }}>
+              <ThemedText font="Nunito-ExtraBold" label="Acquisti effettuati"  />
+              {/* <View style={{ alignItems: 'center'}}>
+                <PieChart
+                  focusOnPress
+                  onPress={(item: pieDataItem) => setFocusedProductType(focusedProductType === item ? undefined : item)}
+                  data={productTypeGraphData}
+                  donut
+                  sectionAutoFocus
+                  radius={110}
+                  innerRadius={80}
+                  innerCircleColor={darkColor[800]}
+                  centerLabelComponent={() => {
+                    return (
+                      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        {focusedProductType && 
+                          <>
+                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedProductType.text as string} />
+                            <View className="flex flex-row gap-4">
+                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedProductType.value + " Prodotti"} />
+                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} />
+                            </View>
+                          </>
+                        }
+                      </View>
+                    );
+                  }}
+                />
+              </View> */}
+            </View>
         </View>
         <View  key="4">
           <Text>Last Bought Items</Text>

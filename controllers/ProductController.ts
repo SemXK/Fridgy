@@ -180,8 +180,8 @@ export abstract class ProductController extends Controller {
         throw e as AxiosError;
       });
   };
-  static assignProductToFridge = async (fridgeId: number, productId: number, quantity?: number): Promise<string | AxiosError> => {
-    return await this.authenticatedPostCall(`products/assign-to-fridge`, { fridgeId, productId, quantity })
+  static assignProductToFridge = async (fridgeId: number, unsignedProductId: number, quantity?: number): Promise<string | AxiosError> => {
+    return await this.authenticatedPostCall(`products/assign-to-fridge`, { fridgeId, unsignedProductId, quantity })
       .then((res: AxiosResponse<Fridge>) => {
         if (res.status === 200) {
           const fridge = (res as AxiosResponse).data;
@@ -189,7 +189,8 @@ export abstract class ProductController extends Controller {
         } else if (res.status === 401) {
           throw new AxiosError("Invalid Credentials");
         }
-        return new AxiosError("Unexpected response status: " + res.status);
+        throw new Error("Unexpected response status: " + res.status);
+        // return new AxiosError();
       })
       .catch((e) => {
         throw e as AxiosError;
