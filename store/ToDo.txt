@@ -1,3 +1,4 @@
+* Release 1
 [x] Elenco frigoriferi
 [x] Aggiunta alimenti
 [x] Dettaglio alimenti
@@ -11,13 +12,15 @@
 [] Dettaglio frigoriferi
   [x] Grafico Composizione Inventario
   [x] Grafico Marche Preferithe
-  [ ] Grafico Spese Effettuate
+  [ ] Calendario Azioni del frigo
   [ ] Modifica Frigo
   [ ] Eliminazione Frigo
-
-
+  
+[] Consumo Alimenti
 [] Creazione marche prodotti
 [] Filtri alimenti
+
+* Release 2
 [] Registrazione variazione prezzi alimenti
 
 [] API per prezzi live su alimenti ()

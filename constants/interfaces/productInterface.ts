@@ -82,7 +82,9 @@ export interface Fridge {
   description: string;
   created_at: Date;
   updated_at: Date;
+
   product_list: Product[];
+  actionsStory: FridgeAction[];
 }
 export interface Brand {
   id: number;
@@ -107,6 +109,21 @@ export interface ProductAcquisitionRecord {
   created_at: Date;
   updated_at: Date;
 }
+export interface FridgeAction {
+  id: number;
+  fridgeActionTypeId: number;
+  fridgeId: number;
+  productAcquisitionRecordId?: number;
+  created_at: Date;
+  updated_at: Date;
+
+  fridgeAction: FridgeActionType;
+}
+export interface FridgeActionType {
+  id: number;
+  name: string;
+}
+
 // * Payload
 export interface CreateProductPayload {
   id?: number;

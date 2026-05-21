@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { PieChart, pieDataItem } from "react-native-gifted-charts";
 import PagerView from 'react-native-pager-view';
+import FridgeActionCalendar from "../thirdParty/FridgeActionCalendar";
 import ThemedText from "../ui/ThemedText";
 interface FGD {
   productList: Product[]
@@ -200,34 +201,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
                 borderRadius: 20,
                 backgroundColor: darkColor[800],
               }}>
-              <ThemedText font="Nunito-ExtraBold" label="Acquisti effettuati"  />
-              {/* <View style={{ alignItems: 'center'}}>
-                <PieChart
-                  focusOnPress
-                  onPress={(item: pieDataItem) => setFocusedProductType(focusedProductType === item ? undefined : item)}
-                  data={productTypeGraphData}
-                  donut
-                  sectionAutoFocus
-                  radius={110}
-                  innerRadius={80}
-                  innerCircleColor={darkColor[800]}
-                  centerLabelComponent={() => {
-                    return (
-                      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        {focusedProductType && 
-                          <>
-                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedProductType.text as string} />
-                            <View className="flex flex-row gap-4">
-                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedProductType.value + " Prodotti"} />
-                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} />
-                            </View>
-                          </>
-                        }
-                      </View>
-                    );
-                  }}
-                />
-              </View> */}
+              <FridgeActionCalendar />
             </View>
         </View>
         <View  key="4">
