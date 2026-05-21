@@ -83,7 +83,7 @@ export interface Fridge {
   created_at: Date;
   updated_at: Date;
 
-  product_list: Product[];
+  productList: Product[];
   actionsStory: FridgeAction[];
 }
 export interface Brand {

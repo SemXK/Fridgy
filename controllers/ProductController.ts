@@ -1,4 +1,12 @@
-import { CartItemInterface, Fridge, PaginatedResponse, Product, ProductType, UnassignedProduct } from "@/constants/interfaces/productInterface";
+import {
+  CartItemInterface,
+  Fridge,
+  FridgeAction,
+  PaginatedResponse,
+  Product,
+  ProductType,
+  UnassignedProduct,
+} from "@/constants/interfaces/productInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -191,6 +199,21 @@ export abstract class ProductController extends Controller {
         }
         throw new Error("Unexpected response status: " + res.status);
         // return new AxiosError();
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  static getFridgeHistory = async (fridgeId: string, startDate: Date, endDate: Date): Promise<FridgeAction[] | AxiosError> => {
+    return await this.authenticatedPostCall(`products/get-fridge-history/${fridgeId}`, { startDate, endDate })
+      .then((res: AxiosResponse<Fridge>) => {
+        if (res.status === 200) {
+          const fridge = (res as AxiosResponse).data;
+          return fridge;
+        } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        throw new Error("Unexpected response status: " + res.status);
       })
       .catch((e) => {
         throw e as AxiosError;

@@ -99,7 +99,7 @@ const FridgeDetail = () => {
 
           {/* Grafico + Elenco tipi prodotto */}
           <View className="h-[40%] w-screen mb-4 ">
-            <FridgeGraphDetail productList={fridgeDetail.product_list}/>
+            <FridgeGraphDetail productList={fridgeDetail.productList}/>
           </View>
 
           {/* Elenco Prodotti product_list*/}
@@ -161,7 +161,7 @@ const FridgeDetail = () => {
               <FlatList
                 key={columnsOfProducts}
                 numColumns={columnsOfProducts}
-                data={fridgeDetail.product_list}
+                data={fridgeDetail.productList}
                 initialNumToRender={8}
                 maxToRenderPerBatch={8}
                 showsVerticalScrollIndicator={false}

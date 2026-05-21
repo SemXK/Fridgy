@@ -44,6 +44,7 @@
     "install": "^0.13.0",
     "laravel-echo": "^2.2.6",
     "material-design-icons": "^3.0.1",
+    "moment": "^2.30.1",
     "moti": "^0.30.0",
     "nativewind": "^4.0.1",
     "pusher-js": "^8.4.0",
