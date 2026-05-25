@@ -90,14 +90,14 @@ const AnimatedUnassignedProductDetail = (props: UPD) => {
 
         <TouchableOpacity 
           activeOpacity={0.7}
-          className=" rounded-xl aspect-square flex flex-col items-center justify-center bg-darkColor-800"
+          className=" rounded-xl aspect-square flex flex-col items-center justify-center bg-white dark:bg-darkColor-800"
         >
           <UrlImage source={props.unassignedProduct.product.image} resizeMode='contain'/>
         </TouchableOpacity>
 
         {/* Azioni Prodotto */}
-        <View className="absolute bottom-0 right-0 rounded-tl-2xl rounded-br-2xl bg-primary-500 p-2" >
-          <ThemedText font='Nunito-Italic' label={String(props.unassignedProduct.quantity)} />
+        <View className="absolute bottom-0 right-0 rounded-tl-xl rounded-br-xl bg-primary-500 p-2" >
+          <ThemedText font='Nunito-Italic' darkModeDisabled textStyle='text-white' label={String(props.unassignedProduct.quantity)} />
         </View>
 
       </Animated.View>

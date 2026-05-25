@@ -38,7 +38,7 @@ const DiscountMiniCard = (props: Props) => {
         <View>
           <ThemedText
             darkModeDisabled
-            font="Nunito-ExtraBold"
+            font='Nunito-Bold'
             textStyle="text-white text-center text-2xl "
             label={`Sconto fino al ${props.item.discount}%`}
           />

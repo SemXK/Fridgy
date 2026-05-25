@@ -33,7 +33,10 @@ const FridgeMiniCard = (props: FMCInterface) => {
 
   // * display
   return (
-    <View className="bg-primary-600 pt-4 rounded-xl h-48 relative">
+    <View 
+
+      className="bg-primary-600 pt-4 rounded-xl h-48 relative"
+    >
 
       {/* Modal */}
       <Modal
@@ -58,24 +61,34 @@ const FridgeMiniCard = (props: FMCInterface) => {
 
       {/* Title */}
       <View className="px-4 flex flex-row justify-between items-center -top-2" >
-        <ThemedText font='Nunito-ExtraBold' textStyle='text-2xl'  label={props.fridge.name} />
+        <ThemedText font='Nunito-Bold' darkModeDisabled textStyle='text-2xl text-white'  label={props.fridge.name} />
         <PrimaryIconButton iconSpecs={{name: 'delete-forever', color: 'white', size: 24}} onPress={deleteFridge}/>
       </View>
 
       {/* Info Fridge */}
-      <View className="bg-stone-100 dark:bg-darkColor-900 h-48 p-2  rounded-lg">
+      <View 
+        style={{  
+          borderRadius: 12,
+          marginRight: 8,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: .15,
+          shadowRadius: 3,
+          elevation: 2,
+        }}
+      className="bg-stone-100 dark:bg-darkColor-900 h-48 p-2 w-full rounded-lg">
 
-        <View className="flex flex-row">
+        <View className="flex flex-row ">
           <MaterialCommunityIcons
             name="fridge-outline"
             size={80}
             color={primaryColor[500]}
           />
-          <View className="flex">
-            <ThemedText textStyle='text-xl' label={props.fridge.description || 'Nessuna descrizione'} />
+          <View className="flex  flex-1">
+            <ThemedText textStyle='text-xl' numberOfLines={1} label={props.fridge.description || 'Nessuna descrizione'} />
             {/* Descrizione */}
             <View className="flex flex-row items-center">
-              <ThemedText   label="Ultima Modifica: " />
+              <ThemedText label="Ultima Modifica: " />
               <ThemedText font='Nunito-ExtraLight'  label={ new Date(props.fridge.updated_at).toLocaleDateString('it-IT')} />
             </View>
           </View>
@@ -86,7 +99,7 @@ const FridgeMiniCard = (props: FMCInterface) => {
         <View className="absolute bottom-0 flex flex-row justify-end gap-2 w-full border-t-2 p-4 border-primary-500/10">
 
           <View className="w-1/3">
-            <PrimaryButton onPress={handlePressDetail} buttonText="Dettaglio" />
+            <PrimaryButton onPress={handlePressDetail} buttonText="Dettaglio" textStyle='text-white'/>
           </View>
         </View>
 

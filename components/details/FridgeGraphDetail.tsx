@@ -1,7 +1,7 @@
 import { Product, ProductType } from "@/constants/interfaces/productInterface";
 import { darkColor } from "@/constants/theme";
 import React, { useMemo, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Appearance, StyleSheet, Text, View } from "react-native";
 import { PieChart, pieDataItem } from "react-native-gifted-charts";
 import PagerView from 'react-native-pager-view';
 import FridgeActionCalendar from "../thirdParty/FridgeActionCalendar";
@@ -93,7 +93,6 @@ const FridgeGraphDetail = ({productList}: FGD) => {
   // * Functions
   const handlePageChange = (event:any) => {
     // console.log("click")
-
   }
 
   // * Display
@@ -105,37 +104,87 @@ const FridgeGraphDetail = ({productList}: FGD) => {
         <View key="1">
           {/* <Text>Product Type Chart (Meat, Milk...)</Text> */}
             <View
+              className="rounded-xl bg-white dark:bg-darkColor-800"
               style={{
                 height:'100%',
                 padding: 16,
                 marginRight: 10,
                 borderRadius: 20,
-                backgroundColor: darkColor[800],
-              }}>
-              <ThemedText font="Nunito-ExtraBold" label="Composizione Inventario"  />
+              }}
+              >
+              <ThemedText font="Nunito-Bold" label="Composizione Inventario"  />
+              {
+                productTypeGraphData.length ?
+                <View style={{ alignItems: 'center'}}>
+                  <PieChart
+                    focusOnPress
+                    onPress={(item: pieDataItem) => setFocusedProductType(focusedProductType === item ? undefined : item)}
+                    data={productTypeGraphData}
+                    donut
+                    sectionAutoFocus
+                    radius={110}
+                    innerRadius={80}
+                    innerCircleColor={ Appearance.getColorScheme() === 'dark' ? darkColor[800] : 'white'}
+                    centerLabelComponent={() => {
+                      return (
+                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                          {focusedProductType && 
+                            <>
+                              <ThemedText font="Nunito-Bold" textStyle="text-center text-xl" label={focusedProductType.text as string} />
+                              <View className="flex flex-row gap-4">
+                                <ThemedText font="Nunito-Bold" textStyle="text-center" label={focusedProductType.value + " Prodotti"} />
+                                <ThemedText font="Nunito-Bold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} />
+                              </View>
+                            </>
+                          }
+                        </View>
+                      );
+                    }}
+                  />
+                </View>
+                :
+                <View className="flex flex-row flex-1 items-center justify-center">
+                  <ThemedText font="Nunito-Italic" textStyle="text-center" label="L'inventario è vuoto" />
+                </View>
+              }
+            </View>
+        </View>
+
+        <View  key="2">
+          <View
+            className="rounded-xl bg-white dark:bg-darkColor-800"
+            style={{
+              height:'100%',
+              padding: 16,
+              marginRight: 10,
+              borderRadius: 20,
+            }}>
+            <ThemedText font="Nunito-Bold" label="Marche Prodotti"  />
+            {
+              brandGraphData.length ?
               <View style={{ alignItems: 'center'}}>
                 <PieChart
                   focusOnPress
-                  onPress={(item: pieDataItem) => setFocusedProductType(focusedProductType === item ? undefined : item)}
-                  data={productTypeGraphData}
+                  onPress={(item: pieDataItem) => setFocusedBrand(focusedBrand === item ? undefined : item)}
+                  data={brandGraphData}
                   donut
                   sectionAutoFocus
                   radius={110}
                   innerRadius={80}
-                  innerCircleColor={darkColor[800]}
+                  innerCircleColor={ Appearance.getColorScheme() === 'dark' ? darkColor[800] : 'white'}
                   centerLabelComponent={() => {
                     return (
                       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        {focusedProductType && 
+                        {focusedBrand && 
                           <>
                             {/* <Text
                               style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
-                               {Math.round(focusedProductType.value * 100 / totalProductTypes) }%
+                                {Math.round(focusedProductType.value * 100 / totalProductTypes) }%
                             </Text> */}
-                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedProductType.text as string} />
+                            <ThemedText font="Nunito-Bold" textStyle="text-center text-xl" label={focusedBrand.text as string} />
                             <View className="flex flex-row gap-4">
-                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedProductType.value + " Prodotti"} />
-                              <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedProductType.value * 100 / totalProductTypes) + "%"} />
+                              <ThemedText font="Nunito-Bold" textStyle="text-center" label={focusedBrand.value + " Prodotti"} />
+                              <ThemedText font="Nunito-Bold" textStyle="text-center" label={Math.round(focusedBrand.value * 100 / totalBrands) + "%"} />
                             </View>
                           </>
                         }
@@ -144,65 +193,26 @@ const FridgeGraphDetail = ({productList}: FGD) => {
                   }}
                 />
               </View>
-            </View>
+              :
+              <View className="flex flex-row flex-1 items-center justify-center">
+                <ThemedText font="Nunito-Italic" textStyle="text-center" label="L'inventario è vuoto" />
+              </View>
+            }
+          </View>
         </View>
 
-        <View  key="2">
+        <View  key="3">
           <View
+            className="rounded-xl"
             style={{
               height:'100%',
               padding: 16,
               marginRight: 10,
               borderRadius: 20,
-              backgroundColor: darkColor[800],
+              backgroundColor: Appearance.getColorScheme() === 'dark' ? darkColor[800] : 'white',
             }}>
-            <ThemedText font="Nunito-ExtraBold" label="Marche Prodotti"  />
-            <View style={{ alignItems: 'center'}}>
-              <PieChart
-                focusOnPress
-                onPress={(item: pieDataItem) => setFocusedBrand(focusedBrand === item ? undefined : item)}
-
-                data={brandGraphData}
-                donut
-                sectionAutoFocus
-                radius={110}
-                innerRadius={80}
-                innerCircleColor={darkColor[800]}
-                centerLabelComponent={() => {
-                  return (
-                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                      {focusedBrand && 
-                        <>
-                          {/* <Text
-                            style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}>
-                              {Math.round(focusedProductType.value * 100 / totalProductTypes) }%
-                          </Text> */}
-                          <ThemedText font="Nunito-ExtraBold" textStyle="text-center text-xl" label={focusedBrand.text as string} />
-                          <View className="flex flex-row gap-4">
-                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={focusedBrand.value + " Prodotti"} />
-                            <ThemedText font="Nunito-ExtraBold" textStyle="text-center" label={Math.round(focusedBrand.value * 100 / totalBrands) + "%"} />
-                          </View>
-                        </>
-                      }
-                    </View>
-                  );
-                }}
-              />
-            </View>
+            <FridgeActionCalendar />
           </View>
-        </View>
-
-        <View  key="3">
-            <View
-              style={{
-                height:'100%',
-                padding: 16,
-                marginRight: 10,
-                borderRadius: 20,
-                backgroundColor: darkColor[800],
-              }}>
-              <FridgeActionCalendar />
-            </View>
         </View>
         <View  key="4">
           <Text>Last Bought Items</Text>
@@ -213,8 +223,14 @@ const FridgeGraphDetail = ({productList}: FGD) => {
 }
 
 export default FridgeGraphDetail
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: .15,
+    shadowRadius: 3,
+    elevation: 2,
   },
 });

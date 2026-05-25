@@ -125,7 +125,7 @@ const ProductDetail = () => {
                     <ThemedText 
                       label={product.name}
                       textStyle='text-primary-500 text-3xl'
-                      font='Nunito-ExtraBold'
+                      font='Nunito-Bold'
                       darkModeDisabled
                     />
                     <TouchableOpacity onPress={editProduct} >

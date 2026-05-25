@@ -56,7 +56,7 @@ export default function SignUp() {
         <View>
 
           <ThemedText
-            font='Nunito-ExtraBold'
+            font='Nunito-Bold'
             darkModeDisabled
             label="Registrati"
             textStyle="text-primary-500 text-4xl text-center"

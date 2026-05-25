@@ -32,7 +32,7 @@ const ProductTypeMiniCard = (props: Props) => {
       <ThemedText
         numberOfLines={1}
         darkModeDisabled
-        font="Nunito-ExtraBold"
+        font='Nunito-Bold'
         textStyle=" text-primary-500 text-center "
         label={props.item.type}
       />

@@ -22,7 +22,7 @@ const ProductDetailHeader = (props: ProductHeaderInterface) => {
           <ThemedText 
             label={props.title} 
             darkModeDisabled 
-            font="Nunito-ExtraBold"
+            font='Nunito-Bold'
             textStyle='text-3xl text-primary-500 '
           />
         }

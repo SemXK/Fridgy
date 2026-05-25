@@ -126,7 +126,6 @@ const HomePage = () => {
       key: "latest",
       title: "Ultime Uscite",
       loading: filterLoading,
-
       height: 200,
       width: 200,
       data: latestProductList,
@@ -221,7 +220,7 @@ const HomePage = () => {
           <View >
             <ThemedText
               darkModeDisabled
-              font="Nunito-ExtraBold"
+              font='Nunito-Bold'
               textStyle="text-primary-500 text-2xl p-4"
               label={item.title || ""}
             />
@@ -247,8 +246,9 @@ const HomePage = () => {
                 renderItem={({ item: product }) => (
                   <View
                     style={{
-                      width: item.width, // use outer section width
-                      height: item.height, // use outer section height
+                      marginBottom: 5,
+                      width: item.width,
+                      height: item.height,
                       backgroundColor: "white",
                       borderRadius: 12,
                       marginRight: 8,

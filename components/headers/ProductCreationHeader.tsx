@@ -10,7 +10,7 @@ const ProductCreationHeader = () => {
         <View className="flex flex-row items-center">
           <MenuButton />
           {/* <ThemedText 
-            font='Nunito-ExtraBold' 
+            font='Nunito-Bold' 
             textStyle='text-4xl text-primary-500' 
             darkModeDisabled label="Crea il prodotto"
           /> */}

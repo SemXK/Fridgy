@@ -26,6 +26,7 @@ const CartTotalView = (props: CartTotalInterface) => {
 
       {/* Button */}
       <PrimaryButton
+        textStyle='text-white'
         buttonText="Ordina ora"
         onPress={props.onPress}
       />

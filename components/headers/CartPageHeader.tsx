@@ -16,7 +16,7 @@ const CartPageHeader = () => {
         {/* <ThemedText
           darkModeDisabled
           label="Il mio carrello"
-          font="Nunito-ExtraBold"
+          font='Nunito-Bold'
           textStyle='text-xl text-primary-500'
         /> */}
       </View>

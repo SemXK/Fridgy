@@ -51,7 +51,7 @@ export default function SignIn() {
         {/* Header + Fields */}
         <View>
           <ThemedText
-            font='Nunito-ExtraBold'
+            font='Nunito-Bold'
             darkModeDisabled
             label="Benvenuto"
             textStyle="text-primary-500 text-4xl text-center"

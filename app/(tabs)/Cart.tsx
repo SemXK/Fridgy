@@ -126,7 +126,7 @@ const CartComponent = () => {
     {
       !showPaymentLoading ?
       <>
-            {/* Snackbar */}
+        {/* Snackbar */}
         <TopSnackbar
           visible={!!snackbarMessage}
           message={snackbarMessage}

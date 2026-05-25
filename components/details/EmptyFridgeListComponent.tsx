@@ -1,6 +1,6 @@
 import { darkColor } from '@/constants/theme';
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Appearance, Image, View } from 'react-native';
 import PrimaryButton from '../pressable/PrimaryButton';
 import ThemedText from '../ui/ThemedText';
 
@@ -21,7 +21,7 @@ const EmptyFridgeListComponent = (props: EFLCInterface) => {
           <ThemedText darkModeDisabled textStyle='text-white text-xl'  label="Non hai Inventari"></ThemedText>
           <ThemedText darkModeDisabled textStyle='text-white'  label="Crea un frigo e inizia ad organizzare i tuoi alimenti"></ThemedText>
         </View>
-        <PrimaryButton onPress={props.onPress} buttonText="Crea Frigorifero" buttonColor={darkColor[900]}/>
+        <PrimaryButton onPress={props.onPress} buttonText="Crea Frigorifero" buttonColor={Appearance.getColorScheme() === 'dark' ? darkColor[900] : 'white'}/>
       </View>
     </View>
   )

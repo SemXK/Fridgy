@@ -66,59 +66,40 @@ const ProductMiniCard = (props: Props) => {
           />
         </TouchableOpacity>
       </View>
-
+    
       {/* Descrizione Prodotto */}
-      <UrlImage
-        source={props.product.image}
-        className=" self-center "
-        width={125}
-        height={125}
-        resizeMode="contain"
-      />
-      <ThemedText
-        numberOfLines={1}
-        darkModeDisabled
-        font="Nunito-ExtraBold"
-        textStyle="text-xl text-primary-500 line-clamp-1"
-        label={props.product.name}
-      />
-
-      {/* Descrizione Prodotto */}
-      <View className="flex flex-row " >
-        <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
-        <ThemedText label={`${props.product.quantity} ${props.product.uma} `} />
+      <View className="flex flex-col justify-between h-full">
+        <UrlImage
+          source={props.product.image}
+          className=" self-center "
+          width={100}
+          height={100}
+          resizeMode="contain"
+        />
+        <View>
+          <ThemedText
+            numberOfLines={1}
+            darkModeDisabled
+            font='Nunito-Bold'
+            textStyle="text-xl text-primary-500 line-clamp-1"
+            label={props.product.name}
+          />
+          <View className="flex flex-row " >
+            <ThemedText darkModeDisabled label='Quantità: ' font='Nunito-Italic' textStyle='color-primary-500' />
+            <ThemedText label={`${props.product.quantity} ${props.product.uma} `} />
+          </View>
+          <View className="flex flex-row " >
+            <ThemedText darkModeDisabled label='Prezzo: ' font='Nunito-Italic' textStyle='color-primary-500' />
+            <ThemedText label={`${props.product.price} €`} />
+          </View>
+        </View>
       </View>
-      <View className="flex flex-row " >
-        <ThemedText darkModeDisabled label='Prezzo: ' font='Nunito-Italic' textStyle='color-primary-500' />
-        <ThemedText label={`${props.product.price} €`} />
-      </View>
-
-      {/* Tipo di prodotto */}
-      {/* <View
-
-        className='flex flex-row flex-wrap gap-1'>
-        {props.product.foodTypes.map((type) => {
-          return (
-            <ThemedText
-              key={type.id}
-              font="Nunito-Italic"
-              label={type.type}
-            />
-            // <PillComponent
-            //   key={type.id}
-            //   textStyle='text-white line-clamp-1 text-center'
-            //   containerClassName={`${type.color}`}
-            //   label={type.type}
-            // />
-          )
-        })}
-      </View> */}
 
       {/* Azioni Prodotto */}
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={(e) => addProductToCart(e)}
-        className="absolute bottom-0 right-0 rounded-tl-2xl rounded-br-2xl bg-primary-500 p-2"
+        className="absolute bottom-0 right-0 rounded-tl-xl rounded-br-xl bg-primary-500 p-2"
       >
         <Ionicons name="add" size={26} color="white" />
       </TouchableOpacity>

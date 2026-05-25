@@ -1,8 +1,11 @@
 import AssignedProductToFridgeDetail from "@/components/details/AssignedProductDetail"
 import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
 import CartPageHeader from "@/components/headers/CartPageHeader"
+import FridgeActionDailyAgenda from "@/components/thirdParty/FridgeActionDailyAgenda"
+import BottomSheetComponent from "@/components/ui/BottomSheet"
 import ThemedText from "@/components/ui/ThemedText"
 import { Fridge } from "@/constants/interfaces/productInterface"
+import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { router, useLocalSearchParams } from "expo-router"
@@ -10,6 +13,7 @@ import React, { useEffect, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useFridge } from "./_layout"
 
 // $ Flat list constants
 const FOUR_ROW_FLATLIST_WIDTH = 21
@@ -18,6 +22,9 @@ const SINGLE_ROW_FLATLIST_WIDTH = 98
 
 
 const FridgeDetail = () => {
+  // £ Context
+  const { fridgeAgendaProps, setFridgeAgendaProps } = useFridge()
+
   // % Animation states
   const productWidth = useSharedValue(FOUR_ROW_FLATLIST_WIDTH) // in %
 
@@ -33,7 +40,6 @@ const FridgeDetail = () => {
   // *States
   const [fridgeDetail, setFridgeDetail] = useState<Fridge | undefined>(undefined);
   const [columnsOfProducts, setColumnsOfProducts] = useState<number>(4);
-
 
   // * Lifecycle
   useEffect(() => {
@@ -77,7 +83,6 @@ const FridgeDetail = () => {
     }
   }
 
-
   // * Display
   return (
     <SafeAreaView className="flex-1">
@@ -89,11 +94,10 @@ const FridgeDetail = () => {
           <View >
             <CartPageHeader />
 
-            <ThemedText font='Nunito-ExtraBold' darkModeDisabled textStyle="text-4xl text-primary-500"  label={fridgeDetail.name} />
+            <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-4xl text-primary-500"  label={fridgeDetail.name} />
             <View className="flex flex-row gap-2">
-              <ThemedText font='Nunito-ExtraBold'  label="Ultima Modifica: " />
+              <ThemedText font='Nunito-Bold'  label="Ultima Modifica: " />
               <ThemedText font='Nunito-Italic'  label={ new Date(fridgeDetail.updated_at).toLocaleDateString('it-IT')} />
-
             </View>
           </View>
 
@@ -113,14 +117,14 @@ const FridgeDetail = () => {
                   <MaterialIcons 
                     name="menu-book"
                     size={32}
-                    color="white"
+                    color={primaryColor[500]}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <MaterialIcons 
                     name="restaurant"
                     size={32}
-                    color="white"
+                    color={primaryColor[500]}
                   />
                 </TouchableOpacity>
               </View>
@@ -131,7 +135,8 @@ const FridgeDetail = () => {
                   <MaterialCommunityIcons 
                     name="view-headline"
                     size={32}
-                    color="white"
+                    color={ columnsOfProducts === 1 ? primaryColor[500] : primaryColor[900]}
+
                     onPress={() => handleProductViewDisplay('row')}
                   />
                 </TouchableOpacity>
@@ -140,7 +145,8 @@ const FridgeDetail = () => {
                   <MaterialCommunityIcons 
                     name="view-grid"
                     size={26}
-                    color="white"
+                    color={ columnsOfProducts === 2 ? primaryColor[500] : primaryColor[900]}
+
                     onPress={() => handleProductViewDisplay('doubleCol')}
                   />
                 </TouchableOpacity>
@@ -149,7 +155,7 @@ const FridgeDetail = () => {
                   <MaterialCommunityIcons 
                     name="view-comfy"
                     size={32}
-                    color="white"
+                    color={ columnsOfProducts === 4 ? primaryColor[500] : primaryColor[900]}
                     onPress={() => handleProductViewDisplay('fourCol')}
                   />
                 </TouchableOpacity>
@@ -158,46 +164,68 @@ const FridgeDetail = () => {
             </View>
 
             {/* Dipslay prodotti */}
-              <FlatList
-                key={columnsOfProducts}
-                numColumns={columnsOfProducts}
-                data={fridgeDetail.productList}
-                initialNumToRender={8}
-                maxToRenderPerBatch={8}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={item => String(item.id)}
-                className="flex-1"
-                columnWrapperStyle={
-                  columnsOfProducts > 1
-                    ? {
-                        justifyContent: 'flex-start',
-                        marginBottom: 16,
-                        gap: 16
-                      }
-                    : 
-                    undefined
-                }
-                contentContainerStyle={{
-                  paddingBottom: 20
-                }}
-                // ListEmptyComponent={() => <EmptyFridgeListComponent onPress={() => setNewFridgeModal(true)}/>}
-                renderItem={({ item }) => (
-                  <Animated.View style={[
-                    productViewWidth,
-                    columnsOfProducts === 1 && {
+            <FlatList
+              key={columnsOfProducts}
+              numColumns={columnsOfProducts}
+              data={fridgeDetail.productList}
+              initialNumToRender={8}
+              maxToRenderPerBatch={8}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={item => String(item.id)}
+              className="flex-1"
+              columnWrapperStyle={
+                columnsOfProducts > 1
+                  ? {
+                      justifyContent: 'flex-start',
                       marginBottom: 16,
-                    },
-                ]}>
-                    <AssignedProductToFridgeDetail product={item} itemsPerColumns={columnsOfProducts} />
-                  </Animated.View>
-                )}
-              />
+                      gap: 16
+                    }
+                  : 
+                  undefined
+              }
+              contentContainerStyle={{
+                paddingBottom: 20
+              }}
+              ListEmptyComponent={() => {
+                return (
+                  <View className="flex flex-row flex-1 items-center justify-center">
+                    <ThemedText font="Nunito-Italic" textStyle="text-center" label="L'inventario è vuoto" />
+                  </View>
+                )
+              }}
+              renderItem={({ item }) => (
+                <Animated.View style={[
+                  productViewWidth,
+                  columnsOfProducts === 1 && {
+                    marginBottom: 16,
+                  },
+                  {                  
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.15,
+                    shadowRadius: 3,
+                    elevation: 2,
+                  }
+              ]}>
+                  <AssignedProductToFridgeDetail product={item} itemsPerColumns={columnsOfProducts} />
+                </Animated.View>
+              )}
+            />
           </View>
         </View>
         :
         null
       }
 
+      {/* Agenda BottomSheet */}
+      {
+        fridgeAgendaProps && 
+        <BottomSheetComponent
+          height={.7}
+          onClose={() => setFridgeAgendaProps(null)}
+          ShownComponent={FridgeActionDailyAgenda}
+        />
+      }
     </SafeAreaView>
   )
 }

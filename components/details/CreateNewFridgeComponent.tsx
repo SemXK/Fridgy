@@ -50,7 +50,7 @@ const CreateNewFridgeComponent = (props: CNFCInterface) => {
         </View>
 
         {/* Actions */}
-        <PrimaryButton onPress={handleCreateFridge} buttonText="Crea Frigorifero"/>
+        <PrimaryButton onPress={handleCreateFridge} textStyle='text-white' buttonText="Crea Frigorifero"/>
 
       </View>
   )

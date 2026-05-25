@@ -105,21 +105,21 @@ const FridgeList = () => {
         <View className="px-4 h-full mb-32">  
         { 
           unassignedProducts.length ? 
-            <ThemedText label="Prodotti da assengare"  font="Nunito-Bold"  darkModeDisabled textStyle="text-primary-500 text-2xl"/>
+            <ThemedText label="Prodotti da assegnare"  font="Nunito-Bold"  darkModeDisabled textStyle="text-primary-500 text-2xl"/>
             :
             null
         }
 
           {/* Product list */}
-            <View className="flex flex-row flex-wrap justify-start gap-4 mb-4">
-              {unassignedProducts.map((prod) => <AnimatedUnassignedProductDetail 
-                key={prod.id} 
-                unassignedProduct={prod} 
-                onDragOverFridge={itemDragEvent} 
-                onDropOnFridge={assignProductToFridge}
-                />
-              )}
-            </View>
+          <View className="flex flex-row flex-wrap justify-start gap-4 mb-4">
+            {unassignedProducts.map((prod) => <AnimatedUnassignedProductDetail 
+              key={prod.id} 
+              unassignedProduct={prod} 
+              onDragOverFridge={itemDragEvent} 
+              onDropOnFridge={assignProductToFridge}
+              />
+            )}
+          </View>
 
           {/* Fridge List */}
           <View className="relative">
@@ -139,12 +139,7 @@ const FridgeList = () => {
             data={fridgeList}
             keyExtractor={item => String(item.id)}
             numColumns={1}
-            onLayout={(layout) => {
-              fridgeVerticalHeights.current = []
-              // console.log(layout)
-              // fridgeListVerticalPosition.current = layout.nativeEvent.layout.y
-            }}
-            style={{ flex: 1 }}
+            style={{ flex: 1,  }}
             contentContainerStyle={{
               paddingBottom: 160,
               gap: 64,
@@ -153,8 +148,7 @@ const FridgeList = () => {
             renderItem={({ item }) => (
             <View
               onLayout={(event) => {
-                const { y, height } = event.nativeEvent.layout;
-
+                const { height } = event.nativeEvent.layout;
                 // 1* needed for the drag and release animation of products to assing to fridge
                 fridgeVerticalHeights.current[fridgeVerticalHeights.current.length] = { 
                   y: fridgeListVerticalPosition.current + fridgeVerticalHeights.current.length * height, 

@@ -100,7 +100,7 @@ const ProductCartItem = (props: CartItem) => {
         <ThemedText
           numberOfLines={1}
           darkModeDisabled
-          font="Nunito-ExtraBold"
+          font='Nunito-Bold'
           textStyle="text-2xl text-primary-500 "
           label={product.name}
         />
