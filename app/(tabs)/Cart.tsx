@@ -10,6 +10,7 @@ import { SnackbarStatus } from '@/constants/enums/common'
 import { StripeWebhookResponses } from '@/constants/enums/stripePayment'
 import { PaymentContextInterface } from '@/constants/interfaces/paymentInterface'
 import { CartContextInterface } from '@/constants/interfaces/productInterface'
+import { styleShadows } from '@/constants/styles/style-shadows'
 import { StripeController } from '@/controllers/StripeController'
 import { useFocusEffect } from '@react-navigation/native'
 import { initPaymentSheet, presentPaymentSheet } from '@stripe/stripe-react-native'
@@ -159,20 +160,16 @@ const CartComponent = () => {
             </View>
             }
             contentContainerStyle={{
-              paddingHorizontal: 12, // padding on left/right of whole list
+              paddingHorizontal: 12,
               paddingBottom: 100,
               gap: 12
             }}
             renderItem={({ item }) => (
               <View
                 style={{
-                  marginHorizontal: 6, // half of the gap, so two items sum to 12px
+                  marginHorizontal: 6, 
                   borderRadius: 40,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.8,
-                  shadowRadius: 3,
-                  elevation: 4,
+                  ...styleShadows.shadow
                 }}
               >
                 <ProductCartItem cartItem={item} />

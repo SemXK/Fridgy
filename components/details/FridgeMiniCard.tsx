@@ -1,4 +1,5 @@
 import { Fridge } from '@/constants/interfaces/productInterface';
+import { styleShadows } from '@/constants/styles/style-shadows';
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -70,11 +71,7 @@ const FridgeMiniCard = (props: FMCInterface) => {
         style={{  
           borderRadius: 12,
           marginRight: 8,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: .15,
-          shadowRadius: 3,
-          elevation: 2,
+          ...styleShadows.shadow
         }}
       className="bg-stone-100 dark:bg-darkColor-900 h-48 p-2 w-full rounded-lg">
 
@@ -124,14 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    ...styleShadows.shadow
   },
   button: {
     borderRadius: 20,
@@ -154,14 +144,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-// 1! Ombre (per dopo)
-// style={{
-//   marginHorizontal: 6, 
-//   backgroundColor: 'white',
-//   borderRadius: 12,
-//   shadowColor: '#000',
-//   shadowOffset: { width: 0, height: 1 },
-//   shadowOpacity: 0.15,
-//   shadowRadius: 3,
-//   elevation: 2,
-// }}

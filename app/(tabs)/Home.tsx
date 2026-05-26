@@ -12,6 +12,7 @@ import { ProductController, ProductListHomePageResponse } from '@/controllers/Pr
 
 import TopSnackbar from '@/components/ui/SnackbacComponent';
 import { SnackbarStatus } from '@/constants/enums/common';
+import { styleShadows } from '@/constants/styles/style-shadows';
 import { router } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
@@ -139,7 +140,6 @@ const HomePage = () => {
     {
       key: "popular",
       loading: filterLoading,
-
       title: "Prodotti Popolari",
       height: 200,
       width: 200,
@@ -252,11 +252,7 @@ const HomePage = () => {
                       backgroundColor: "white",
                       borderRadius: 12,
                       marginRight: 8,
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowOpacity: 0.15,
-                      shadowRadius: 3,
-                      elevation: 2,
+                      ...styleShadows.shadow
                     }}
                   >
                     {item.renderCard(product)}

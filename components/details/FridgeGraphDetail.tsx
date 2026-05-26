@@ -1,4 +1,5 @@
 import { Product, ProductType } from "@/constants/interfaces/productInterface";
+import { styleShadows } from "@/constants/styles/style-shadows";
 import { darkColor } from "@/constants/theme";
 import React, { useMemo, useState } from "react";
 import { Appearance, StyleSheet, Text, View } from "react-native";
@@ -227,10 +228,6 @@ export default FridgeGraphDetail
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: .15,
-    shadowRadius: 3,
-    elevation: 2,
+    ...styleShadows.shadow
   },
 });

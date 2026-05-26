@@ -16,7 +16,7 @@
   [ ] Modifica Frigo
   [ ] Eliminazione Frigo
 
-[] Rendere Generico lo stile per le ombre delle cards
+[x] Rendere Generico lo stile per le ombre delle cards
 [] Consumo Alimenti
 [] Creazione marche prodotti
 [] Filtri alimenti

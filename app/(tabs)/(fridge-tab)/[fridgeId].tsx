@@ -5,6 +5,7 @@ import FridgeActionDailyAgenda from "@/components/thirdParty/FridgeActionDailyAg
 import BottomSheetComponent from "@/components/ui/BottomSheet"
 import ThemedText from "@/components/ui/ThemedText"
 import { Fridge } from "@/constants/interfaces/productInterface"
+import { styleShadows } from "@/constants/styles/style-shadows"
 import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
@@ -199,13 +200,7 @@ const FridgeDetail = () => {
                   columnsOfProducts === 1 && {
                     marginBottom: 16,
                   },
-                  {                  
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.15,
-                    shadowRadius: 3,
-                    elevation: 2,
-                  }
+                  styleShadows.shadow
               ]}>
                   <AssignedProductToFridgeDetail product={item} itemsPerColumns={columnsOfProducts} />
                 </Animated.View>

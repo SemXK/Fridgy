@@ -1,3 +1,4 @@
+import { styleShadows } from '@/constants/styles/style-shadows';
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { Appearance, Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native';
@@ -161,11 +162,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -3 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 10,
+    ...styleShadows.shadow
   },
   header: {
     paddingTop: 10,
