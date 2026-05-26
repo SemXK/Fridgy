@@ -1,4 +1,5 @@
 import AssignedProductToFridgeDetail from "@/components/details/AssignedProductDetail"
+import EditFridgeComponent from "@/components/details/EditFridgeComponent"
 import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
 import CartPageHeader from "@/components/headers/CartPageHeader"
 import FridgeActionDailyAgenda from "@/components/thirdParty/FridgeActionDailyAgenda"
@@ -8,7 +9,7 @@ import { Fridge } from "@/constants/interfaces/productInterface"
 import { styleShadows } from "@/constants/styles/style-shadows"
 import { primaryColor } from "@/constants/theme"
 import { ProductController } from "@/controllers/ProductController"
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
+import { FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { router, useLocalSearchParams } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
@@ -24,7 +25,7 @@ const SINGLE_ROW_FLATLIST_WIDTH = 98
 
 const FridgeDetail = () => {
   // £ Context
-  const { fridgeAgendaProps, setFridgeAgendaProps } = useFridge()
+  const { fridgeAgendaProps, setFridgeAgendaProps, fridgeDetail, setFridgeDetail } = useFridge()
 
   // % Animation states
   const productWidth = useSharedValue(FOUR_ROW_FLATLIST_WIDTH) // in %
@@ -39,8 +40,9 @@ const FridgeDetail = () => {
   // const { openDetail, closeDetail } = useFridge()
 
   // *States
-  const [fridgeDetail, setFridgeDetail] = useState<Fridge | undefined>(undefined);
   const [columnsOfProducts, setColumnsOfProducts] = useState<number>(4);
+  const [editingFridgeIsOpen, setEditingFridgeIsOpen] = useState<boolean>(false);
+
 
   // * Lifecycle
   useEffect(() => {
@@ -83,6 +85,12 @@ const FridgeDetail = () => {
 
     }
   }
+  const editFridge = () => {
+    setEditingFridgeIsOpen(true)
+  }
+  const handleCloseModal = () => {
+    setEditingFridgeIsOpen(false)
+  }
 
   // * Display
   return (
@@ -94,8 +102,14 @@ const FridgeDetail = () => {
           {/* Descrizione principale Frigo */}
           <View >
             <CartPageHeader />
+            <View className="flex flex-row justify-between">
+              <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-4xl text-primary-500"  label={fridgeDetail.name} />
+              <TouchableOpacity onPress={editFridge} >
+                <FontAwesome6 name="edit" size={24} color={primaryColor[500]} />
+              </TouchableOpacity>
 
-            <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-4xl text-primary-500"  label={fridgeDetail.name} />
+            </View>
+
             <View className="flex flex-row gap-2">
               <ThemedText font='Nunito-Bold'  label="Ultima Modifica: " />
               <ThemedText font='Nunito-Italic'  label={ new Date(fridgeDetail.updated_at).toLocaleDateString('it-IT')} />
@@ -221,6 +235,18 @@ const FridgeDetail = () => {
           ShownComponent={FridgeActionDailyAgenda}
         />
       }
+
+      {/* Edit Fridge BottomSheet */}
+      {
+        editingFridgeIsOpen && 
+        <BottomSheetComponent
+          height={.7}
+          onClose={() => handleCloseModal()}
+          ShownComponent={EditFridgeComponent}
+        />
+      }
+
+
     </SafeAreaView>
   )
 }

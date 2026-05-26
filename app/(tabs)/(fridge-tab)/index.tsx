@@ -174,7 +174,7 @@ const FridgeList = () => {
           onClose={() => handleCloseModal()}
           ShownComponent={CreateNewFridgeComponent}
         />
-    }
+      }
     </SafeAreaView>
   )
 }

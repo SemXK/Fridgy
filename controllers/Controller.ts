@@ -83,6 +83,25 @@ export abstract class Controller {
       throw new Error("Unauthorize sd");
     }
   };
+  static authenticatedPutCall = async (apiPath: string, payload: unknown) => {
+    const token = await this.getAuthToken();
+    const guestId = await this.sessionGetId();
+
+    if (token || guestId) {
+      try {
+        return await axios.put(`${this.baseUrl}/${apiPath}`, payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Guest-Token": guestId,
+          },
+        });
+      } catch (error: any) {
+        return error;
+      }
+    } else {
+      throw new Error("Unauthorize sd");
+    }
+  };
   static authenticatedDeleteCall = async (apiPath: string) => {
     const token = await this.getAuthToken();
     const guestId = await this.sessionGetId();

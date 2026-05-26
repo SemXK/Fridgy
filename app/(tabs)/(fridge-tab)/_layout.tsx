@@ -1,11 +1,12 @@
 import { AgendaFridgeAction } from '@/constants/interfaces/common'
+import { Fridge } from '@/constants/interfaces/productInterface'
 import { Slot } from 'expo-router'
 import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
 
 // ? General Frudge Context
 const FridgeContext = createContext<{
-  filter: string
-  setFilter: (v: string) => void
+  fridgeDetail: Fridge | null;
+  setFridgeDetail: Dispatch<SetStateAction<Fridge | null>>
   fridgeAgendaProps: AgendaFridgeAction[] | null,
   setFridgeAgendaProps: Dispatch<SetStateAction<AgendaFridgeAction[]  | null>>
 }>({} as any)
@@ -15,14 +16,14 @@ export const useFridge = () => useContext(FridgeContext)
 const FridgeLayout = () => {
 
   // % States
-  const [filter, setFilter] = useState<string>("");
+  const [fridgeDetail, setFridgeDetail] = useState<Fridge | null>(null); // List of actions, displayed in the agenda bottomsheet
   const [fridgeAgendaProps, setFridgeAgendaProps] = useState<AgendaFridgeAction[]  | null>(null); // List of actions, displayed in the agenda bottomsheet
 
   // * Display
   return (
     <FridgeContext.Provider value={{ 
-      filter, 
-      setFilter, 
+      fridgeDetail,
+      setFridgeDetail,
       fridgeAgendaProps, 
       setFridgeAgendaProps  
       }}>

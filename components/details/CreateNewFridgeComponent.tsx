@@ -1,8 +1,7 @@
 import { ProductController } from '@/controllers/ProductController';
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import ThemedFormField from '../inputs/CustomFormField';
-import ThemedTextArea from '../inputs/CustomTextArea';
+import FridgeForm from '../forms/FridgeForm';
 import PrimaryButton from '../pressable/PrimaryButton';
 
 interface CNFCInterface {
@@ -18,7 +17,7 @@ const CreateNewFridgeComponent = (props: CNFCInterface) => {
   // * Functions
   const handleCreateFridge = async () => {
     if(name){
-      await ProductController.createFridge(name, description)
+      await ProductController.createFridge({ name, description})
       .then((res) => {
         if(res) {
           props.onClose()
@@ -34,20 +33,12 @@ const CreateNewFridgeComponent = (props: CNFCInterface) => {
       <View className="flex flex-col justify-between gap-4 p-4 ">
 
         {/* Text Inputs */}
-        <View className="flex flex-col gap-4">
-
-
-          <ThemedFormField
-            value={name}
-            setValue={setName}
-            label="Nome"
-          />
-          <ThemedTextArea
-            value={description}
-            setValue={setDescription}
-            label="Descrizione"
-          />      
-        </View>
+        <FridgeForm
+          name={name} 
+          description={description}  
+          setName={setName} 
+          setDescription={setDescription}  
+        />
 
         {/* Actions */}
         <PrimaryButton onPress={handleCreateFridge} textStyle='text-white' buttonText="Crea Frigorifero"/>

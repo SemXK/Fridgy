@@ -160,8 +160,8 @@ export abstract class ProductController extends Controller {
         throw e as AxiosError;
       });
   };
-  static createFridge = async (name: string, description: string): Promise<boolean | AxiosError> => {
-    return await this.authenticatedPostCall("products/create-fridge", { name, description })
+  static createFridge = async (fridgeForm: Partial<Fridge>): Promise<boolean | AxiosError> => {
+    return await this.authenticatedPostCall("products/create-fridge", fridgeForm)
       .then((res: AxiosResponse<CartItemInterface[]>) => {
         if (res.status === 200) {
           return true;
@@ -206,6 +206,21 @@ export abstract class ProductController extends Controller {
   };
   static getFridgeHistory = async (fridgeId: string, startDate: Date, endDate: Date): Promise<FridgeAction[] | AxiosError> => {
     return await this.authenticatedPostCall(`products/get-fridge-history/${fridgeId}`, { startDate, endDate })
+      .then((res: AxiosResponse<Fridge>) => {
+        if (res.status === 200) {
+          const fridge = (res as AxiosResponse).data;
+          return fridge;
+        } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        throw new Error("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  static editFridge = async (fridgeId: string, fridgeForm: Partial<Fridge>): Promise<Fridge | AxiosError> => {
+    return await this.authenticatedPutCall(`products/edit-fridge/${fridgeId}`, fridgeForm)
       .then((res: AxiosResponse<Fridge>) => {
         if (res.status === 200) {
           const fridge = (res as AxiosResponse).data;

@@ -13,7 +13,7 @@
   [x] Grafico Composizione Inventario
   [x] Grafico Marche Preferithe
   [x] Calendario Azioni del frigo
-  [ ] Modifica Frigo
+  [x] Modifica Frigo
   [ ] Eliminazione Frigo
 
 [x] Rendere Generico lo stile per le ombre delle cards
