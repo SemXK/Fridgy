@@ -39,6 +39,7 @@ export abstract class Controller {
         ...config,
       });
     } catch (error: any) {
+      console.log({ error });
       throw error;
     }
   };

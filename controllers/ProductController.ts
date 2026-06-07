@@ -56,10 +56,10 @@ export abstract class ProductController extends Controller {
   static setProduct = async (formData: FormData): Promise<Product> => {
     const response = await this.basicPostCall("products/set-product", formData);
     if (response.status === 200) return response.data;
-    else if (response.status === 401) throw new AxiosError("Invalid Credentials");
+    // else if (response.status === 401) throw new AxiosError("Invalid Credentials");
     else {
       console.log(response);
-      throw new AxiosError("Unexpected response status: " + response.status);
+      throw new AxiosError("Unexpected response status: " + response.data);
     }
   };
   static getProduct = async (productId: number | string): Promise<Product | AxiosError> => {

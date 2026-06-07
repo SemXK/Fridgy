@@ -50,38 +50,40 @@ const ProductCreation = () => {
     })
   }  
   const handleSubmit = async () => {
-    setLoadingPreview(true);
+    console.log(PERCENTUALI_IVA[0])
+    if(productForm.name && productForm.price && productForm.brandId && productForm.uma) {
+      setLoadingPreview(true);
+      const formData = new FormData();  
+      formData.append("name", productForm.name);
+      formData.append("description", productForm.description);
+      formData.append("price", String(parseFloat(productForm.price.replace(',', '.'))));
+      formData.append("taxPercent",PERCENTUALI_IVA[productForm.taxPercent].replace("%", ''));
+      formData.append("brandId", String(productForm.brandId));
+      formData.append("quantity", productForm.quantity);
+      formData.append("uma", UNITA_DI_MISURA[productForm.uma as number]);
 
-    const formData = new FormData();
-    formData.append("name", productForm.name);
-    formData.append("description", productForm.description);
-    formData.append("price", String(parseFloat(productForm.price.replace(',', '.'))));
-    formData.append("taxPercent",PERCENTUALI_IVA[productForm.taxPercent].replace("%", ''));
-    formData.append("brandId", String(productForm.brandId));
-    formData.append("quantity", productForm.quantity);
-    formData.append("uma", UNITA_DI_MISURA[productForm.uma as number]);
-
-
-    if (image) {
-      const file = {
-        uri: image.uri,
-        type: image.mimeType || "image/jpeg",
-        name: image.fileName || `image.${image.uri.split('.').pop()}`,
-      };
-
-      formData.append("image", file as any);
-    }
-
-    try {
-      await ProductController.setProduct(formData);
-      setProductForm(initialState);
-      setImage(null);
-    } 
-    catch (e: any) {
-      console.log({ msg: e.message });
-    } 
-    finally {
-      setLoadingPreview(false);
+      if (image) {
+        const file = {
+          uri: image.uri,
+          type: image.mimeType || "image/jpeg",
+          name: image.fileName || `image.${image.uri.split('.').pop()}`,
+        };
+  
+        formData.append("image", file as any);
+      }
+  
+      console.log({formData: formData.get('uma')})
+      try {
+        await ProductController.setProduct(formData);
+        setProductForm(initialState);
+        setImage(null);
+      } 
+      catch (e: any) {
+        console.log({ msg: e.message });
+      } 
+      finally {
+        setLoadingPreview(false);
+      }
     }
   };
 
