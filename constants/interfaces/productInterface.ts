@@ -64,11 +64,20 @@ export interface Product {
   updated_at: string;
 
   // * Pivot Tables
-  pivot?: {
+  pivot: {
+    id: number;
     fridgeId: number;
     productId: number;
-    quantity: number;
+    quantity: number;   // Numero di prodotti interi (4 cartoni di latte)
   };
+  pivotConsumption?: {
+    id: number;
+    fridgeId: number;
+    productId: number;
+    quantity: number;   // quantità rimasta (250ml di latte)
+    created_at: Date;
+    updated_at: Date;
+  }[];
 }
 export interface Discount {
   id: number;
@@ -84,6 +93,7 @@ export interface Fridge {
   updated_at: Date;
 
   productList: Product[];
+
   actionsStory: FridgeAction[];
 }
 export interface Brand {

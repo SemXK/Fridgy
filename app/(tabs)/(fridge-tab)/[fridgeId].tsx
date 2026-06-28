@@ -6,12 +6,11 @@ import CartPageHeader from "@/components/headers/CartPageHeader"
 import FridgeActionDailyAgenda from "@/components/thirdParty/FridgeActionDailyAgenda"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
 import ThemedText from "@/components/ui/ThemedText"
-import { Fridge, Product } from "@/constants/interfaces/productInterface"
+import { Product } from "@/constants/interfaces/productInterface"
 import { styleShadows } from "@/constants/styles/style-shadows"
 import { primaryColor } from "@/constants/theme"
-import { ProductController } from "@/controllers/ProductController"
 import { FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
-import { router, useLocalSearchParams } from "expo-router"
+import { useLocalSearchParams } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
@@ -26,7 +25,7 @@ const SINGLE_ROW_FLATLIST_WIDTH = 98
 
 const FridgeDetail = () => {
   // £ Context
-  const { fridgeAgendaProps, setFridgeAgendaProps, fridgeDetail, setFridgeDetail } = useFridge()
+  const { fridgeAgendaProps, setFridgeAgendaProps, fridgeDetail, getFridgeDetail } = useFridge()
 
   // % Animation states
   const productWidth = useSharedValue(FOUR_ROW_FLATLIST_WIDTH) // in %
@@ -45,26 +44,12 @@ const FridgeDetail = () => {
   const [editingFridgeIsOpen, setEditingFridgeIsOpen] = useState<boolean>(false);
   const [consumingProduct, setConsumingProduct] = useState<Product | null>(null); // BottomSheet for product usage
 
-
-
   // * Lifecycle
   useEffect(() => {
-    getFridgeDetail()
-    // openDetail()
-    // return () => closeDetail()
-  }, [])
+    getFridgeDetail(fridgeId)
+  }, [fridgeId])
 
   // * Functions
-  const getFridgeDetail = async () => {
-    await ProductController.getFridgeDetail(Number(fridgeId))
-      .then((res) => {
-        const fridge = res as Fridge
-        setFridgeDetail(fridge)
-      })
-      .catch((e) => {
-        router.back()
-      })
-  }
   const handleProductViewDisplay = (displayType: string) => {
     switch (displayType) {
       case 'doubleCol':
@@ -184,7 +169,7 @@ const FridgeDetail = () => {
                 </View>
               </View>
 
-              {/* Dipslay prodotti */}
+              {/* Dipslay prodotti  */}
               <FlatList
                 key={columnsOfProducts}
                 numColumns={columnsOfProducts}

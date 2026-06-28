@@ -1,6 +1,7 @@
 import { AgendaFridgeAction } from '@/constants/interfaces/common'
 import { Fridge } from '@/constants/interfaces/productInterface'
-import { Slot } from 'expo-router'
+import { ProductController } from '@/controllers/ProductController'
+import { router, Slot } from 'expo-router'
 import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
 
 // ? General Frudge Context
@@ -8,7 +9,8 @@ const FridgeContext = createContext<{
   fridgeDetail: Fridge | null;
   setFridgeDetail: Dispatch<SetStateAction<Fridge | null>>
   fridgeAgendaProps: AgendaFridgeAction[] | null,
-  setFridgeAgendaProps: Dispatch<SetStateAction<AgendaFridgeAction[]  | null>>
+  setFridgeAgendaProps: Dispatch<SetStateAction<AgendaFridgeAction[]  | null>>,
+  getFridgeDetail: (id: string) => void
 }>({} as any)
 export const useFridge = () => useContext(FridgeContext)
 
@@ -19,13 +21,26 @@ const FridgeLayout = () => {
   const [fridgeDetail, setFridgeDetail] = useState<Fridge | null>(null); // List of actions, displayed in the agenda bottomsheet
   const [fridgeAgendaProps, setFridgeAgendaProps] = useState<AgendaFridgeAction[]  | null>(null); // List of actions, displayed in the agenda bottomsheet
 
+  // $ functions
+  const getFridgeDetail = async (fridgeId: string) => {
+    await ProductController.getFridgeDetail(Number(fridgeId))
+      .then((res) => {
+        const fridge = res as Fridge
+        setFridgeDetail(fridge)
+      })
+      .catch((e) => {
+        router.navigate('/(tabs)/Home')
+      })
+  }
+
   // * Display
   return (
     <FridgeContext.Provider value={{ 
       fridgeDetail,
       setFridgeDetail,
       fridgeAgendaProps, 
-      setFridgeAgendaProps  
+      setFridgeAgendaProps,
+      getFridgeDetail 
       }}>
       {/* <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black "> */}
         {/* * Auth Header */}

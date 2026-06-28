@@ -1,153 +1,138 @@
-import { productTypeToIcon } from '@/constants/enums/productTypeEnum';
+import { useFridge } from '@/app/(tabs)/(fridge-tab)/_layout';
 import { Product } from '@/constants/interfaces/productInterface';
-import { darkColor, primaryColor } from '@/constants/theme';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ProductController } from '@/controllers/ProductController';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
-import ThemedText from '../ui/ThemedText';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import ConsumeProductAnimated from '../animatedComponents/ConsumeProductAnimated';
+import PrimaryButton from '../pressable/PrimaryButton';
 
 interface ConsumingProduct {
   product: Product;
 }
 
 
-const SelectedItemDimension = 256;
-const UnselectedItemDimension = 98
-
 const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
+  // £ Context
+  const { getFridgeDetail } = useFridge()
 
   // * States
-  const [productIcon, setProductIcon] = useState<React.ComponentProps<typeof MaterialCommunityIcons>['name']>('food')
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [percentage, setPercentage] = useState(100);
-
+  const [currentQuantityRecorder, setCurrentQuantityRecorder] = useState<number>(0);
   // * Animated States
-  const fillPercentage = useSharedValue(100);
-  const isActive = useSharedValue(false);
-  const startTime = useSharedValue(0);
+  const actionsOpacity = useSharedValue(1);
 
   // ? Gestures
-  const pan = Gesture.Pan()
-    .onBegin(() => {
-      startTime.value = Date.now();
-      isActive.value = false;
-    })
-    .onUpdate((e) => {
-      const heldLongEnough = Date.now() - startTime.value > 200;
-      if (!heldLongEnough) return;
-
-      const sensitivity = 0.35; // tune this
-      const verticalPos = e.translationY
-      // Scroll Up
-      if (verticalPos > 0) {
-        fillPercentage.value =
-          Math.max(0, 100 - e.translationY * sensitivity)
-      }
-      // Scroll Up
-      else {
-        fillPercentage.value =
-          Math.min(100, 100 - e.translationY * sensitivity)
-
-      }
-      scheduleOnRN(setPercentage, Math.round(fillPercentage.value - 10))
-  });
-
-  const animatedProductUsageStyle = useAnimatedStyle(() => {
-    return {
-      height: `${100 - fillPercentage.value}%`,
-    };
-  });
-
-
+  const animatedActionsOpacity = useAnimatedStyle(() => {
+    return{
+      opacity: actionsOpacity.value
+    }
+  })
 
   // $ Functions
   const onPressItem = (index: number) => {
-    // setSelectedIndex(prev => (prev === index ? null : index));
     setSelectedIndex(index);
   };
+  const handleConsumeProduct = async () => {
+    await ProductController.consumeProduct({
+      productId: props.product.id,
+      fridgeId: props.product.pivot.fridgeId,
+      quantity: currentQuantityRecorder
+    }).then(() => {
+      console.log("Saved")
+      getFridgeDetail(String(props.product.pivot.fridgeId))
+      setSelectedIndex(null)
+    }).catch((e) => {
+      console.log({e: e.message})
+    })
+  }
 
   // % Event Listeners
   useEffect(() => {
-    setProductIcon(productTypeToIcon(props.product.productTypes[0].type))
-  }, [props])
+    actionsOpacity.value = withTiming(selectedIndex != null ? 1 : 0, {duration: 200})
+  }, [selectedIndex])
+
 
   // 1! Display da fare con flastlist (2026)
   return (
-    <GestureDetector gesture={pan}>
+    
+    <View className="flex flex-col p-4  h-[80%]">
 
-      <View className="flex flex-row gap-4 flex-wrap p-4 items-center justify-center h-full">
-        {Array(props.product.pivot?.quantity)
-          .fill({})
-          .map((_, i) => {
-            const isSelected = selectedIndex === i;
-            const isHidden = selectedIndex !== null && !isSelected;
+      {/* Product Icons */}
+        <View className="flex flex-row gap-4 flex-wrap items-center justify-center h-full">
+          {/* Full Products */}
+          {
+            Array(props.product.pivot?.quantity)
+            .fill({})
+            .map((_, i) => {
+              const isSelected = selectedIndex === i;
+              const isHidden = selectedIndex !== null && !isSelected;
 
-            if (!isHidden) {
-              return (
-                <View
-                  key={i}
-                  onTouchEnd={() => {
-                    onPressItem(i)
-                  }}
-                  style={[{
-                    opacity: isHidden ? 0 : 1,
-                    width: isSelected ? SelectedItemDimension : UnselectedItemDimension,
-                    height: isSelected ? SelectedItemDimension : UnselectedItemDimension,
-                    top: 0
-                  },
-                  ]}
-                >
-                  {/* Background */}
-                  <MaterialCommunityIcons
-                    name={productIcon}
-                    size={isSelected ? SelectedItemDimension : UnselectedItemDimension}
-                    color={primaryColor[500]}
+              if (!isHidden) {
+                return (
+                  <ConsumeProductAnimated 
+                    key={i} 
+                    onTouch={() => {onPressItem(i)}}
+                    isSelected={isSelected}
+                    isHidden={isHidden}
+                    product={props.product}
+                    selectedIndex={selectedIndex}
+                    setCurrentQuantityRecorder={setCurrentQuantityRecorder}
+
                   />
+                );
+              }
+              else {
+              }
+            })
+          }
 
-                  {/* Fill */}
-                  <Animated.View
-                    style={[{
-                      overflow: "hidden",
-                      position: "absolute",
-                      top: 0
-                    },
-                      animatedProductUsageStyle
-                    ]}
-                  >
-                    <MaterialCommunityIcons
-                      name={productIcon}
-                      size={isSelected ? SelectedItemDimension : UnselectedItemDimension}
-                      color={darkColor[800]}
-                    />
-                  </Animated.View>
+          {/* Cosnumed Products */}
+          {
+            props.product.pivotConsumption?.map((pivot, i) => {
+              const index = i + props.product.pivot?.quantity 
+              const isSelected = selectedIndex === index;
+              const isHidden = selectedIndex !== null && !isSelected;
 
-                  {/* Text */}
-                  <View
-                    style={{
-                      position: "absolute",
-                      alignSelf: "center",
-                      top: "50%",
-                    }}
-                  >
-                    <ThemedText
-                      label={`${percentage}%`}
-                      textStyle="text-2xl"
-                    />
-                  </View>
-                </View>
-              );
-            }
-            else {
-            }
-          })}
-      </View>
+              if (!isHidden) {
+                return (
+                  <ConsumeProductAnimated 
+                    key={index} 
+                    onTouch={() => {onPressItem(index)}}
+                    isSelected={isSelected}
+                    isHidden={isHidden}
+                    product={props.product}
+                    selectedIndex={selectedIndex}
+                    quantityConsumed={pivot.quantity}
+                    setCurrentQuantityRecorder={setCurrentQuantityRecorder}
+                  />
+                );
+              }
+              else {
+              }
+            })
+          }
 
-      
-    </GestureDetector>
 
+        </View>
+
+
+      {/* Actions for selected product */}
+      <Animated.View 
+        className="flex flex-row justify-between"
+        style={animatedActionsOpacity}
+        >
+        <PrimaryButton 
+          buttonText="Annulla"
+          mode="outlined"
+          onPress={() => setSelectedIndex(null)}
+        />
+        <PrimaryButton 
+          buttonText="Consuma"
+          onPress={handleConsumeProduct}
+        />
+      </Animated.View>
+    </View>
   )
 }
 

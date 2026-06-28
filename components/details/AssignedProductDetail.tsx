@@ -21,7 +21,6 @@ const AssignedProductToFridgeDetail = (props: {
     opacity: productOpacity.value
   }))
 
-
   // * Lifecycle
   useEffect(() => {
     productOpacity.value = withTiming(props.itemsPerColumns === 4 ? 0 : 1, {
@@ -69,7 +68,7 @@ const AssignedProductToFridgeDetail = (props: {
 
       {/* Azioni Prodotto */}
       <View className="absolute bottom-0 right-0 rounded-tl-xl rounded-br-xl bg-primary-500 p-2" >
-        <ThemedText font='Nunito-Italic' darkModeDisabled textStyle='text-white' label={String(props.product.pivot?.quantity)} />
+        <ThemedText font='Nunito-Italic' darkModeDisabled textStyle='text-white' label={String(props.product.pivot?.quantity + (props.product.pivotConsumption?.length || 0))} />
       </View>
 
 
