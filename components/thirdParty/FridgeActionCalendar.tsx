@@ -16,15 +16,16 @@ import '../../constants/locale';
 const FridgeActionCalendar = () => {
   // £ Context
   const { fridgeId }= useLocalSearchParams<{ fridgeId: string }>()
-  const {setFridgeAgendaProps } = useFridge()
+  const {setFridgeAgendaProps , fridgeDetail} = useFridge()
   
   // * States
   const [fridgeActions, setFridgeActions] = useState<MarkedDates>({})
   const [calendarStartDate, setCalendarStartDate] = useState<Date>(moment().startOf('M').toDate())
   const [calendarEndDate, setCalendarEndDate] = useState<Date>(moment().endOf('M').toDate())
+
   useEffect(() => {
     getFridgeActions()
-  }, [])
+  }, [fridgeDetail])
 
   // * Functions
   const getFridgeActions = async () => {
@@ -48,15 +49,13 @@ const FridgeActionCalendar = () => {
               moment(act.created_at).format('YYYY-MM-DD') === date
             )
           })
-          .map((act) => {
-          return {
-            key: act.id.toString(), 
-            color: getFridgeActionsColor(act.fridgeActionTypeId), 
-            // fridgeActionTypeId: act.fridgeActionTypeId,
-            // fridgeAction: act.fridgeAction
-            ...act
-          }
-        }) 
+          .map((act, i) => {
+            return {
+              key: act.id.toString(), 
+              color: getFridgeActionsColor(act.fridgeActionTypeId), 
+              ...act
+            }
+        })
       }
     })
     setFridgeActions(markedDates)

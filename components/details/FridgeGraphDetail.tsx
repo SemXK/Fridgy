@@ -59,7 +59,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
       currentTotalItems += pieItem.value
     })
     setTotalProductTypes(currentTotalItems)
-  }, [])
+  }, [productList])
 
   // $ Memoized Brand Function 
   useMemo(() => {
@@ -89,7 +89,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
     setBrandGraphData(pieDataItems)
     const currentTotalItems = pieDataItems.reduce((sum, pieItem) => sum + (pieItem.value || 0), 0)
     setTotalBrands(currentTotalItems)
-  }, [])
+  }, [productList])
 
   // * Functions
   const handlePageChange = (event:any) => {
@@ -101,7 +101,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
     <View style={styles.container}>
       <PagerView style={styles.container} initialPage={0} onPageScroll={handlePageChange}>
 
-        {/* Pie Chart */}
+        {/* Pie Chart Product Type*/}
         <View key="1">
           {/* <Text>Product Type Chart (Meat, Milk...)</Text> */}
             <View
@@ -151,6 +151,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
             </View>
         </View>
 
+        {/* Pie Chart Product Brand*/}
         <View  key="2">
           <View
             className="rounded-xl bg-white dark:bg-darkColor-800"
@@ -202,6 +203,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
           </View>
         </View>
 
+        {/* Fridge Events Calendar */}
         <View  key="3">
           <View
             className="rounded-xl"
@@ -215,6 +217,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
             <FridgeActionCalendar />
           </View>
         </View>
+
         <View  key="4">
           <Text>Last Bought Items</Text>
         </View>

@@ -93,8 +93,7 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
               const index = i + props.product.pivot?.quantity 
               const isSelected = selectedIndex === index;
               const isHidden = selectedIndex !== null && !isSelected;
-
-              if (!isHidden) {
+              if (!isHidden || pivot.quantity !== 0) {
                 return (
                   <ConsumeProductAnimated 
                     key={index} 
