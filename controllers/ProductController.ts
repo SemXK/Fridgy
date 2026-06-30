@@ -234,7 +234,15 @@ export abstract class ProductController extends Controller {
         throw e as AxiosError;
       });
   };
-  static consumeProduct = async (payload: {productId: number, fridgeId: number, quantity: number}): Promise<boolean | AxiosError> => {
+  /**
+   * 
+   * @param payload Object with these params
+   * @key productId the id of the consumed product
+   * @key fridgeId the id of the fridge
+   * @key the quantity remained
+   * @key prevQuantity the quantity before consuming the product
+   */
+  static consumeProduct = async (payload: {productId: number, fridgeId: number, quantity: number, prevQuantity: number}): Promise<boolean | AxiosError> => {
     console.log({payload})
     return await this.authenticatedPostCall(`products/consume-product`, payload)
       .then((res: AxiosResponse<Fridge>) => {

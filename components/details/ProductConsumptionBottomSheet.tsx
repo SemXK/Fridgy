@@ -18,7 +18,8 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
 
   // * States
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [currentQuantityRecorder, setCurrentQuantityRecorder] = useState<number>(0);
+  const [currentQuantityRecorder, setCurrentQuantityRecorder] = useState<number | string>(0);    //Current %, used for UI display
+  const [prevQuantity, setPrevQuantity] = useState<number>(0);    //Previous %, used for the API payload
   // * Animated States
   const actionsOpacity = useSharedValue(1);
 
@@ -32,12 +33,28 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
   // $ Functions
   const onPressItem = (index: number) => {
     setSelectedIndex(index);
+    // The consumed element is at 100%
+    if(index < props.product.pivot.quantity) {
+      setPrevQuantity(props.product.quantity)
+    }
+    // Thge consumed item was already consumed partially
+    else {
+      const consumeIndex = index - props.product.pivot.quantity
+      setPrevQuantity(props.product.pivotConsumption?.[consumeIndex]?.quantity || 0)
+    }
   };
   const handleConsumeProduct = async () => {
+    console.log({
+      productId: props.product.id,
+      fridgeId: props.product.pivot.fridgeId,
+      quantity: currentQuantityRecorder,
+      prevQuantity,
+    })
     await ProductController.consumeProduct({
       productId: props.product.id,
       fridgeId: props.product.pivot.fridgeId,
-      quantity: currentQuantityRecorder
+      quantity: Number(currentQuantityRecorder),
+      prevQuantity,
     }).then(() => {
       console.log("Saved")
       getFridgeDetail(String(props.product.pivot.fridgeId))
@@ -51,7 +68,6 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
   useEffect(() => {
     actionsOpacity.value = withTiming(selectedIndex != null ? 1 : 0, {duration: 200})
   }, [selectedIndex])
-
 
   // 1! Display da fare con flastlist (2026)
   return (
@@ -78,7 +94,6 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
                     product={props.product}
                     selectedIndex={selectedIndex}
                     setCurrentQuantityRecorder={setCurrentQuantityRecorder}
-
                   />
                 );
               }

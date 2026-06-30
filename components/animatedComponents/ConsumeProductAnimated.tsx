@@ -16,13 +16,11 @@ interface ConsumeProductInterface {
   product: Product,
   selectedIndex: number | null,
   quantityConsumed?: number,
-  setCurrentQuantityRecorder: React.Dispatch<React.SetStateAction<number>>
+  setCurrentQuantityRecorder: React.Dispatch<React.SetStateAction<number | string>>,
 }
-
 
 const SelectedItemDimension = 256;
 const UnselectedItemDimension = 98
-
 
 const ConsumeProductAnimated = ({
   onTouch,
@@ -31,12 +29,12 @@ const ConsumeProductAnimated = ({
   product,
   selectedIndex,
   quantityConsumed,
-  setCurrentQuantityRecorder
+  setCurrentQuantityRecorder,
 }: ConsumeProductInterface) => {
 
   // * States
   const [productIcon, setProductIcon] = useState<React.ComponentProps<typeof MaterialCommunityIcons>['name']>('food')
-  const [productQuantityRemained, setProductQuantityRemained] = useState(quantityConsumed ? quantityConsumed : product.quantity);
+  const [productQuantityRemained, setProductQuantityRemained] = useState<string | number>(quantityConsumed ? quantityConsumed : product.quantity);
 
   // * Animated States
   const fillPercentage = useSharedValue(quantityConsumed ? quantityConsumed * 100 / product.quantity  : 100);
@@ -67,15 +65,23 @@ const ConsumeProductAnimated = ({
         fillPercentage.value =
           Math.min(100, 100 - e.translationY * sensitivity)
       }
-      scheduleOnRN(setProductQuantityRemained, Math.round(fillPercentage.value * product.quantity / 100))
+      let newPercentage: string | number = fillPercentage.value * product.quantity / 100
+      if(newPercentage < 1) {
+        newPercentage = newPercentage.toFixed(2)
+      }
+      else {
+        newPercentage = Math.floor(newPercentage)
+      }
+      scheduleOnRN(setProductQuantityRemained, newPercentage)
   });
 
   // % Events
   useEffect(() => {
     setProductIcon(productTypeToIcon(product.productTypes[0].type))
   }, [product.productTypes])
+
   useEffect(() => {
-    setCurrentQuantityRecorder(productQuantityRemained)
+    setCurrentQuantityRecorder(productQuantityRemained);
   }, [productQuantityRemained, setCurrentQuantityRecorder])
 
   // ? Animations

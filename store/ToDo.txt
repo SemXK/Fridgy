@@ -17,12 +17,14 @@
   [ ] Eliminazione Frigo
 
 [x] Rendere Generico lo stile per le ombre delle cards
-[] Consumo Alimenti
-[] Creazione marche prodotti
+[x] Consumo Alimenti
+[] Messaggi per cronologia frigo 
 [] Filtri alimenti
+
 
 * Release 2
 [] Registrazione variazione prezzi alimenti
+[] Creazione marche prodotti
 
 [] API per prezzi live su alimenti ()
 [] API per sconti live ()
