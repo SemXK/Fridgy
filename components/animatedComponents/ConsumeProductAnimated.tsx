@@ -91,9 +91,6 @@ const ConsumeProductAnimated = ({
     };
   });
 
-  // $ Functions
-
-
   return (
     <GestureDetector gesture={pan}>
 

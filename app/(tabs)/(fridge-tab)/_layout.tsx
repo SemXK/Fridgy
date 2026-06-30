@@ -10,7 +10,9 @@ const FridgeContext = createContext<{
   setFridgeDetail: Dispatch<SetStateAction<Fridge | null>>
   fridgeAgendaProps: AgendaFridgeAction[] | null,
   setFridgeAgendaProps: Dispatch<SetStateAction<AgendaFridgeAction[]  | null>>,
-  getFridgeDetail: (id: string) => void
+  getFridgeDetail: (id: string) => void,
+  fridgeLoading: boolean,
+  setFridgeLoading: Dispatch<SetStateAction<boolean>>
 }>({} as any)
 export const useFridge = () => useContext(FridgeContext)
 
@@ -18,11 +20,13 @@ export const useFridge = () => useContext(FridgeContext)
 const FridgeLayout = () => {
 
   // % States
-  const [fridgeDetail, setFridgeDetail] = useState<Fridge | null>(null); // List of actions, displayed in the agenda bottomsheet
+  const [fridgeDetail, setFridgeDetail] = useState<Fridge | null>(null); 
   const [fridgeAgendaProps, setFridgeAgendaProps] = useState<AgendaFridgeAction[]  | null>(null); // List of actions, displayed in the agenda bottomsheet
+  const [fridgeLoading, setFridgeLoading] = useState<boolean>(false);
 
   // $ functions
   const getFridgeDetail = async (fridgeId: string) => {
+    setFridgeLoading(true)
     await ProductController.getFridgeDetail(Number(fridgeId))
       .then((res) => {
         const fridge = res as Fridge
@@ -30,6 +34,9 @@ const FridgeLayout = () => {
       })
       .catch((e) => {
         router.navigate('/(tabs)/Home')
+      })
+      .finally(() => {
+        setFridgeLoading(false)
       })
   }
 
@@ -40,15 +47,15 @@ const FridgeLayout = () => {
       setFridgeDetail,
       fridgeAgendaProps, 
       setFridgeAgendaProps,
-      getFridgeDetail 
+      getFridgeDetail,
+      fridgeLoading,
+      setFridgeLoading
       }}>
       {/* <SafeAreaView className="h-screen w-screen relative bg-white dark:bg-black "> */}
         {/* * Auth Header */}
-        {/* <HomePageHeader title="Il mio inventario"/> */}
 
         {/* Children Components */}
         <Slot />
-
       {/* </SafeAreaView> */}
     </FridgeContext.Provider>
 

@@ -207,7 +207,11 @@ const FridgeDetail = () => {
                     },
                     styleShadows.shadow
                   ]}>
-                    <AssignedProductToFridgeDetail product={item} itemsPerColumns={columnsOfProducts} onPressFunc={consumeProduct} />
+                    <AssignedProductToFridgeDetail 
+                      product={item} 
+                      itemsPerColumns={columnsOfProducts} 
+                      onPressFunc={consumeProduct} 
+                    />
                   </Animated.View>
                 )}
               />

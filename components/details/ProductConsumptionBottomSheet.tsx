@@ -14,12 +14,13 @@ interface ConsumingProduct {
 
 const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
   // £ Context
-  const { getFridgeDetail } = useFridge()
+  const { fridgeLoading, getFridgeDetail } = useFridge()
 
   // * States
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [currentQuantityRecorder, setCurrentQuantityRecorder] = useState<number | string>(0);    //Current %, used for UI display
   const [prevQuantity, setPrevQuantity] = useState<number>(0);    //Previous %, used for the API payload
+  
   // * Animated States
   const actionsOpacity = useSharedValue(1);
 
@@ -31,6 +32,10 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
   })
 
   // $ Functions
+  /**
+   * Focuses on one of the items, while keeping in memory the quantity of it before any edits
+   * @param index the array index of the pressed item
+   */
   const onPressItem = (index: number) => {
     setSelectedIndex(index);
     // The consumed element is at 100%
@@ -44,16 +49,16 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
     }
   };
   const handleConsumeProduct = async () => {
-    console.log({
-      productId: props.product.id,
-      fridgeId: props.product.pivot.fridgeId,
-      quantity: currentQuantityRecorder,
-      prevQuantity,
-    })
+    // console.log({
+    //   productId: props.product.id,
+    //   fridgeId: props.product.pivot.fridgeId,
+    //   quantity: currentQuantityRecorder,
+    //   prevQuantity,
+    // })
     await ProductController.consumeProduct({
       productId: props.product.id,
       fridgeId: props.product.pivot.fridgeId,
-      quantity: Number(currentQuantityRecorder),
+      quantity: currentQuantityRecorder as number,
       prevQuantity,
     }).then(() => {
       console.log("Saved")
@@ -69,67 +74,67 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
     actionsOpacity.value = withTiming(selectedIndex != null ? 1 : 0, {duration: 200})
   }, [selectedIndex])
 
-  // 1! Display da fare con flastlist (2026)
+  // 1! Display da fare con flastlist 
   return (
     
     <View className="flex flex-col p-4  h-[80%]">
 
       {/* Product Icons */}
-        <View className="flex flex-row gap-4 flex-wrap items-center justify-center h-full">
-          {/* Full Products */}
-          {
-            Array(props.product.pivot?.quantity)
-            .fill({})
-            .map((_, i) => {
-              const isSelected = selectedIndex === i;
-              const isHidden = selectedIndex !== null && !isSelected;
 
-              if (!isHidden) {
-                return (
-                  <ConsumeProductAnimated 
-                    key={i} 
-                    onTouch={() => {onPressItem(i)}}
-                    isSelected={isSelected}
-                    isHidden={isHidden}
-                    product={props.product}
-                    selectedIndex={selectedIndex}
-                    setCurrentQuantityRecorder={setCurrentQuantityRecorder}
-                  />
-                );
-              }
-              else {
-              }
-            })
-          }
+      <View className="flex flex-row gap-4 flex-wrap items-center justify-center h-full">
+        {/* Full Products */}
+        {
+          Array(props.product.pivot?.quantity)
+          .fill({})
+          .map((_, i) => {
+            const isSelected = selectedIndex === i;
+            const isHidden = selectedIndex !== null && !isSelected;
 
-          {/* Cosnumed Products */}
-          {
-            props.product.pivotConsumption?.map((pivot, i) => {
-              const index = i + props.product.pivot?.quantity 
-              const isSelected = selectedIndex === index;
-              const isHidden = selectedIndex !== null && !isSelected;
-              if (!isHidden || pivot.quantity !== 0) {
-                return (
-                  <ConsumeProductAnimated 
-                    key={index} 
-                    onTouch={() => {onPressItem(index)}}
-                    isSelected={isSelected}
-                    isHidden={isHidden}
-                    product={props.product}
-                    selectedIndex={selectedIndex}
-                    quantityConsumed={pivot.quantity}
-                    setCurrentQuantityRecorder={setCurrentQuantityRecorder}
-                  />
-                );
-              }
-              else {
-              }
-            })
-          }
+            if (!isHidden) {
+              return (
+                <ConsumeProductAnimated 
+                  key={i} 
+                  onTouch={() => {onPressItem(i)}}
+                  isSelected={isSelected}
+                  isHidden={isHidden}
+                  product={props.product}
+                  selectedIndex={selectedIndex}
+                  setCurrentQuantityRecorder={setCurrentQuantityRecorder}
+                />
+              );
+            }
+            else {
+            }
+          })
+        }
+
+        {/* Cosnumed Products */}
+        {
+          props.product.pivotConsumption?.map((pivot, i) => {
+            const index = i + props.product.pivot?.quantity 
+            const isSelected = selectedIndex === index;
+            const isHidden = selectedIndex !== null && !isSelected;
+            if (!isHidden || pivot.quantity !== 0) {
+              return (
+                <ConsumeProductAnimated 
+                  key={index} 
+                  onTouch={() => {onPressItem(index)}}
+                  isSelected={isSelected}
+                  isHidden={isHidden}
+                  product={props.product}
+                  selectedIndex={selectedIndex}
+                  quantityConsumed={pivot.quantity}
+                  setCurrentQuantityRecorder={setCurrentQuantityRecorder}
+                />
+              );
+            }
+            else {
+            }
+          })
+        }
 
 
-        </View>
-
+      </View>
 
       {/* Actions for selected product */}
       <Animated.View 
