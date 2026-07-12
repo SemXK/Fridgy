@@ -1,18 +1,15 @@
-import Echo from "laravel-echo";
-import Pusher from "pusher-js";
+import EchoModule from "laravel-echo";
+import PusherModule from "pusher-js/react-native";
+
+const Echo = (EchoModule as unknown as { default?: typeof EchoModule }).default ?? EchoModule;
+const Pusher = (PusherModule as any).Pusher;
 
 let echoInstance: any;
 
-interface EchoChannelInterface {
-  broadcaster: string;
-  client: Pusher;
-}
 
-export async function getEcho(): Promise<Echo<any>> {
+export async function getEcho(): Promise<typeof Echo<any>> {
   if (echoInstance) return echoInstance;
 
-  const Echo = (await import("laravel-echo")).default;
-  const Pusher = (await import("pusher-js/react-native")).default;
   const AppName = process.env.EXPO_PUBLIC_PUSHER_APP_NAME;
 
   const pusherClient = new Pusher(AppName as string, {
