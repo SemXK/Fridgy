@@ -1,4 +1,4 @@
-* Release 1
+* Release 1.0.0
 [x] Elenco frigoriferi
 [x] Aggiunta alimenti
 [x] Dettaglio alimenti
@@ -14,18 +14,27 @@
   [x] Grafico Marche Preferithe
   [x] Calendario Azioni del frigo
   [x] Modifica Frigo
-  [ ] Eliminazione Frigo
-
 [x] Rendere Generico lo stile per le ombre delle cards
 [x] Consumo Alimenti
+
+* Release 1.1.0
 [] Messaggi per cronologia frigo 
-[] Filtri alimenti
+[] Fix Bug creazione e primo login
+[] Sistema Auth con i seguenti tipi di utente
+  [] Consumatore
+  [] Produttore
+  [] Specialista / Nutrizionista
+  [] Dietologo
+  [] Sviluppatore
+  [] Gestore 
+
+[] Mappa dei negozi vicini
+[] Logo e Splash screen app
 
 
-* Release 2
+
 [] Registrazione variazione prezzi alimenti
 [] Creazione marche prodotti
-
 [] API per prezzi live su alimenti ()
 [] API per sconti live ()
 [] Pagina per sezioni sconti ()
