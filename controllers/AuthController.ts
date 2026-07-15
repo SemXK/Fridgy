@@ -85,52 +85,55 @@ export abstract class AuthController extends Controller {
     }
   }
 
-  // * Offline Session functions
-  static createSession = async (guestId: string) => {
-    return await this.basicPostCall("init-guest-session", {guestId}).then((res: AxiosResponse<Guest>) => {
+  /**
+   * Creates a guest session using the passed token 
+   * @param guestId the token used to create a guest session
+   */
+  static createGuestSession = async (guestId: string) => {
+    return await this.basicPostCall("init-guest-session", {guestId})
+    .then((res: AxiosResponse<Guest>) => {
+
       if (res.status === 200) {
         this.currentGuest = res.data
       }
+
+    })
+    .catch((e) => {
+      console.log({initGuestSessionError: e})
     })
   }
+  /**
+   * Get's user's guest session or creates a new one
+   * @returns guest The guest session
+   */
   static sessionInit = async () => {
-    try {
+    if(this.currentGuest) return this.currentGuest
+    // 1* Get Current Guest Session token
+    let guestId = await SecureStore.getItemAsync("guestId");
 
-      // 1* unique guest id from phone's storage
-      let guestId = await SecureStore.getItemAsync("guestId");
+    // 1* Create guest session token if missing
+    if (!guestId) {
+      guestId = Crypto.randomUUID();
+      await SecureStore.setItemAsync("guestId", guestId);
+      return await this.createGuestSession(guestId)
+    }
 
-      // 1* Create guest session
-      if (!guestId) {
-        guestId = Crypto.randomUUID();
-        await SecureStore.setItemAsync("guestId", guestId as string);
-        
-        // 2* api create guest 
-        this.createSession(guestId as string)
-        
-      }
+    // 1* Get Token's Session (or creates one if missing)
+    else {
 
-      // 1* Get guest session
-      else {
-        return await this.basicGetCall(`guest-session/${guestId}`).then((res: AxiosResponse<Guest>) => {
-          if (res.status === 200) {
-            this.currentGuest = res.data
-          }
-          else {
-            // 2* api create guest 
-            sessionStorage.removeItem("guestId")
-            guestId = Crypto.randomUUID();
-            this.createSession(guestId)
-          }
-        })
-      }
-      return this.currentGuest
-    } 
-    catch (err) {
-      // Caso che compare solo nei test: Tabella migrata
-      await SecureStore.deleteItemAsync("guestId")
-      console.log("Error getting guest id, guest id deleted", err);
+      // 1* Create Guest Token
+      return await this.basicGetCall(`guest-session/${guestId}`)
+      .then(async (res: AxiosResponse<Guest>) => {
+
+        // 2* Current Session Found
+        if (res.status === 200) {
+          this.currentGuest = res.data
+        }
+
+      })
+      .catch(async () => {
+          await this.createGuestSession(guestId as string)
+      })
     }
   }
-
-
 }

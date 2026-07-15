@@ -1,4 +1,4 @@
-* Release 1.0.0
+* Release 1.0.0 - First Release
 [x] Elenco frigoriferi
 [x] Aggiunta alimenti
 [x] Dettaglio alimenti
@@ -17,22 +17,23 @@
 [x] Rendere Generico lo stile per le ombre delle cards
 [x] Consumo Alimenti
 
-* Release 1.1.0
+* Release 1.1.0 - Update Authentication
 [] Messaggi per cronologia frigo 
-[] Fix Bug creazione e primo login
+[x] Fix Bug creazione e primo login
 [] Sistema Auth con i seguenti tipi di utente
-  [] Consumatore
-  [] Produttore
-  [] Specialista / Nutrizionista
-  [] Dietologo
-  [] Sviluppatore
-  [] Gestore 
+  [x] Consumatore
+  [x] Produttore
+  [x] Specialista / Nutrizionista
+  [x] Dietologo
+  [x] Sviluppatore
+  [x] Gestore 
 
-[] Mappa dei negozi vicini
+[] Pagina Utente
 [] Logo e Splash screen app
+[] Review Light and Dark Mode Pre release
 
-
-
+* Release 1.2.0 - Live Server implementation 
+[] Mappa dei negozi vicini
 [] Registrazione variazione prezzi alimenti
 [] Creazione marche prodotti
 [] API per prezzi live su alimenti ()
@@ -48,4 +49,4 @@ Bug Risolti
 
 Bug Noti
 [] Durante la modifica dell'immagine di un prodotto, la modifica non viene presa durante il primo render del componente
-[] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano (Error getting guest id, guest id deleted [AxiosError: Request failed with status code 404])
+[x] Dopo una migrazione, l'app si blocca e deve essere riavviata. Il token dell'user e del guest non si refreshano (Error getting guest id, guest id deleted [AxiosError: Request failed with status code 404])

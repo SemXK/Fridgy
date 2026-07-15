@@ -4,6 +4,10 @@ export interface AuthType {
   user?: User;
   guest?: Guest;
 };
+export interface UserAccessType {
+  id: number;
+  type: string;
+}
 
 export interface User {
   id: number;
@@ -11,7 +15,8 @@ export interface User {
   surname: string;
   username: string;
   email: string;
-
+  accessTypeId: number;
+  accessType: UserAccessType;
   favouriteProducts: Product[];
   hatedProducts: Product[];
 

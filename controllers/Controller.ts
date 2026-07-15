@@ -27,9 +27,11 @@ export abstract class Controller {
 
   // * Generic API calls
   static basicGetCall = async (apiPath: string) => {
+
     try {
       return await axios.get(`${this.baseUrl}/${apiPath}`);
-    } catch (error: any) {
+    } 
+    catch (error: any) {
       throw error;
     }
   };
@@ -39,7 +41,6 @@ export abstract class Controller {
         ...config,
       });
     } catch (error: any) {
-      console.log({ error });
       throw error;
     }
   };
@@ -48,7 +49,6 @@ export abstract class Controller {
   static authenticatedGetCall = async (apiPath: string) => {
     const token = await this.getAuthToken();
     const guestId = await this.sessionGetId();
-
     if (token || guestId) {
       try {
         return await axios.get(`${this.baseUrl}/${apiPath}`, {
@@ -61,7 +61,7 @@ export abstract class Controller {
         return error;
       }
     } else {
-      throw new Error("AHAHAH");
+      throw new Error("Errore Generico Controller");
     }
   };
   static authenticatedPostCall = async (apiPath: string, payload: unknown) => {
