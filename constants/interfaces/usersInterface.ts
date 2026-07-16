@@ -19,7 +19,7 @@ export interface User {
   accessType: UserAccessType;
   favouriteProducts: Product[];
   hatedProducts: Product[];
-
+  address: Address;
   created_at: Date;
   updated_at: Date;
 }
@@ -29,4 +29,11 @@ export interface Guest {
   guestId: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface Address {
+  via: string;
+  comune: string;
+  regione: string;
+  stato: string;
 }

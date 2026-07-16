@@ -1,22 +1,22 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import CartButton from '../pressable/CartButton';
 import MenuButton from '../pressable/MenuButton';
-import NotificationButton from '../pressable/NotificationButton';
 import ThemedText from '../ui/ThemedText';
 
-interface HomePageInterface {
+interface ProfilePageInterface {
   title?: string;
   headerClass?: string;
 }
 
-const HomePageHeader = (props: HomePageInterface) => {
+const ProfilePageHeader = (props: ProfilePageInterface) => {
   // * Context
 
   return (
   <View className={"flex flex-row justify-between items-center px-4 py-3 " + props.headerClass}>
       <View className="flex flex-row  items-center">
-        <MenuButton/>
+        <MenuButton iconColor='white'/>
         {props.title && 
           <ThemedText 
             label={props.title} 
@@ -27,11 +27,21 @@ const HomePageHeader = (props: HomePageInterface) => {
         }
       </View>
       <View className="flex flex-row">
-        <NotificationButton />
-        <CartButton />
+        <TouchableOpacity
+          onPress={() => console.log('pressed')}
+          // onPressIn={handlePressIn}
+          // onPressOut={handlePressOut}
+        >
+          <IconButton
+            icon="account-settings"
+            size={20}
+            iconColor="white"
+          />
+        </TouchableOpacity>
+        <CartButton iconColor='white'/>
       </View>
     </View>
   )
 }
 
-export default HomePageHeader
+export default ProfilePageHeader

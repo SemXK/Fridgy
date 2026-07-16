@@ -14,6 +14,7 @@ const FridgeContext = createContext<{
   fridgeLoading: boolean,
   setFridgeLoading: Dispatch<SetStateAction<boolean>>
 }>({} as any)
+
 export const useFridge = () => useContext(FridgeContext)
 
 // ? Component

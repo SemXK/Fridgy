@@ -7,7 +7,11 @@ import { TouchableOpacity, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import ThemedText from '../ui/ThemedText'
 
-const CartButton = () => {
+interface CartButtonInterface {
+  iconColor?: string;
+}
+
+const CartButton = ({iconColor}: CartButtonInterface) => {
   // * Context
   const { cart } = useContext(CartContext) as CartContextInterface;
 
@@ -37,7 +41,7 @@ const CartButton = () => {
       <IconButton
         icon="shopping"
         size={20}
-        iconColor={primaryColor[500]}
+        iconColor={iconColor ?? primaryColor[500]}
       />
         {
           cartCount  ? 

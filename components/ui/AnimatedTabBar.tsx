@@ -1,3 +1,4 @@
+import { TabBarIcons } from '@/constants/iconConstants';
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
@@ -20,7 +21,10 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const isProductDetail = route.name === "productDetail";
   const isFridgeIndex = route.name === "(fridge-tab)";
   const isProductCreation = route.name === "ProductCreation";
-  if (!isHome && !isFridgeIndex && !isProductDetail && !isProductCreation) {
+  const isProfilePage = route.name === "ProfilePage";
+
+  // * Specify which page shows the Tab Bar
+  if (!isHome && !isFridgeIndex && !isProductDetail && !isProductCreation && !isProfilePage) {
     return null;
   }
 
@@ -58,13 +62,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
           }
         };
 
-        const icons: Record<string, string> = {
-          'Home': 'home',
-          '(fridge-tab)': 'fridge-outline',
-          'ProductCreation':'camera'
-        };
-
-        const iconName = icons[route.name] || 'circle-outline';
+        const iconName = TabBarIcons[route.name] || 'circle-outline';
         return (
           <TouchableOpacity
             key={route.key}

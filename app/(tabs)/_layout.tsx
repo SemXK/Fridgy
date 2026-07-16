@@ -51,17 +51,14 @@ export default function TabLayout() {
           title: 'Dettaglio Prodotto',
           headerShown: false,
           href:null
-
         }}
       />
+      <Tabs.Screen
+        name="ProfilePage"
+        options={{
+          headerShown: false,
+        }}
+      />      
     </Tabs>
   );
 }
-
-
-// <MaterialCommunityIcons
-//   className=" text-primary-600"
-//   name="fridge-outline"
-//   size={64}
-//   color={primaryColor[500]}
-//   />

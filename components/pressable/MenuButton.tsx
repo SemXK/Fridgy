@@ -1,9 +1,15 @@
-import { primaryColor } from '@/constants/theme'
-import React from 'react'
-import { TouchableOpacity } from 'react-native'
-import { IconButton } from 'react-native-paper'
+import { primaryColor } from '@/constants/theme';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { IconButton } from 'react-native-paper';
 
-const MenuButton = () => {
+interface MenuButtonInterface {
+  iconColor?: string;
+}
+
+const MenuButton = ({
+  iconColor
+}: MenuButtonInterface) => {
   return (
     <TouchableOpacity
       onPress={(e) => {}}
@@ -12,7 +18,7 @@ const MenuButton = () => {
       <IconButton
         icon="menu"
         size={20}
-        iconColor={primaryColor[500]}
+        iconColor={iconColor ?? primaryColor[500]}
       />
     </TouchableOpacity>
   )
