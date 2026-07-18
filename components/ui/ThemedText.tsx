@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 interface TTInterface {
   label: string;
   textStyle?: string;
-  darkModeDisabled?: boolean;
+  darkModeDisabled?: boolean;   // if false, ignores the color given by textStyle
   font?: AvailableFonts;
   numberOfLines?: number;
 }

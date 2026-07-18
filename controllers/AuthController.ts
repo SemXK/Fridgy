@@ -22,7 +22,7 @@ export interface AuthResponse {
 export abstract class AuthController extends Controller {
   static currentUser: User | undefined;
   static currentGuest: Guest | undefined;
-  static currentToken: string | null;
+  static currentToken: string | undefined;
   static tokenType: string | undefined; // Maybe this isnt even needed
   static expiresIn: number | undefined; // Maybe this isnt even needed
 
@@ -82,6 +82,25 @@ export abstract class AuthController extends Controller {
     }
     else {
       throw new Error ("Unauthorized s");
+    }
+  }
+  static logout = async () => {
+    if(this.currentUser) {
+      return await this.authenticatedGetCall("logout").then((res: AxiosResponse) => {
+        if (res.status === 200) {
+          this.deleteAuthToken()
+          this.deleteRefreshToken()
+          this.deleteGuestToken()
+          this.currentUser = undefined;
+          this.currentGuest = undefined;
+          this.currentToken = undefined;
+          return true;
+        }
+        else if (res.status === 401){
+          throw new AxiosError("Unauthorized");
+        }
+        throw new Error("Unexpected response");
+      });
     }
   }
 

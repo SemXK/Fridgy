@@ -1,10 +1,16 @@
 import ProfilePageHeader from '@/components/headers/ProfilePageHeader'
+import DefaultBadge from '@/components/ui/badges/DefaultBadge'
 import ThemedText from '@/components/ui/ThemedText'
 import UserProfileImage from '@/components/ui/UserProfileImage'
+import { AuthController } from '@/controllers/AuthController'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import React, { useContext } from 'react'
-import { View } from 'react-native'
+import { Appearance, TouchableOpacity, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { IconButton } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import colors from 'tailwindcss/colors'
 import { UserContext } from '../_layout'
 
 const ProfilePage = () => {
@@ -12,6 +18,16 @@ const ProfilePage = () => {
   // $Context
   const { user } =  useContext(UserContext)
 
+  // * functions
+  const logout = async () => {
+    await AuthController.logout()
+    .then(() => {
+      router.navigate('/(auth)/sign-in')
+    })
+    .catch(() => {
+      // error
+    })
+  }
 
   return (
     <View className="bg-primary-500">
@@ -31,7 +47,7 @@ const ProfilePage = () => {
             <ThemedText 
               label={user ? user.name : 'Utente'} 
               textStyle='text-white text-2xl'
-              font='Nunito-ExtraBold'
+              font='Nunito-Bold'
             />
             <ThemedText 
               label={user ? user.accessType.type : 'Ospite (Non Autenticato)'} 
@@ -58,15 +74,67 @@ const ProfilePage = () => {
 
         {/* Users Preferences */}
         <View className="flex flex-row gap-4 justify-between  ">
-          <UserProfileImage user={user}/>
-          <UserProfileImage user={user}/>
-          <UserProfileImage user={user}/>
-          <UserProfileImage user={user}/>
+          <DefaultBadge />
+          <DefaultBadge />
+          <DefaultBadge />
+          <DefaultBadge />
         </View>
 
       </View>
 
-      <View className="h-full w-full bg-darkColor-900 rounded-t-[30px]">
+      <View className="h-full w-full dark:bg-darkColor-900 bg-white rounded-t-2xl">
+
+        {/*  Options */}
+        <ScrollView 
+          className="p-4"
+          >
+
+        {/* User Options */}
+
+          <View className="w-full">
+            <ThemedText 
+              darkModeDisabled
+              textStyle='text-primary-500 text-2xl mb-4'
+              font='Nunito-Bold'
+              label="Impostazioni Account"
+            />
+            <TouchableOpacity 
+              activeOpacity={.7}
+              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-t-2xl">
+              <MaterialCommunityIcons
+                name='account-box-edit-outline'
+                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                size={16}
+              />
+              <ThemedText label='Modifica Informazioni' />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              activeOpacity={.7}
+              onPress={logout}
+              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
+              <MaterialCommunityIcons
+                name='logout'
+                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                size={16}
+              />
+              <ThemedText label='Log out' />
+            </TouchableOpacity>
+
+            <View className="border-t-[1px] border-white dark:border-darkColor-900 w-[50%] self-center h-[1px]" />
+            <TouchableOpacity 
+              activeOpacity={.7}
+              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-b-2xl ">
+              <MaterialCommunityIcons
+                name='delete'
+                color={colors.rose[500]}
+                size={16}
+              />
+              <ThemedText label='Elimina Account' textStyle='text-rose-500' darkModeDisabled />
+            </TouchableOpacity>
+
+          </View>
+        </ScrollView>
       </View>
 
       </SafeAreaView>

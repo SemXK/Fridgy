@@ -9,7 +9,7 @@ interface UserProfileInterface {
 
 const UserProfileImage = ({user, guest}: UserProfileInterface) => {
   return (
-    <View className="rounded-full aspect-square w-1/6 bg-darkColor-900">
+    <View className="rounded-full aspect-square w-1/6 dark:bg-darkColor-900 bg-white">
       
     </View>
   )
