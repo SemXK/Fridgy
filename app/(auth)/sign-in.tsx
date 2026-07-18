@@ -31,6 +31,7 @@ export default function SignIn() {
           router.navigate('/(tabs)/Home');
         })
         .catch(e => {
+          console.log(e.message)
           setShowSnackbar(e.message)
         })
     }
@@ -79,15 +80,14 @@ export default function SignIn() {
         </View>
 
         {/* Actions + Router */}
-        <View className="flex flex-col justify-center items-center gap-4">
-          <PrimaryButton
-            mode="text"
-            isLoading={authLoading}
-            buttonText='Accedi'
-            className="w-1/2"
-            onPress={handleRegister}
+        <View className="flex flex-col justify-center items-center gap-4 mb-20">
+          <View className="w-full">
+            <PrimaryButton
+              isLoading={authLoading}
+              buttonText='Accedi'
+              onPress={handleRegister}
           />
-
+          </View>
           <View className="flex-row self-center gap-2 ">
             <ThemedText font='Nunito-Light' textStyle='text-stone-400 dark:text-stone-500' label="Non hai un accounts?" />
             <Link href="/sign-up">

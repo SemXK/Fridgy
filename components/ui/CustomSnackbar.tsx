@@ -13,7 +13,7 @@ interface SnackbarProps {
 }
 
 export default function Snackbar({ visible, message, duration = 3000, onDismiss }: SnackbarProps) {
-  const opacity = useSharedValue(0);
+  const opacity = useSharedValue(1);
 
   useEffect(() => {
     if (visible) {

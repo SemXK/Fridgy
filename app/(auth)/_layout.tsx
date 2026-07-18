@@ -1,4 +1,3 @@
-import Logo from '@/components/ui/Logo';
 import { Slot } from 'expo-router';
 import React from 'react';
 import { Appearance, Dimensions, Image, KeyboardAvoidingView, Platform, View } from 'react-native';
@@ -28,16 +27,16 @@ export default function TabLayout() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
       <Image
-        className="h-screen w-screen absolute top-0"
+        className="h-screen w-screen absolute -top-8"
         resizeMode='cover'
         source={require("@/assets/images/fridge.jpg")}
       />
 
       {/* Logo */}
-      <View className="h-1/4 w-screen flex justify-center items-center">
-        <View className="p-8 bg-white dark:bg-black rounded-lg">
+      <View className="h-1/4 mt-12 w-screen flex justify-center items-center">
+        {/* <View className="p-8 bg-white dark:bg-black rounded-lg">
           <Logo />
-        </View>
+        </View> */}
       </View>
 
 

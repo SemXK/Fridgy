@@ -96,29 +96,27 @@ export default function SignUp() {
         </View>
 
         {/* Actions è Route */}
-        <View>
-          {/* Buttons */}
-          <View className="flex flex-col justify-center items-center gap-4">
+        <View className="flex flex-col justify-center items-center gap-4  mb-20">
+
+          <View className="w-full">
 
             <PrimaryButton
-              mode="text"
               isLoading={authLoading}
               buttonText='Registrati'
-              className="w-1/2"
               onPress={handleRegister}
             />
+          </View>
 
-            {/* Route */}
-            <View className="flex-row self-center gap-2 ">
-              <ThemedText font='Nunito-Light' textStyle='text-stone-400 dark:text-stone-500' label="Hai un accounts?" />
-              <Link href="/sign-in">
-                <ThemedText darkModeDisabled font='Nunito-Bold' label="Accedi" textStyle="text-primary-500 underline" />
-              </Link>
-            </View>
-
+          {/* Route */}
+          <View className="flex-row self-center gap-2 ">
+            <ThemedText font='Nunito-Light' textStyle='text-stone-400 dark:text-stone-500' label="Hai un accounts?" />
+            <Link href="/sign-in">
+              <ThemedText darkModeDisabled font='Nunito-Bold' label="Accedi" textStyle="text-primary-500 underline" />
+            </Link>
           </View>
 
         </View>
+
       </View>
 
     </View>
