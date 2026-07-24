@@ -6,11 +6,11 @@
     "orientation": "portrait",
     "owner": "xsemxkx",
     "icon": "./assets/images/icon.png",
-    "scheme": "com.fridgy.app",
+    "scheme": "com.xsemxkx.fridgy",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fridgy.app",
+      "bundleIdentifier": "com.xsemxkx.fridgy",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -23,7 +23,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.fridgy.app"
+      "package": "com.xsemxkx.fridgy"
     },
     "web": {
       "output": "static",
