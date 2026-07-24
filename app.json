@@ -4,13 +4,14 @@
     "slug": "FridgyAnimated",
     "version": "1.0.0",
     "orientation": "portrait",
+    "owner": "xsemxkx",
     "icon": "./assets/images/icon.png",
-    "scheme": "com.xsemxkx.fridgyanimated",
+    "scheme": "fridgy",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xsemxkx.fridgy",
+      "bundleIdentifier": "fridgy",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -24,7 +25,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.xsemxkx.fridgy"
+      "package": "fridgy"
     },
     "web": {
       "output": "static",
@@ -44,7 +45,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

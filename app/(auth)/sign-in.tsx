@@ -2,15 +2,19 @@ import 'react-native-reanimated';
 
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
+import GoogleLogin from '@/components/thirdParty/GoogleLogin';
 import CustomSnackbar from '@/components/ui/CustomSnackbar';
 import ThemedText from '@/components/ui/ThemedText';
 import { AuthController } from '@/controllers/AuthController';
 import { Link, router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
-
+import { OauthContext } from '../_layout';
 
 export default function SignIn() {
+  // & Context
+  const  oauthTokenCollection  = useContext(OauthContext);
+
   // * inputs
   const [email, setEmail] = useState<string>("sems@gmailss.com")
   const [password, setPassword] = useState<string>("Password123!")
@@ -41,6 +45,19 @@ export default function SignIn() {
     setAuthLoading(false)
   }
 
+  const signIn = async () => {
+    // console.log({ oauthTokenCollection })
+    // await promptAsync().then((resp: any) => {
+    //   console.log({resp})
+    // })
+    // try {
+    //   await GoogleSignin.hasPlayServices();
+    //   const userInfo = await GoogleSignin.signIn();
+    //   console.log(userInfo);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+  };
   return (
     <View className="w-full ">
       <CustomSnackbar
@@ -81,19 +98,28 @@ export default function SignIn() {
 
         {/* Actions + Router */}
         <View className="flex flex-col justify-center items-center gap-4 mb-20">
+          {
+            oauthTokenCollection && 
+            <GoogleLogin
+              oauthTokenCollection={oauthTokenCollection}
+            />
+          }
+
           <View className="w-full">
             <PrimaryButton
               isLoading={authLoading}
               buttonText='Accedi'
               onPress={handleRegister}
-          />
+            />
           </View>
+
           <View className="flex-row self-center gap-2 ">
             <ThemedText font='Nunito-Light' textStyle='text-stone-400 dark:text-stone-500' label="Non hai un accounts?" />
             <Link href="/sign-up">
               <ThemedText darkModeDisabled font='Nunito-Bold' label="Registrati" textStyle="text-primary-500 underline" />
             </Link>
           </View>
+
         </View>
       </View>
 

@@ -3,6 +3,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import * as Crypto from 'expo-crypto';
 import * as SecureStore from "expo-secure-store";
 
+import { OauthTokenCollection } from "@/constants/interfaces/oauth";
 import { Controller } from "./Controller";
 
 interface Credentials {
@@ -102,8 +103,12 @@ export abstract class AuthController extends Controller {
         throw new Error("Unexpected response");
       });
     }
+  } 
+  static getOauthToken = async (): Promise<OauthTokenCollection>  => {
+    return await this.basicGetCall("get-google-public-key").then((res: AxiosResponse<OauthTokenCollection>) => {
+      return res.data;
+    });
   }
-
   /**
    * Creates a guest session using the passed token 
    * @param guestId the token used to create a guest session

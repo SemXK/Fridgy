@@ -1,3 +1,4 @@
+import { OauthTokenCollection } from '@/constants/interfaces/oauth';
 import { PaymentContextInterface } from '@/constants/interfaces/paymentInterface';
 import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/productInterface';
 import { AuthType, Guest, User } from '@/constants/interfaces/usersInterface';
@@ -29,7 +30,7 @@ export const CartContext = createContext<CartContextInterface>({
   }
 });
 export const PaymentWebsocketContext = createContext<PaymentContextInterface>({paymentChannel: null});
-
+export const OauthContext = createContext<OauthTokenCollection | null>(null)
 // * BottomSheet portal
 export const BottomSheetContext = createContext<any>(() => {});
 
@@ -67,6 +68,8 @@ export default function RootLayout() {
   const [guest, setGuest] = useState<Guest | undefined>(undefined)
   const [cart, setCart] = useState<CartItemInterface[]>([])
   const [stripePublicKey, setStripePublicKey] = useState<string>('')
+  const [oauthTokenCollection, setOauthTokenCollection] = useState<OauthTokenCollection | null>(null)
+
   const [paymentChannel, setPaymentChannel] = useState<any>(false)
 
   // * BottomSheet state
@@ -89,7 +92,6 @@ export default function RootLayout() {
     if(!guest) {
       AuthController.sessionInit().then(() => {
         setGuest(AuthController.currentGuest);
-
       })
     }
 
@@ -103,6 +105,11 @@ export default function RootLayout() {
     // 1* Stripe Public Key
     StripeController.getPublicKey().then((key: string) => {
       setStripePublicKey(key)
+    })
+
+    // 1* OAuth Public Key
+    AuthController.getOauthToken().then((keyObject: OauthTokenCollection) => {
+      setOauthTokenCollection(keyObject)
     })
 
     // 1* Websockets
@@ -155,42 +162,44 @@ export default function RootLayout() {
       />
 
       <BottomSheetContext.Provider value={setSheet}>
-        <UserContext value={{user, guest}}>
-          <CartContext value={{cart, setCart}}>
-            <PaymentWebsocketContext value={{paymentChannel, setPaymentChannel}}>
+        <OauthContext value={oauthTokenCollection}>
+          <UserContext value={{user, guest}}>
+            <CartContext value={{cart, setCart}}>
+              <PaymentWebsocketContext value={{paymentChannel, setPaymentChannel}}>
 
-              <GestureHandlerRootView>
+                <GestureHandlerRootView>
 
-              <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                <PaperProvider>
+                <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                  <PaperProvider>
 
-                  <StripeProvider
-                    publishableKey={stripePublicKey}
-                    >
+                    <StripeProvider
+                      publishableKey={stripePublicKey}
+                      >
 
-                    {/* Main stack */}
-                    <Stack initialRouteName="(tabs)">
-                      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    </Stack>
-                  </StripeProvider>
+                      {/* Main stack */}
+                      <Stack initialRouteName="(tabs)">
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                      </Stack>
+                    </StripeProvider>
 
-                  {/* Global Bottomsheet */}
-                  {sheet.open && (
-                    <sheet.component
-                      height={sheet.height}
-                      onClose={() => sheet.onClose()}
-                    />
-                  )}
+                    {/* Global Bottomsheet */}
+                    {sheet.open && (
+                      <sheet.component
+                        height={sheet.height}
+                        onClose={() => sheet.onClose()}
+                      />
+                    )}
 
-                </PaperProvider>
-              </ThemeProvider>
+                  </PaperProvider>
+                </ThemeProvider>
 
-              </GestureHandlerRootView>
+                </GestureHandlerRootView>
 
-            </PaymentWebsocketContext>
-          </CartContext>
-        </UserContext>
+              </PaymentWebsocketContext>
+            </CartContext>
+          </UserContext>
+        </OauthContext>
       </BottomSheetContext.Provider>
     </>
   );
