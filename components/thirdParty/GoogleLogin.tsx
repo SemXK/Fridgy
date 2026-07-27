@@ -23,10 +23,10 @@ const redirectUri =
 
   const [request, response, promptAsync] =
     Google.useAuthRequest({
-      clientId: oauthTokenCollection.webClientId,
-      // androidClientId: oauthTokenCollection.androidClientId,
-      // iosClientId: oauthTokenCollection.iosClientId,
-      // webClientId: oauthTokenCollection.webClientId,
+      // clientId: oauthTokenCollection.webClientId,
+      androidClientId: oauthTokenCollection.androidClientId,
+      iosClientId: oauthTokenCollection.iosClientId,
+      webClientId: oauthTokenCollection.webClientId,
       scopes: ["openid", "profile", "email"],
       redirectUri
     });
@@ -53,7 +53,7 @@ const redirectUri =
     <View className="w-full">
       <PrimaryButton
         // isLoading={authLoading}
-        buttonText='Accedi Con Googlez'
+        buttonText={redirectUri}
         onPress={signIn}
       />
     </View>
