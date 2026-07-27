@@ -28,7 +28,7 @@ const redirectUri =
       iosClientId: oauthTokenCollection.iosClientId,
       webClientId: oauthTokenCollection.webClientId,
       scopes: ["openid", "profile", "email"],
-      redirectUri
+      // redirectUri
     });
 
   useEffect(() => {
