@@ -160,4 +160,16 @@ export abstract class AuthController extends Controller {
       })
     }
   }
+  /**
+   * Verifies the google sign in token via backend APi
+   */
+  static verifyOauthSigninToken = async (oauthToken: string): Promise<void | AxiosResponse<boolean, any, {}>> => {
+    return await this.basicPostCall("verify-google-signin", {oauthToken})
+    .then((res: AxiosResponse<boolean>) => {
+      return res;
+    })
+    .catch((e) => {
+      console.log({initGuestSessionError: e})
+    })
+  }
 }
