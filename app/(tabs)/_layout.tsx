@@ -4,6 +4,7 @@ import React from 'react';
 
 
 export default function TabLayout() {
+
   return (
     <Tabs
       screenOptions={{
@@ -54,7 +55,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="ProfilePage"
+        name="(profile-tab)"
         options={{
           headerShown: false,
         }}

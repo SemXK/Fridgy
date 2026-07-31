@@ -16,12 +16,18 @@ export interface User {
   username: string;
   email: string;
   accessTypeId: number;
-  accessType: UserAccessType;
+  accessType?: UserAccessType;
   favouriteProducts: Product[];
   hatedProducts: Product[];
   address: Address;
   created_at: Date;
   updated_at: Date;
+
+  token: string;
+  refreshToken: string;
+  tokenType?: string;
+  expiresIn?: number;
+
 }
 
 export interface Guest {

@@ -16,7 +16,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ActivityIndicator, FlatList, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-
 const FridgeList = () => {
   // * References
   const fridgeVerticalHeights = useRef<{y: number,height: number, fridgeId: number}[]>([]);
@@ -164,7 +163,7 @@ const FridgeList = () => {
           />
         </View>
 
-      }
+    }
 
       {/* BottomSheet */}
       {
@@ -175,6 +174,7 @@ const FridgeList = () => {
           ShownComponent={CreateNewFridgeComponent}
         />
       }
+
     </SafeAreaView>
   )
 }

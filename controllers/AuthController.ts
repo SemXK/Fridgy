@@ -14,10 +14,7 @@ interface Credentials {
 }
 export interface AuthResponse {
   user: User;
-  token: string;
-  refreshToken: string;
-  tokenType?: string;
-  expiresIn?: number;
+
 }
 
 export abstract class AuthController extends Controller {
@@ -69,10 +66,10 @@ export abstract class AuthController extends Controller {
       return await this.authenticatedGetCall("me").then((res: AxiosResponse) => {
         if (res.status === 200) {
           const data = (res as AxiosResponse).data as AuthResponse;
-          this.setAuthToken(data.token)
-          this.setRefreshToken(data.refreshToken)
+          this.setAuthToken(data.user.token)
+          this.setRefreshToken(data.user.refreshToken)
           this.currentUser = data.user;
-          this.currentToken = data.token;
+          this.currentToken = data.user.token;
           return data.user;
         }
         else if (res.status === 401){
@@ -82,7 +79,7 @@ export abstract class AuthController extends Controller {
       });
     }
     else {
-      throw new Error ("Unauthorized s");
+      throw new Error ("Unauthorized");
     }
   }
   static logout = async () => {

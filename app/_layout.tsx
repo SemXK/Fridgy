@@ -81,15 +81,16 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    // # Momentaneamente non è obbligatorio
-    // if(!user) {
-    //   AuthController.me()
-    //   .then((userResponse: User) => {
-    //     setUser(userResponse);
-    //   })
-    // }
-    // 1* Guest API (per ora gli utenti sono tutti guest)
-    if(!guest) {
+    // 1* Imposta user
+    if(!user) {
+      AuthController.me()
+      .then((userResponse: User) => {
+        setUser(userResponse);
+      })
+    }
+
+    // 1* Guest API (da ignorare se l'utente è autenticato)
+    if(!guest && !user) {
       AuthController.sessionInit().then(() => {
         setGuest(AuthController.currentGuest);
       })
@@ -115,7 +116,7 @@ export default function RootLayout() {
     // 1* Websockets
     if(!paymentChannel) {
       (async () => {
-        console.log("WSS init" )
+        console.log("WSS init")
         const echo = await getEcho() as any;
         echo.connector.pusher.connection.bind('state_change', (states: any) => {
           console.log('Pusher state:', states.current);

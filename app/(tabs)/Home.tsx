@@ -33,7 +33,7 @@ interface HomePageSection {
 const HomePage = () => {
 
   // * Context
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   // * Display State
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
@@ -51,9 +51,6 @@ const HomePage = () => {
   useEffect(() => {
     getProductTypes()
     getShopItems()
-
-
-
   }, []);
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -61,6 +58,8 @@ const HomePage = () => {
     }, 1000);
     return () => clearTimeout(handler);
   }, [filter]);
+
+
 
   // * API calls
   const getShopItems = async () => {

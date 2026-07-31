@@ -5,18 +5,23 @@ import UserProfileImage from '@/components/ui/UserProfileImage'
 import { AuthController } from '@/controllers/AuthController'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Appearance, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { IconButton } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import colors from 'tailwindcss/colors'
-import { UserContext } from '../_layout'
-
+import { UserContext } from '../../_layout'
 const ProfilePage = () => {
 
   // $Context
   const { user } =  useContext(UserContext)
+  
+  // % States
+
+  // £ Effects
+  useEffect(() => {
+  }, [])
 
   // * functions
   const logout = async () => {
@@ -28,7 +33,9 @@ const ProfilePage = () => {
       // error
     })
   }
-
+  const openEditRolesBottomSheet = () => {
+    router.navigate('/(tabs)/(profile-tab)/RoleOptionStepper')
+  }
   return (
     <View className="bg-primary-500">
       {/* Top Bar */}
@@ -45,12 +52,12 @@ const ProfilePage = () => {
           <UserProfileImage user={user}/>
           <View className="w-5/6 h-full rounded-2xl p-2">
             <ThemedText 
-              label={user ? user.name : 'Utente'} 
+              label={user ? user.surname : 'Utente'} 
               textStyle='text-white text-2xl'
               font='Nunito-Bold'
             />
             <ThemedText 
-              label={user ? user.accessType.type : 'Ospite (Non Autenticato)'} 
+              label={user?.accessType?.type || 'Ospite (Non Autenticato)'} 
               textStyle='text-white '
             />            
           </View>
@@ -66,7 +73,7 @@ const ProfilePage = () => {
               iconColor="white"
             />
             <ThemedText 
-              label={user ? user.address?.via : 'Via Non Specificata'} 
+              label={ user?.address?.via || 'Via Non Specificata'} 
               textStyle='text-white '
             />            
           </View>
@@ -90,7 +97,6 @@ const ProfilePage = () => {
           >
 
         {/* User Options */}
-
           <View className="w-full">
             <ThemedText 
               darkModeDisabled
@@ -107,6 +113,18 @@ const ProfilePage = () => {
                 size={16}
               />
               <ThemedText label='Modifica Informazioni' />
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              activeOpacity={.7}
+              onPress={openEditRolesBottomSheet}
+              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
+              <MaterialCommunityIcons
+                name='account-switch'
+                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                size={16}
+              />
+              <ThemedText label='Cambia Ruolo' />
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -137,7 +155,17 @@ const ProfilePage = () => {
         </ScrollView>
       </View>
 
+      {/* * Bottom Sheet */}
+      {/* {
+        editingRoles && 
+        <BottomSheetComponent 
+          height={1.5}
+          onClose={() => setEditingRoles(false)}
+          ShownComponent={EditUserRoleSteper}
+        />
+      } */}
       </SafeAreaView>
+
     </View>
   )
 }

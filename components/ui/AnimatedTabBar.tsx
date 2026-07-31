@@ -21,7 +21,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const isProductDetail = route.name === "productDetail";
   const isFridgeIndex = route.name === "(fridge-tab)";
   const isProductCreation = route.name === "ProductCreation";
-  const isProfilePage = route.name === "ProfilePage";
+  const isProfilePage = route.name === "(profile-tab)";
 
   // * Specify which page shows the Tab Bar
   if (!isHome && !isFridgeIndex && !isProductDetail && !isProductCreation && !isProfilePage) {
