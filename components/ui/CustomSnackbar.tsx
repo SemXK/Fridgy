@@ -1,10 +1,8 @@
 import { primaryColor } from '@/constants/theme';
 import React, { useEffect } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-
+import { Dimensions, StyleSheet } from 'react-native';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 const { width } = Dimensions.get('window');
-
 interface SnackbarProps {
   visible: boolean;
   message: string;
@@ -16,18 +14,19 @@ export default function Snackbar({ visible, message, duration = 3000, onDismiss 
   const opacity = useSharedValue(1);
 
   useEffect(() => {
-    if (visible) {
-      opacity.value = withTiming(1, { duration: 100 });
-      if (duration > 0) {
-        const timer = setTimeout(() => {
-          opacity.value = withTiming(0, { duration: 100 });
-          onDismiss?.();
-        }, duration);
-        return () => clearTimeout(timer);
-      }
-    } else {
-      opacity.value = withTiming(0, { duration: 100 });
-    }
+    // if (visible) {
+    //   opacity.value = withTiming(1, { duration: 100 });
+    //   if (duration > 0) {
+    //     const timer = setTimeout(() => {
+    //       opacity.value = withTiming(0, { duration: 100 });
+    //       onDismiss?.();
+    //     }, duration);
+    //     return () => clearTimeout(timer);
+    //   }
+    // } 
+    // else {
+    //   opacity.value = withTiming(0, { duration: 100 });
+    // }
   }, [visible]);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -35,19 +34,20 @@ export default function Snackbar({ visible, message, duration = 3000, onDismiss 
   }));
 
   return (
-    <Animated.View style={[styles.snackbar, animatedStyle]}>
-      <Text style={styles.message}>{message}</Text>
-      <TouchableOpacity onPress={() => { opacity.value = withTiming(0); onDismiss?.(); }}>
-        <Text style={styles.action}>OK</Text>
-      </TouchableOpacity>
-    </Animated.View>
+    <></>
+    // <Animated.View style={[styles.snackbar, animatedStyle]}>
+    //   <Text style={styles.message}>{message}</Text>
+    //   <TouchableOpacity onPress={() => { opacity.value = withTiming(0); onDismiss?.(); }}>
+    //     <Text style={styles.action}>OK</Text>
+    //   </TouchableOpacity>
+    // </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   snackbar: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 4,
     left: width * 0.05,
     width: width * 0.9,
     backgroundColor: '#323232',

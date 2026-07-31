@@ -15,7 +15,7 @@ import { SnackbarStatus } from '@/constants/enums/common';
 import { styleShadows } from '@/constants/styles/style-shadows';
 import { router } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from '../_layout';
 
@@ -156,14 +156,15 @@ const HomePage = () => {
   // * Display
   return (
     <SafeAreaView className="flex-1">
-
-
-
+      <KeyboardAvoidingView
+        style={{ flex: 1,  }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined} 
+      >
       {/* * Auth Header */}
       <HomePageHeader />
 
       {/* Filter */}
-      <View className="p-4">
+      <View className="p-4 ">
         <ThemedFormField
           value={filter}
           setValue={setFilter}
@@ -211,7 +212,6 @@ const HomePage = () => {
 
       {/* * Lista di liste  */}
       <FlatList
-        className='mb-20'
         data={sections}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
@@ -265,6 +265,7 @@ const HomePage = () => {
   
         )}
       />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 

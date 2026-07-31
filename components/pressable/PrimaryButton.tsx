@@ -17,6 +17,7 @@ interface ButtonInterface {
   leftIcon?: React.ReactNode,
   rightIcon?: React.ReactNode,
   textStyle?: string,
+  disabled?: boolean,
 }
 
 const PrimaryButton = ({ onPress, 
@@ -28,6 +29,7 @@ const PrimaryButton = ({ onPress,
   leftIcon, 
   rightIcon,
   textStyle,
+  disabled = false
 }: ButtonInterface) => {
   return (
     <Button
@@ -37,9 +39,12 @@ const PrimaryButton = ({ onPress,
         height: 40,
         borderWidth: 0,
       }}
-      contentStyle={{ justifyContent: 'center', 
-        alignItems: 'center' }}
+      contentStyle={{ 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+      }}
       textColor='white'
+      disabled={disabled}
       onPress={!isLoading ? onPress : undefined}
       className={className}
     >      

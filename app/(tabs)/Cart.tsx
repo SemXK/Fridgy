@@ -86,11 +86,10 @@ const CartComponent = () => {
       // * Inizializza PaymentSheet
       const { error: initError } = await initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'SORDI',
+        merchantDisplayName: 'Acquisto Beni',
         allowsDelayedPaymentMethods: false,
         style: 'automatic',
         returnURL: process.env.EXPO_PUBLIC_REDIRECT_TO_CART
-
       });
 
       if (initError) {

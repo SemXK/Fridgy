@@ -9,15 +9,14 @@ import { View } from "moti";
 import PrimaryButton from "../pressable/PrimaryButton";
 
 WebBrowser.maybeCompleteAuthSession();
-
+const DevelopmentMode = Constants.executionEnvironment === "storeClient"
 export interface GoogleLoginInterface {
   oauthTokenCollection: OauthTokenCollection
 }
 
 export default  function  GoogleLogin({ oauthTokenCollection }: GoogleLoginInterface) {
-const redirectUri =
-  Constants.executionEnvironment === "storeClient"
-    ? `https://auth.expo.io/@${Constants.expoConfig?.owner}/${Constants.expoConfig?.slug}`
+const redirectUri = DevelopmentMode ? 
+    `https://auth.expo.io/@${Constants.expoConfig?.owner}/${Constants.expoConfig?.slug}`
     : AuthSession.makeRedirectUri({
         scheme: Constants.expoConfig?.scheme as string,
       });
@@ -30,6 +29,7 @@ const redirectUri =
       webClientId: oauthTokenCollection.webClientId,
       scopes: ["openid", "profile", "email"],
     });
+
   // ? Force Web Signin
   // const [request, response, promptAsync] =
   //   Google.useAuthRequest({
@@ -41,17 +41,6 @@ const redirectUri =
   // % Functions
   const signIn = async () => {
     const result = await promptAsync();
-    // {
-    //   type: "success",
-    //   params: {
-    //     code: "4/0AdQt8qhJxXXXXXXXXXXXXXX",
-    //     scope: "openid email profile",
-    //     state: "aRandomStateValue"
-    //   },
-    //   authentication: null,
-    //   error: null,
-    //   url: "myapp://redirect?code=4/0AdQt8qhJxXXXXXXXXXXXXXX&scope=openid%20email%20profile&state=aRandomStateValue"
-    // }
     console.log(result)
 
     if (result.type === "success") {
@@ -65,11 +54,15 @@ const redirectUri =
 
   return (
     <View className="w-full">
-      <PrimaryButton
-        // isLoading={authLoading}
-        buttonText="Login con Google"
-        onPress={signIn}
-      />
+      { 
+        !DevelopmentMode && 
+        <PrimaryButton
+          // isLoading={authLoading}
+          buttonText="Login con Google"
+          onPress={signIn}
+        />
+      }
+
     </View>
   );
 }

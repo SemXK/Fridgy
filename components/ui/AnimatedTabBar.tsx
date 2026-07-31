@@ -31,17 +31,14 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   return (
     <View
       style={{
-        width: "70%",
+        width: "80%",
         position: 'absolute',
-        bottom: 0,
-        margin: 10,
+        bottom: 4,
         flexDirection: 'row',
-        alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: primaryColor[500],
-        borderRadius: 16,
-        paddingVertical: 10,
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        gap: 4,
       }}
     >
       {state.routes.map((route: any, index: number) => {
@@ -68,12 +65,13 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
             key={route.key}
             onPress={onPress}
             activeOpacity={0.7}
+            // className="bg-white dark:bg-darkColor-800 p-2 rounded-2xl aspect-square  flex flex-col items-center justify-center"
             style={{ flex: 1, alignItems: 'center' }}
           >
             <MotiView
-              className="items-center"
+              className="bg-white dark:bg-darkColor-800 p-2 rounded-2xl aspect-square w-16 flex flex-col items-center justify-center"
               animate={{
-                scale: isFocused ? 1.15 : 1,
+                // scale: isFocused ? 1.15 : 1,
                 translateY: isFocused ? -4 : 0,
               }}
               transition={{ type: 'timing', duration: 250 }}
@@ -81,7 +79,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
               <MaterialCommunityIcons
                 name={iconName as any}
                 size={24}
-                color={isFocused ? 'white' : primaryColor[200]}
+                color={isFocused ? primaryColor[500] : 'white' }
               />
             </MotiView>
           </TouchableOpacity>
