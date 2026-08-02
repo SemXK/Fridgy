@@ -72,6 +72,7 @@ export abstract class Controller {
           headers: {
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
+            'Refresh-Token' : await this.getRefreshToken()
           },
         });
       } catch (error: any) {
@@ -92,6 +93,7 @@ export abstract class Controller {
           headers: {
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
+            'Refresh-Token' : await this.getRefreshToken()
           },
         });
       } catch (error: any) {
@@ -111,6 +113,8 @@ export abstract class Controller {
           headers: {
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
+            'Refresh-Token' : await this.getRefreshToken()
+
           },
         });
       } catch (error: any) {
@@ -130,6 +134,8 @@ export abstract class Controller {
           headers: {
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
+            'Refresh-Token' : await this.getRefreshToken()
+
           },
         });
       } catch (error: any) {

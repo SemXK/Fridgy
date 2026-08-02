@@ -3,6 +3,9 @@ import { Product } from "./productInterface";
 export interface AuthType {
   user?: User;
   guest?: Guest;
+  setUser: React.Dispatch<User>;
+  setGuest: React.Dispatch<Guest>;
+
 };
 export interface UserAccessType {
   id: number;
@@ -16,7 +19,7 @@ export interface User {
   username: string;
   email: string;
   accessTypeId: number;
-  accessType?: UserAccessType;
+  accessType: UserAccessType;
   favouriteProducts: Product[];
   hatedProducts: Product[];
   address: Address;

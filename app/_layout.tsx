@@ -22,7 +22,14 @@ import '../global.css';
 
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
-export const UserContext = createContext<AuthType>({});
+export const UserContext = createContext<AuthType>({
+  setUser: function (value: User): void {
+    throw new Error('Function not implemented.');
+  },
+  setGuest: function (value: Guest): void {
+    throw new Error('Function not implemented.');
+  }
+});
 export const CartContext = createContext<CartContextInterface>({
   cart: [],
   setCart: function (value: React.SetStateAction<CartItemInterface[]>): void {
@@ -164,7 +171,7 @@ export default function RootLayout() {
 
       <BottomSheetContext.Provider value={setSheet}>
         <OauthContext value={oauthTokenCollection}>
-          <UserContext value={{user, guest}}>
+          <UserContext value={{user, guest, setUser, setGuest}}>
             <CartContext value={{cart, setCart}}>
               <PaymentWebsocketContext value={{paymentChannel, setPaymentChannel}}>
 

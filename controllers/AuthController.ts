@@ -75,7 +75,7 @@ export abstract class AuthController extends Controller {
         else if (res.status === 401){
           throw new AxiosError("Unauthorized");
         }
-        throw new Error("Unexpected response");
+        throw new Error("Unexpected response: ", );
       });
     }
     else {
@@ -168,5 +168,20 @@ export abstract class AuthController extends Controller {
     .catch((e) => {
       console.log({initGuestSessionError: e})
     })
+  }
+  /**
+   * 
+   * @param accessTypeId - the new access type
+   * @returns the newly updated user
+   */
+  static changeAccessType = async (accessTypeId: number): Promise<User | boolean>  => {
+      return await this.authenticatedPostCall("change-access-type", {accessTypeId})
+      .then((res: AxiosResponse<AuthResponse>) => {
+        if (res.status === 200) {
+          this.currentUser = res.data.user
+          return res.data.user
+        }
+        return false
+      })
   }
 }

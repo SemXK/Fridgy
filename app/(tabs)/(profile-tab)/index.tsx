@@ -12,6 +12,8 @@ import { IconButton } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import colors from 'tailwindcss/colors'
 import { UserContext } from '../../_layout'
+
+
 const ProfilePage = () => {
 
   // $Context
@@ -21,7 +23,8 @@ const ProfilePage = () => {
 
   // £ Effects
   useEffect(() => {
-  }, [])
+    console.log(user?.accessType)
+  }, [user])
 
   // * functions
   const logout = async () => {

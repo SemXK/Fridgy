@@ -46,7 +46,6 @@ const ProductMiniCard = (props: Props) => {
       activeOpacity={0.7} 
       className="relative w-full h-full aspect-square bg-stone-100 dark:bg-darkColor-900 rounded-xl p-4 justify-start "
       onPress={props.onPress}
-
     >
       {/* Tasto Favourite */}
       <View className="absolute top-0 right-0 ">
