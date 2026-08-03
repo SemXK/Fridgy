@@ -6,6 +6,7 @@ import Constants from "expo-constants";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { View } from "moti";
+import { useEffect } from "react";
 import PrimaryButton from "../pressable/PrimaryButton";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -30,22 +31,43 @@ const redirectUri = DevelopmentMode ?
       scopes: ["openid", "profile", "email"],
     });
 
-  // ? Force Web Signin
-  // const [request, response, promptAsync] =
-  //   Google.useAuthRequest({
-  //     clientId: oauthTokenCollection.webClientId,
-  //     scopes: ["profile", "email"],
-  //     redirectUri
-  //   });
-
+  useEffect(() =>{ signIn() }, [])
   // % Functions
   const signIn = async () => {
     const result = await promptAsync();
-    console.log(result)
-
-    if (result.type === "success") {
-      // const { code } = result.params;
-      await AuthController.verifyOauthSigninToken(result as any)
+    // console.log("uri", request?.redirectUri);
+    // console.log("red",AuthSession.makeRedirectUri());
+    // const result = 
+    //   {
+    //     'type' :'success',
+    //     'error' :null,
+    //     'url' :'com.xsemxkx.fridgy:/oauthredirect?state=3G81HN12kg&iss=https://accounts.google.com&code=4/0AXEQxIAqmIJx1wbicb8hHcjhrZ3umMhYI6dMuewZ_OJN_WmtBWeJg-0PLudpn-AHx6UL_Q&scope=email%20profile%20https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email%20openid&authuser=0&prompt=consent',
+    //     'params' :
+    //     {
+    //       'state' :'3G81HN12kg',
+    //       'iss' :'https://accounts.google.com',
+    //       'code' :'4/0AXEQxIAqmIJx1wbicb8hHcjhrZ3umMhYI6dMuewZ_OJN_WmtBWeJg-0PLudpn-AHx6UL_Q',
+    //       'scope' :'email profile https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid',
+    //       'authuser' :'0',
+    //       'prompt' :'consent',
+    //     },
+    //     'authentication' :null,
+    //     'errorCode' :null,
+    //   }
+    if (result?.type === "success") {
+      const tokenResponse = await AuthSession.exchangeCodeAsync(
+        {
+          clientId: oauthTokenCollection.webClientId,
+          code: result.params.code,
+          redirectUri: AuthSession.makeRedirectUri(),
+          extraParams: {
+            code_verifier: request?.codeVerifier ?? "",
+          },
+        },
+        Google.discovery
+      );
+      console.log(tokenResponse)
+      await AuthController.verifyOauthSigninToken(tokenResponse.idToken as string)
         .then((res: any) => {
           if (res.status === 200) router.navigate('/(tabs)/Home')
         })

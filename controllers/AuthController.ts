@@ -84,7 +84,7 @@ export abstract class AuthController extends Controller {
   }
   static logout = async () => {
     if(this.currentUser) {
-      return await this.authenticatedGetCall("logout").then((res: AxiosResponse) => {
+      return await this.authenticatedGetCall("logout").then(async (res: AxiosResponse) => {
         if (res.status === 200) {
           this.deleteAuthToken()
           this.deleteRefreshToken()
@@ -97,7 +97,7 @@ export abstract class AuthController extends Controller {
         else if (res.status === 401){
           throw new AxiosError("Unauthorized");
         }
-        throw new Error("Unexpected response");
+        throw new Error(res.statusText);
       });
     }
   } 

@@ -5,7 +5,7 @@ import UserProfileImage from '@/components/ui/UserProfileImage'
 import { AuthController } from '@/controllers/AuthController'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Appearance, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { IconButton } from 'react-native-paper'
@@ -21,19 +21,14 @@ const ProfilePage = () => {
   
   // % States
 
-  // £ Effects
-  useEffect(() => {
-    console.log(user?.accessType)
-  }, [user])
-
   // * functions
   const logout = async () => {
     await AuthController.logout()
     .then(() => {
       router.navigate('/(auth)/sign-in')
     })
-    .catch(() => {
-      // error
+    .catch((e) => {
+      console.log(e.message)
     })
   }
   const openEditRolesBottomSheet = () => {
