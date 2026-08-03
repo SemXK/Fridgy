@@ -44,8 +44,8 @@ const redirectUri = DevelopmentMode ?
     console.log(result)
 
     if (result.type === "success") {
-      const { code } = result.params;
-      await AuthController.verifyOauthSigninToken(code)
+      // const { code } = result.params;
+      await AuthController.verifyOauthSigninToken(result as any)
         .then((res: any) => {
           if (res.status === 200) router.navigate('/(tabs)/Home')
         })
