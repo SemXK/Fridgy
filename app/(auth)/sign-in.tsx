@@ -9,6 +9,7 @@ import { Link, router } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import { OauthContext } from '../_layout';
+
 export default function SignIn() {
   // & Context
   const  oauthTokenCollection  = useContext(OauthContext);
@@ -23,6 +24,7 @@ export default function SignIn() {
 
   const [visible, setVisible] = useState<boolean>(false)
   const [authLoading, setAuthLoading] = useState<boolean>(false)
+
   // & Functions
   const handleRegister = async () => {
     setAuthLoading(true)

@@ -71,7 +71,7 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   //  * Auth (non obligatorio)
-  const [user, setUser] = useState<User | undefined>(undefined)
+  const [user, setUser] = useState<User | null>(null)
   const [guest, setGuest] = useState<Guest | undefined>(undefined)
   const [cart, setCart] = useState<CartItemInterface[]>([])
   const [stripePublicKey, setStripePublicKey] = useState<string>('')
@@ -91,7 +91,7 @@ export default function RootLayout() {
     // 1* Imposta user
     if(!user) {
       AuthController.me()
-      .then((userResponse: User) => {
+      .then((userResponse: User | null) => {
         setUser(userResponse);
       })
     }
