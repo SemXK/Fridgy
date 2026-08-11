@@ -23,7 +23,7 @@
     "@reduxjs/toolkit": "^2.9.0",
     "@stripe/stripe-react-native": "^0.50.3",
     "axios": "^1.13.2",
-    "expo": "~54.0.25",
+    "expo": "~57.0.12",
     "expo-blur": "^15.0.8",
     "expo-constants": "~18.0.8",
     "expo-crypto": "^15.0.7",
@@ -73,7 +73,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.26",
     "tailwindcss": "3",
     "typescript": "~5.9.2"
   },
