@@ -23,7 +23,12 @@ const RoleOptionStepper = () => {
 
   // $ Effects
   useEffect(() => {
-    getAccessTypes()
+    if(user) {
+      getAccessTypes()
+    }
+    else{
+      router.navigate('/(auth)/sign-in')
+    }
   }, []);
 
   // $ FUnctions
@@ -82,7 +87,7 @@ const RoleOptionStepper = () => {
               accessType={item}
               onPress={swapRoles}
               disabled={roleLoading}
-              currentActiveType={user!.accessTypeId}
+              currentActiveType={user.accessTypeId}
             />
           )}
         />

@@ -58,7 +58,7 @@ export abstract class AuthController extends Controller {
       return res as AxiosResponse<unknown, AuthResponse> | AxiosError;
     })
   };
-  static me = async (): Promise<User> => {
+  static me = async (): Promise<User | null> => {
     if(this.currentUser) {
       return this.currentUser;
     }
@@ -73,13 +73,13 @@ export abstract class AuthController extends Controller {
           return data.user;
         }
         else if (res.status === 401){
-          throw new AxiosError("Unauthorized");
+          throw new AxiosError("Unauthorized: Me API");
         }
         throw new Error("Unexpected response: ", );
       });
     }
     else {
-      throw new Error ("Unauthorized");
+      return null;
     }
   }
   static logout = async () => {

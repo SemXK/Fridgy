@@ -28,7 +28,7 @@
   [x] Sviluppatore
   [x] Gestore 
 
-[] Pagina Utente
+[x] Pagina Utente
 [] Logo e Splash screen app
 [] Review Light and Dark Mode Pre release
 

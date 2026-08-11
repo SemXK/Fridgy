@@ -35,8 +35,6 @@ const redirectUri = DevelopmentMode ?
   // % Functions
   const signIn = async () => {
     const result = await promptAsync();
-    // console.log("uri", request?.redirectUri);
-    // console.log("red",AuthSession.makeRedirectUri());
     // const result = 
     //   {
     //     'type' :'success',

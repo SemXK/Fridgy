@@ -104,37 +104,63 @@ const ProfilePage = () => {
             />
             <TouchableOpacity 
               activeOpacity={.7}
-              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-t-2xl">
-              <MaterialCommunityIcons
-                name='account-box-edit-outline'
-                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                size={16}
-              />
-              <ThemedText label='Modifica Informazioni' />
+              disabled={!user}
+
+              className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-t-2xl">
+                <View className="flex flex-row gap-4">
+                  <MaterialCommunityIcons
+                    name='account-box-edit-outline'
+                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                    size={16}
+                  />
+                  <ThemedText label='Modifica Informazioni' />
+                </View>
+                {
+                  !user &&
+                  <MaterialCommunityIcons
+                    name='lock'
+                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                    size={16}
+                  />
+                }
             </TouchableOpacity>
 
             <TouchableOpacity 
               activeOpacity={.7}
+              disabled={!user}
+
               onPress={openEditRolesBottomSheet}
-              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
-              <MaterialCommunityIcons
-                name='account-switch'
-                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                size={16}
-              />
-              <ThemedText label='Cambia Ruolo' />
+              className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
+                <View className="flex flex-row gap-4">
+                    <MaterialCommunityIcons
+                    name='account-switch'
+                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                    size={16}
+                    />
+                  <ThemedText label='Cambia Ruolo' />
+                </View>
+                {
+                  !user &&
+                  <MaterialCommunityIcons
+                    name='lock'
+                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                    size={16}
+                  />
+                }
             </TouchableOpacity>
 
             <TouchableOpacity 
               activeOpacity={.7}
               onPress={logout}
-              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
-              <MaterialCommunityIcons
-                name='logout'
-                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                size={16}
-              />
-              <ThemedText label='Log out' />
+              className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
+                <View className="flex flex-row gap-4">
+                  <MaterialCommunityIcons
+                    name='logout'
+                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                    size={16}
+                  />
+                  <ThemedText label={user ? 'Log out' : 'Vai al Sign-in'} />
+                </View>
             </TouchableOpacity>
 
             <View className="border-t-[1px] border-white dark:border-darkColor-900 w-[50%] self-center h-[1px]" />
