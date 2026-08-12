@@ -123,7 +123,7 @@ export default function RootLayout() {
     // 1* Websockets
     if(!paymentChannel) {
       (async () => {
-        console.log("WSS init")
+        console.log("WSS init swap")
         const echo = await getEcho() as any;
         echo.connector.pusher.connection.bind('state_change', (states: any) => {
           console.log('Pusher state:', states.current);

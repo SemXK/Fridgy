@@ -3,7 +3,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import * as Crypto from 'expo-crypto';
 import * as SecureStore from "expo-secure-store";
 
-import { OauthTokenCollection } from "@/constants/interfaces/oauth";
+import { GoogleAuthPayload, GoogleSignInResponse, OauthTokenCollection } from "@/constants/interfaces/oauth";
 import { Controller } from "./Controller";
 
 interface Credentials {
@@ -160,14 +160,19 @@ export abstract class AuthController extends Controller {
   /**
    * Verifies the google sign in token via backend APi
    */
-  static verifyOauthSigninToken = async (oauthToken: string): Promise<void | AxiosResponse<boolean, any, {}>> => {
-    return await this.basicPostCall("verify-google-signin", {oauthToken})
-    .then((res: AxiosResponse<boolean>) => {
-      return res;
-    })
-    .catch((e) => {
-      console.log({initGuestSessionError: e})
-    })
+  static verifyGoogleSigninKey = async (googleAuthPayload: GoogleAuthPayload): Promise<void | GoogleSignInResponse> => {
+    return await this.basicPostCall("verify-google-signin", googleAuthPayload)
+      .then((res: AxiosResponse<GoogleSignInResponse>) => {
+        const data = res.data
+        this.setRefreshToken(data.refreshToken);
+        this.setAuthToken(data.token);
+        this.currentUser = data.currentUser;
+        return res.data;
+      })
+      .catch((e) => {
+        console.log({initGuestSessionError: e})
+        return
+      })
   }
   /**
    * 

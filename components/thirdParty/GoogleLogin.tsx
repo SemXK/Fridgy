@@ -18,7 +18,7 @@ export interface GoogleLoginInterface {
 }
 
 export default  function  GoogleLogin({ oauthTokenCollection }: GoogleLoginInterface) {
-const redirectUri = DevelopmentMode ? 
+  const redirectUri = DevelopmentMode ? 
     `https://auth.expo.io/@${Constants.expoConfig?.owner}/${Constants.expoConfig?.slug}`
     : AuthSession.makeRedirectUri({
         scheme: Constants.expoConfig?.scheme as string,
@@ -31,6 +31,8 @@ const redirectUri = DevelopmentMode ?
       iosClientId: oauthTokenCollection.iosClientId,
       webClientId: oauthTokenCollection.webClientId,
       scopes: ["openid", "profile", "email"],
+      shouldAutoExchangeCode: false,
+      redirectUri
     });
 
   useEffect(() =>{}, [])
@@ -39,24 +41,13 @@ const redirectUri = DevelopmentMode ?
     const result = await promptAsync();
 
     if (result?.type === "success") {
-      console.log({result})
-
-      // const tokenResponse = await AuthSession.exchangeCodeAsync(
-      //   {
-      //     clientId: oauthTokenCollection.webClientId,
-      //     code: result.params.code,
-      //     redirectUri: AuthSession.makeRedirectUri(),
-      //     extraParams: {
-      //       code_verifier: request?.codeVerifier ?? "",
-      //     },
-      //   },
-      //   Google.discovery
-      // );
-      // console.log(tokenResponse)
-      await AuthController.verifyOauthSigninToken(result.params.code as string)
-        .then((res: any) => {
-          if (res.status === 200) router.navigate('/(tabs)/Home')
-        })
+      await AuthController.verifyGoogleSigninKey({
+        code: result.params.code,
+        codeVerifier: request?.codeVerifier as string,
+        redirectUri,
+      }).then((res) => {
+        if (res) router.navigate('/(tabs)/Home')
+      })
     }
   };
 

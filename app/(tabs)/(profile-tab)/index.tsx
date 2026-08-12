@@ -50,7 +50,7 @@ const ProfilePage = () => {
           <UserProfileImage user={user}/>
           <View className="w-5/6 h-full rounded-2xl p-2">
             <ThemedText 
-              label={user ? user.surname : 'Utente'} 
+              label={user ? user.username : 'Utente'} 
               textStyle='text-white text-2xl'
               font='Nunito-Bold'
             />
