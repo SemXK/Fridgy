@@ -23,7 +23,7 @@ import '../global.css';
 // % Default startup functions
 SplashScreen.preventAutoHideAsync();
 export const UserContext = createContext<AuthType>({
-  setUser: function (value: User): void {
+  setUser: function (value: User | null): void {
     throw new Error('Function not implemented.');
   },
   setGuest: function (value: Guest): void {
@@ -92,7 +92,7 @@ export default function RootLayout() {
     // 1* Imposta user
     if(!user) {
       AuthController.me()
-      .then((userResponse: User | null) => {
+      .then(async (userResponse: User | null) => {
         setUser(userResponse);
       })
     }

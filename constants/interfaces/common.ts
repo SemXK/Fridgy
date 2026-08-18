@@ -14,3 +14,10 @@ export interface AgendaFridgeAction extends FridgeAction {
 export type WithStateSetters<T, EditableKeys extends keyof T> = Partial<T> & {
   [K in EditableKeys as `set${Capitalize<string & K>}`]: Dispatch<SetStateAction<T[K]>>;
 };
+
+
+export interface StateRoute {
+  key: string, 
+  name: string, 
+  params: undefined
+}

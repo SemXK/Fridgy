@@ -3,7 +3,7 @@ import { Product } from "./productInterface";
 export interface AuthType {
   user?: User | null;
   guest?: Guest;
-  setUser: React.Dispatch<User>;
+  setUser: React.Dispatch<User | null>;
   setGuest: React.Dispatch<Guest>;
 
 };

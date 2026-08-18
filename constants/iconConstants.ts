@@ -1,5 +1,5 @@
 export const TabBarIcons: Record<string, string> = {
-  'Home': 'home',
+  'index': 'home',
   '(fridge-tab)': 'fridge-outline',
   'ProductCreation':'camera',
   '(profile-tab)' : 'account',

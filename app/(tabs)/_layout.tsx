@@ -12,10 +12,11 @@ export default function TabLayout() {
         tabBarHideOnKeyboard: true,
         animation: 'shift',
       }}
+      
       tabBar={(props) => <AnimatedTabBar {...props} />}
     >
       <Tabs.Screen
-        name="Home"
+        name="index"
         options={{
           title: 'Home',
           tabBarHideOnKeyboard: true,

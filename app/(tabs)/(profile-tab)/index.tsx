@@ -18,19 +18,19 @@ import { UserContext } from '../../_layout'
 const ProfilePage = () => {
 
   // $Context
-  const { user } =  useContext(UserContext)
+  const { user, setUser } =  useContext(UserContext)
   
   // % States
 
   // * functions
   const logout = async () => {
     await AuthController.logout()
-    // .then(() => {
-      // router.navigate('/(auth)/sign-in')
-    // })
-    // .catch((e) => {
-    //   console.log(e)
-    // })
+    .then(() => {
+      setUser(null)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
     .finally(() => {
       router.navigate('/(auth)/sign-in')
     })
