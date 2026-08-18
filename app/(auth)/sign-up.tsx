@@ -1,11 +1,13 @@
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
-import CustomSnackbar from '@/components/ui/CustomSnackbar';
+import TopSnackbar from '@/components/ui/SnackbarComponent';
 import ThemedText from '@/components/ui/ThemedText';
+import { SnackbarStatus } from '@/constants/enums/common';
+import { validatePassword } from '@/constants/functions/PasswordRegex';
 import { AuthController } from '@/controllers/AuthController';
 import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 
 
@@ -20,35 +22,42 @@ export default function SignUp() {
   const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [visible, setVisible] = useState<boolean>(false)
   const [authLoading, setAuthLoading] = useState<boolean>(false)
+  const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
 
   // & Functions
   const handleRegister = async () => {
     setAuthLoading(true)
-    if (username && email && password && confirmPassword) {
+    const passInvalidMessage = validatePassword(password)
+    if(passInvalidMessage) {
+      setBarStatus(SnackbarStatus.Warning)
+      setShowSnackbar(passInvalidMessage)
+    }
+    if(password !== confirmPassword) {
+      setBarStatus(SnackbarStatus.Warning)
+      setShowSnackbar("Le password non coincidono!")
+    }
+    else if (username && email && password && confirmPassword) {
       await AuthController
         .register({ username, email, password, confirmPassword })
-        .then((data) => {
+        .then(() => {
+          setBarStatus(SnackbarStatus.Success)
+          setShowSnackbar('Benvenuto!')
           router.navigate('/(tabs)/Home');
         })
         .catch(e => {
+          setBarStatus(SnackbarStatus.Error)
           setShowSnackbar(e.message)
         })
     }
     else {
-      setShowSnackbar("Compila tutti i campi")
+      setBarStatus(SnackbarStatus.Warning)
+      setShowSnackbar("Compila tutti i campi!")
     }
     setAuthLoading(false)
   }
 
   return (
     <View className="w-full">
-
-      {/* SnackBar */}
-      <CustomSnackbar
-        visible={!!showSnackbar} 
-        message={showSnackbar} 
-        onDismiss={() => setShowSnackbar("")} 
-      />
 
       {/* fields */}
       <View className="p-4 flex flex-col justify-between h-3/4">
@@ -117,16 +126,15 @@ export default function SignUp() {
 
         </View>
 
+        {/* Snackbar */}
+        <TopSnackbar
+          status={barStatus}
+          message={showSnackbar} 
+          onHide={() => setShowSnackbar('')} 
+        />
+
       </View>
 
     </View>
   )
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-});

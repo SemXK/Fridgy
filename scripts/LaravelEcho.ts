@@ -15,7 +15,7 @@ export async function getEcho(): Promise<typeof Echo<any>> {
   const pusherClient = new Pusher(AppName as string, {
     cluster: "mt1",
     // wsHost: '10.0.2.2', // android emulator
-    wsHost: "192.168.1.9",
+    wsHost: "192.168.1.13",
     wsPort: 8080,
     forceTLS: false,
     disableStats: true,

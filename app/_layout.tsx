@@ -36,6 +36,7 @@ export const CartContext = createContext<CartContextInterface>({
     throw new Error('Function not implemented.');
   }
 });
+
 export const PaymentWebsocketContext = createContext<PaymentContextInterface>({paymentChannel: null});
 export const OauthContext = createContext<OauthTokenCollection | null>(null)
 // * BottomSheet portal
@@ -123,7 +124,7 @@ export default function RootLayout() {
     // 1* Websockets
     if(!paymentChannel) {
       (async () => {
-        console.log("WSS init swap")
+        console.log("WSS init ")
         const echo = await getEcho() as any;
         echo.connector.pusher.connection.bind('state_change', (states: any) => {
           console.log('Pusher state:', states.current);

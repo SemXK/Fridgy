@@ -2,6 +2,7 @@ import ProfilePageHeader from '@/components/headers/ProfilePageHeader'
 import DefaultBadge from '@/components/ui/badges/DefaultBadge'
 import ThemedText from '@/components/ui/ThemedText'
 import UserProfileImage from '@/components/ui/UserProfileImage'
+import { User } from '@/constants/interfaces/usersInterface'
 import { AuthController } from '@/controllers/AuthController'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { router } from 'expo-router'
@@ -24,11 +25,14 @@ const ProfilePage = () => {
   // * functions
   const logout = async () => {
     await AuthController.logout()
-    .then(() => {
+    // .then(() => {
+      // router.navigate('/(auth)/sign-in')
+    // })
+    // .catch((e) => {
+    //   console.log(e)
+    // })
+    .finally(() => {
       router.navigate('/(auth)/sign-in')
-    })
-    .catch((e) => {
-      console.log(e.message)
     })
   }
   const openEditRolesBottomSheet = () => {
@@ -47,7 +51,7 @@ const ProfilePage = () => {
         <View className="flex flex-row gap-4 justify-between">
 
           {/* User Image */}
-          <UserProfileImage user={user}/>
+          <UserProfileImage user={user as User}/>
           <View className="w-5/6 h-full rounded-2xl p-2">
             <ThemedText 
               label={user ? user.username : 'Utente'} 

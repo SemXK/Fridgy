@@ -3,8 +3,11 @@ import 'react-native-reanimated';
 import CustomFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import GoogleLogin from '@/components/thirdParty/GoogleLogin';
+import TopSnackbar from '@/components/ui/SnackbarComponent';
 import ThemedText from '@/components/ui/ThemedText';
+import { SnackbarStatus } from '@/constants/enums/common';
 import { AuthController } from '@/controllers/AuthController';
+import { AxiosError } from 'axios';
 import { Link, router } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
@@ -16,14 +19,14 @@ export default function SignIn() {
 
   // * inputs
   const [email, setEmail] = useState<string>("consumatore@swantech.it")
-  const [password, setPassword] = useState<string>("consumatore")
+  const [password, setPassword] = useState<string>("")
 
   // * State settings
-
   const [showSnackbar, setShowSnackbar] = useState<string>("")
-
-  const [visible, setVisible] = useState<boolean>(false)
   const [authLoading, setAuthLoading] = useState<boolean>(false)
+  const [showPass, setShowPass] = useState<boolean>(false)
+  const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
+
 
   // & Functions
   const handleRegister = async () => {
@@ -32,19 +35,18 @@ export default function SignIn() {
       await AuthController
         .login({ email, password})
         .then(() => {
+          setBarStatus(SnackbarStatus.Success)
+          setShowSnackbar('Benvenuto')
           router.navigate('/(tabs)/Home');
         })
-        .catch(e => {
-          console.log(e.message)
+        .catch((e: AxiosError) => {
+          setBarStatus(SnackbarStatus.Error)
           setShowSnackbar(e.message)
         })
     }
     else {
-      console.log("Snack")
-      // Snackbar.show({
-      //   text: 'Hello world',
-      //   duration: 4000,
-      // });
+      setBarStatus(SnackbarStatus.Warning)
+      setShowSnackbar('Compila tutti i campi')
     }
     setAuthLoading(false)
   }
@@ -89,8 +91,8 @@ export default function SignIn() {
               value={password}
               setValue={setPassword}
               label="Password"
-              secureTextEntry={!visible}
-              secureTextEntryChange={setVisible}
+              secureTextEntry={!showPass}
+              secureTextEntryChange={setShowPass}
             />
           </View>
         </View>
@@ -120,6 +122,13 @@ export default function SignIn() {
           </View>
 
         </View>
+
+        {/* Snackbar */}
+        <TopSnackbar 
+          status={barStatus}
+          message={showSnackbar} 
+          onHide={() => setShowSnackbar('')} 
+        />
       </View>
 
     </View>

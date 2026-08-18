@@ -3,7 +3,7 @@ import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MotiView } from 'moti';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Appearance, TouchableOpacity, View } from 'react-native';
 
 function getFocusedRouteName(route: any): string {
   let r = route;
@@ -79,7 +79,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
               <MaterialCommunityIcons
                 name={iconName as any}
                 size={24}
-                color={isFocused ? primaryColor[500] : 'white' }
+                color={isFocused ? primaryColor[500] : Appearance.getColorScheme() === 'dark' ? 'white' : 'black' }
               />
             </MotiView>
           </TouchableOpacity>

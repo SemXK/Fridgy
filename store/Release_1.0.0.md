@@ -1,0 +1,18 @@
+## Release 1.0.0 - First Release
+- [x] Elenco frigoriferi
+- [x] Aggiunta alimenti
+- [x] Dettaglio alimenti
+- [x] Storico prezzi alimenti
+- [x] Registrazione spese (grafico con date e soldi spesi)
+- [x] Modifica prodotti
+- [x] Snackbar Component
+- [x] Acquisto alimenti
+- [x] Eliminazione frigoriferi 
+- [x] Assegnazione prodotti nel frigo
+- [x] Dettaglio frigoriferi
+  - [x] Grafico Composizione Inventario
+  - [x] Grafico Marche Preferithe
+  - [x] Calendario Azioni del frigo
+  - [x] Modifica Frigo
+- [x] Rendere Generico lo stile per le ombre delle cards
+- [x] Consumo Alimenti

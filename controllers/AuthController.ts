@@ -32,10 +32,10 @@ export abstract class AuthController extends Controller {
         this.setRefreshToken(data.refreshToken)
         this.currentUser = data.user;
         this.currentToken = data.token;
-        return res as AxiosResponse<unknown, AuthResponse>;
+        return data;
       }
       else if (res.status === 422) {
-        throw new AxiosError("Email already taken");
+        throw new AxiosError("Un altro account è associato a questa E-mail");
       }
       return res as AxiosResponse<unknown, AuthResponse> | AxiosError;
     })
@@ -52,10 +52,9 @@ export abstract class AuthController extends Controller {
         this.expiresIn = data.expiresIn;
         return res as AxiosResponse<unknown, AuthResponse>;
       }
-      else if (res.status === 401) {
-        throw new AxiosError("Invalid Credentials");
+      else {
+        throw new AxiosError("Credenziali Errate");
       }
-      return res as AxiosResponse<unknown, AuthResponse> | AxiosError;
     })
   };
   static me = async (): Promise<User | null> => {
@@ -84,8 +83,9 @@ export abstract class AuthController extends Controller {
   }
   static logout = async () => {
     if(this.currentUser) {
-      return await this.authenticatedGetCall("logout").then(async (res: AxiosResponse) => {
-        if (res.status === 200) {
+      return await this.authenticatedGetCall("logout")
+      .then(async (res: AxiosResponse) => {
+        if (res.status === 200 ) {
           this.deleteAuthToken()
           this.deleteRefreshToken()
           this.deleteGuestToken()
@@ -98,7 +98,10 @@ export abstract class AuthController extends Controller {
           throw new AxiosError("Unauthorized");
         }
         throw new Error(res.statusText);
-      });
+      })
+      .catch((e) => {
+        console.log(e)
+      })
     }
   } 
   static getOauthToken = async (): Promise<OauthTokenCollection>  => {

@@ -10,8 +10,6 @@ import { Discount, Product, ProductType } from '@/constants/interfaces/productIn
 import { primaryColor } from '@/constants/theme';
 import { ProductController, ProductListHomePageResponse } from '@/controllers/ProductController';
 
-import TopSnackbar from '@/components/ui/SnackbacComponent';
-import { SnackbarStatus } from '@/constants/enums/common';
 import { styleShadows } from '@/constants/styles/style-shadows';
 import { router } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
@@ -201,13 +199,6 @@ const HomePage = () => {
           },
         ]}
       /> */}
-
-      <TopSnackbar
-        visible={showSnackbar}
-        message="This is a top snackbar!"
-        onHide={() => setShowSnackbar(false)}
-        status={SnackbarStatus.Warning}
-      />
 
       {/* * Lista di liste  */}
       <FlatList
