@@ -75,6 +75,7 @@ const FridgeList = () => {
       .catch(e => console.log(e))
     }
   } 
+
   // * States
   const [loading, setLoading] = useState<boolean>(false)
   const [fridgeList, setFridgeList] = useState<Fridge[]>([])
@@ -154,7 +155,6 @@ const FridgeList = () => {
                   height, 
                   fridgeId: item.id 
                 }
-
               }}
             >
               <FridgeMiniCard fridge={item} callbackFunction={getFridgeList} />
