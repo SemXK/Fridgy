@@ -35,7 +35,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   const [allowsRoutes, setAllowedRoutes] = useState<StateRoute[]>([])
 
   useEffect(() => {
-    console.log({route})
     const allRoutes = state.routes;
     const filteredRoutes = GetAllowedRoutes(allRoutes, user?.accessType)
     setAllowedRoutes(filteredRoutes)
@@ -79,7 +78,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
             key={route.key}
             onPress={onPress}
             activeOpacity={0.7}
-            style={{ flex: 1, alignItems: 'center' }}
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between' }}
           >
             <MotiView
               className="bg-white dark:bg-darkColor-800 p-2 rounded-2xl aspect-square w-16 flex flex-col items-center justify-center"

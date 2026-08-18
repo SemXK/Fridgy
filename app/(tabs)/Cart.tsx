@@ -128,7 +128,6 @@ const CartComponent = () => {
       <>
         {/* Snackbar */}
         <TopSnackbar
-          visible={!!snackbarMessage}
           message={snackbarMessage}
           onHide={() => setSnackbarMessage('')}
           status={SnackbarStatus.Warning}

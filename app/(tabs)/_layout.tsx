@@ -31,6 +31,14 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+
+        <Tabs.Screen
+          name="(store-tab)"
+          options={{
+            headerShown: false,
+          }}
+        />  
+
       <Tabs.Screen
         name="Cart"
         options={{

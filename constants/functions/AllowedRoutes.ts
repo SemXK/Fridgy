@@ -19,7 +19,7 @@ export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessT
       break;
 
     case AccessTypeEnum.Produttore:
-      allowedRoutes = ['index']
+      allowedRoutes = ['index', '(store-tab)', '(profile-tab)']
       break;
     }
   return routes.filter((route) => allowedRoutes.includes(route.name))

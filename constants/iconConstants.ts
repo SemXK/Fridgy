@@ -3,4 +3,6 @@ export const TabBarIcons: Record<string, string> = {
   '(fridge-tab)': 'fridge-outline',
   'ProductCreation':'camera',
   '(profile-tab)' : 'account',
+  '(store-tab)' : 'store',
+
 };

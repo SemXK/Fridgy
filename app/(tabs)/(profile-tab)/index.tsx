@@ -91,7 +91,7 @@ const ProfilePage = () => {
 
       </View>
 
-      <View className="h-full w-full dark:bg-darkColor-900 bg-white rounded-t-2xl">
+      <View className="h-full w-full dark:bg-black bg-white rounded-t-2xl">
 
         {/*  Options */}
         <ScrollView 
