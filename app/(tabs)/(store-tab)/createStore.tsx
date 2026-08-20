@@ -1,15 +1,15 @@
-import CreateNewStoreComponent from '@/components/details/CreateNewStoreComponent'
-import React from 'react'
-import { View } from 'react-native'
+import { Map } from "@maplibre/maplibre-react-native";
+import React from 'react';
 
 const createStore = () => {
   return (
-    <View>
-      <View className="bg-slate-900 h-1/2 w-screen">
+     <Map mapStyle="https://demotiles.maplibre.org/style.json" />
+    // <View>
+    //   <View className="bg-slate-900 h-2/3 w-screen">
 
-      </View>
-      <CreateNewStoreComponent onClose={() => null}/>
-    </View>
+    //   </View>
+    //   <CreateNewStoreComponent onClose={() => null}/>
+    // </View>
   )
 }
 
