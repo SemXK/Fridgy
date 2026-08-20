@@ -1,6 +1,8 @@
-import { OauthTokenCollection } from '@/constants/interfaces/oauth';
 import { PaymentContextInterface } from '@/constants/interfaces/paymentInterface';
 import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/productInterface';
+import { GoogleApiKeys } from '@/constants/interfaces/thirdParty/common';
+import { MapsPlatformKeyPayload } from '@/constants/interfaces/thirdParty/maps';
+import { OauthTokenCollection } from '@/constants/interfaces/thirdParty/oauth';
 import { AuthType, Guest, User } from '@/constants/interfaces/usersInterface';
 import { AuthController } from '@/controllers/AuthController';
 import { ProductController } from '@/controllers/ProductController';
@@ -37,9 +39,10 @@ export const CartContext = createContext<CartContextInterface>({
   }
 });
 
+// # Contexts
 export const PaymentWebsocketContext = createContext<PaymentContextInterface>({paymentChannel: null});
-export const OauthContext = createContext<OauthTokenCollection | null>(null)
-// * BottomSheet portal
+export const OauthContext = createContext<GoogleApiKeys | null>(null)
+export const MapsContext = createContext<MapsPlatformKeyPayload | null>(null)
 export const BottomSheetContext = createContext<any>(() => {});
 
 export default function RootLayout() {
@@ -76,7 +79,9 @@ export default function RootLayout() {
   const [guest, setGuest] = useState<Guest | undefined>(undefined)
   const [cart, setCart] = useState<CartItemInterface[]>([])
   const [stripePublicKey, setStripePublicKey] = useState<string>('')
-  const [oauthTokenCollection, setOauthTokenCollection] = useState<OauthTokenCollection | null>(null)
+  const [oauthTokenCollection, setOauthTokenCollection] = useState<OauthTokenCollection | null>(null) 
+  const [mapsTokenCollection, setMapsTokenCollection] = useState<MapsPlatformKeyPayload | null>(null)
+
 
   const [paymentChannel, setPaymentChannel] = useState<any>(false)
 
@@ -104,13 +109,6 @@ export default function RootLayout() {
       })
     }
 
-    // 1* Guest API (da ignorare se l'utente è autenticato)
-    // if(!guest && !user) {
-    //   AuthController.sessionInit().then(() => {
-    //     setGuest(AuthController.currentGuest);
-    //   })
-    // }
-
     // 1* Cart API
     ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {
       if (!(res instanceof AxiosError)) {
@@ -124,8 +122,16 @@ export default function RootLayout() {
     })
 
     // 1* OAuth Public Key
-    AuthController.getOauthToken().then((keyObject: OauthTokenCollection) => {
-      setOauthTokenCollection(keyObject)
+    AuthController.getOauthToken().then((keyObject: GoogleApiKeys) => {
+      setOauthTokenCollection({
+        androidClientId: keyObject.androidClientId,
+        iosClientId: keyObject.androidClientId,
+        webClientId: keyObject.webClientId,
+      })
+      setMapsTokenCollection({
+        androidMapsKey: keyObject.androidMapsKey,
+        iosMapsKey: keyObject.iosMapsKey,
+      })
     })
 
     // 1* Websockets
@@ -178,7 +184,13 @@ export default function RootLayout() {
       />
 
       <BottomSheetContext.Provider value={setSheet}>
-        <OauthContext value={oauthTokenCollection}>
+        <OauthContext.Provider
+          value={
+            oauthTokenCollection && mapsTokenCollection
+              ? { ...oauthTokenCollection, ...mapsTokenCollection }
+              : null
+          }
+        >
           <UserContext value={{user, guest, setUser, setGuest}}>
             <CartContext value={{cart, setCart}}>
               <PaymentWebsocketContext value={{paymentChannel, setPaymentChannel}}>
@@ -215,7 +227,7 @@ export default function RootLayout() {
               </PaymentWebsocketContext>
             </CartContext>
           </UserContext>
-        </OauthContext>
+        </OauthContext.Provider>
       </BottomSheetContext.Provider>
     </>
   );

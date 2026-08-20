@@ -1,10 +1,11 @@
-import { User } from "./usersInterface";
+import { User } from "../usersInterface";
 
 export interface OauthTokenCollection {
   androidClientId: string;
   iosClientId: string;
   webClientId: string;
 }
+
 export interface GoogleAuthPayload {
   code: string;
   codeVerifier: string;

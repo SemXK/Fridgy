@@ -1,16 +1,31 @@
-import { Map } from "@maplibre/maplibre-react-native";
 import React from 'react';
+import MapView, {
+  PROVIDER_GOOGLE,
+  type Region,
+} from 'react-native-maps';
 
-const createStore = () => {
+const INITIAL_REGION: Region = {
+  latitude: 41.8902,
+  longitude: 12.4922,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+};
+
+const CreateStore = () => {
   return (
-     <Map mapStyle="https://demotiles.maplibre.org/style.json" />
-    // <View>
-    //   <View className="bg-slate-900 h-2/3 w-screen">
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      style={{ flex: 1 }}
+      initialRegion={INITIAL_REGION}
+      showsCompass={false}
+      showsTraffic={false}
+      showsBuildings
+      zoomEnabled
+      scrollEnabled
+      rotateEnabled
+      pitchEnabled={false}
+    />
+  );
+};
 
-    //   </View>
-    //   <CreateNewStoreComponent onClose={() => null}/>
-    // </View>
-  )
-}
-
-export default createStore
+export default CreateStore;

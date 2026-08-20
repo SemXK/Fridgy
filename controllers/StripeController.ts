@@ -1,5 +1,5 @@
 // controllers/StripeController.ts
-import { SetupIntentResponse } from "@/constants/interfaces/stripeInterface";
+import { SetupIntentResponse } from "@/constants/interfaces/thirdParty/stripeInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 

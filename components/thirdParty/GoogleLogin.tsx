@@ -1,4 +1,4 @@
-import { OauthTokenCollection } from "@/constants/interfaces/oauth";
+import { OauthTokenCollection } from "@/constants/interfaces/thirdParty/oauth";
 import { AuthController } from "@/controllers/AuthController";
 import * as AuthSession from 'expo-auth-session';
 import * as Google from "expo-auth-session/providers/google";

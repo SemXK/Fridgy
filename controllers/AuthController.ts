@@ -3,7 +3,8 @@ import { AxiosError, AxiosResponse } from "axios";
 import * as Crypto from 'expo-crypto';
 import * as SecureStore from "expo-secure-store";
 
-import { GoogleAuthPayload, GoogleSignInResponse, OauthTokenCollection } from "@/constants/interfaces/oauth";
+import { GoogleApiKeys } from "@/constants/interfaces/thirdParty/common";
+import { GoogleAuthPayload, GoogleSignInResponse } from "@/constants/interfaces/thirdParty/oauth";
 import { Controller } from "./Controller";
 
 interface Credentials {
@@ -107,8 +108,8 @@ export abstract class AuthController extends Controller {
       })
     }
   } 
-  static getOauthToken = async (): Promise<OauthTokenCollection>  => {
-    return await this.basicGetCall("get-google-public-key").then((res: AxiosResponse<OauthTokenCollection>) => {
+  static getOauthToken = async (): Promise<GoogleApiKeys>  => {
+    return await this.basicGetCall("get-google-public-key").then((res: AxiosResponse<GoogleApiKeys>) => {
       return res.data;
     });
   }
