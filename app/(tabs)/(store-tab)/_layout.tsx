@@ -1,8 +1,7 @@
 import { UserContext } from '@/app/_layout';
 import { AccessTypeEnum } from '@/constants/enums/accessType';
-import { router, Slot } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import React, { useContext, useEffect } from 'react';
-import { View } from 'react-native';
 
 const StoreLayout = () => {
   // $ Context
@@ -15,9 +14,12 @@ const StoreLayout = () => {
     }
   }, [])
   return (
-    <View>
-      <Slot />
-    </View>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        animation: "slide_from_right",
+      }}
+    />
   )
 }
 

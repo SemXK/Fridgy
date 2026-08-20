@@ -1,10 +1,12 @@
 import EmptyStoreListComponent from '@/components/details/EmptyStoreListComponent'
 import ProducerHeader from '@/components/headers/ProducerHeader'
 import TopSnackbar from '@/components/ui/SnackbarComponent'
+import ThemedText from '@/components/ui/ThemedText'
 import { SnackbarStatus } from '@/constants/enums/common'
 import { Store } from '@/constants/interfaces/store'
 import { primaryColor } from '@/constants/theme'
 import { StoreController } from '@/controllers/StoreController'
+import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
@@ -17,7 +19,6 @@ const StoreListComponent = () => {
   const [storeList, setStoreList] = useState<Store[]>([])
   const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
-
   // % functions
   const getStoreList = async () => {
     setLoading(true)
@@ -65,15 +66,17 @@ const StoreListComponent = () => {
               paddingBottom: 160,
               gap: 64,
             }}
-            ListEmptyComponent={() => <EmptyStoreListComponent onPress={() => null} />}
+            ListEmptyComponent={() => <EmptyStoreListComponent onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')} />}
             renderItem={({ item }) => (
             <View>
+              <ThemedText label="Work in progress" />
               {/* <FridgeMiniCard fridge={item} callbackFunction={getFridgeList} /> */}
             </View>
             )}
           />
         </View>
       }
+
     </SafeAreaView>
   )
 }

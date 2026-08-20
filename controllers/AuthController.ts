@@ -58,6 +58,12 @@ export abstract class AuthController extends Controller {
     })
   };
   static me = async (): Promise<User | null> => {
+    // console.log({
+    //   currentToken: this.currentToken, 
+    //   getAuthToken: await this.getAuthToken(), 
+    //   setRefreshToken: await this.getRefreshToken(),
+    //   guetsToken: await this.getGuestToken(),
+    // })
     if(this.currentUser) {
       return this.currentUser;
     }
@@ -71,10 +77,7 @@ export abstract class AuthController extends Controller {
           this.currentToken = data.user.token;
           return data.user;
         }
-        else if (res.status === 401){
-          throw new AxiosError("Unauthorized: Me API");
-        }
-        throw new Error("Unexpected response: ", );
+        throw new Error("Unexpected response");
       });
     }
     else {

@@ -95,14 +95,21 @@ export default function RootLayout() {
       .then(async (userResponse: User | null) => {
         setUser(userResponse);
       })
+      .catch(() => {
+        console.log("User invalid, creating guest account...")
+        // 1* /me api returns error if all tokens are invalid
+        AuthController.sessionInit().then(() => {
+          setGuest(AuthController.currentGuest);
+        })
+      })
     }
 
     // 1* Guest API (da ignorare se l'utente è autenticato)
-    if(!guest && !user) {
-      AuthController.sessionInit().then(() => {
-        setGuest(AuthController.currentGuest);
-      })
-    }
+    // if(!guest && !user) {
+    //   AuthController.sessionInit().then(() => {
+    //     setGuest(AuthController.currentGuest);
+    //   })
+    // }
 
     // 1* Cart API
     ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {

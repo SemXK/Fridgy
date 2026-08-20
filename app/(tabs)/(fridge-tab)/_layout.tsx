@@ -1,7 +1,7 @@
 import { AgendaFridgeAction } from '@/constants/interfaces/common'
 import { Fridge } from '@/constants/interfaces/productInterface'
 import { ProductController } from '@/controllers/ProductController'
-import { router, Slot } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import React, { createContext, Dispatch, SetStateAction, useContext, useState } from 'react'
 
 // ? General Frudge Context
@@ -56,7 +56,12 @@ const FridgeLayout = () => {
         {/* * Auth Header */}
 
         {/* Children Components */}
-        <Slot />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            animation: "slide_from_right",
+          }}
+        />
       {/* </SafeAreaView> */}
     </FridgeContext.Provider>
 

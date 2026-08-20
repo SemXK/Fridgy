@@ -13,7 +13,7 @@ const EmptyStoreListComponent = (props: ESLCInterface) => {
       <Image
         className="w-1/4 h-32"
         resizeMode='contain'
-        source={require('../../assets/images/illustrations/emptyFridge.png')}
+        source={require('../../assets/images/illustrations/noStores.png')}
       />
       <View className="w-2/3 flex flex-col justify-between">
         <View>

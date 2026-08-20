@@ -165,15 +165,15 @@ const FridgeList = () => {
 
     }
 
-      {/* BottomSheet */}
-      {
-        newFridgeModal && 
-        <BottomSheetComponent
-          height={1}
-          onClose={() => handleCloseModal()}
-          ShownComponent={CreateNewFridgeComponent}
-        />
-      }
+    {/* BottomSheet */}
+    {
+      newFridgeModal && 
+      <BottomSheetComponent
+        height={1}
+        onClose={() => handleCloseModal()}
+        ShownComponent={CreateNewFridgeComponent}
+      />
+    }
 
     </SafeAreaView>
   )
