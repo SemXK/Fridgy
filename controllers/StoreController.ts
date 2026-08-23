@@ -1,4 +1,4 @@
-import { Store } from "@/constants/interfaces/store";
+import { CreateStorePayload, Store } from "@/constants/interfaces/store";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -15,5 +15,13 @@ export abstract class StoreController extends Controller {
       throw new AxiosError("Unexpected response status: " + res.status);
     });
   };
-  
+  static setStore = async (payload: CreateStorePayload): Promise<Store | AxiosError> => {
+    return await this.authenticatedPostCall("producer/store/set", payload).then((res: AxiosResponse<Store>) => {
+      if (res.status === 200) {
+        const newStore: Store = (res as AxiosResponse).data;
+        return newStore;
+      }
+      throw new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
 }

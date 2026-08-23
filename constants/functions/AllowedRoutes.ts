@@ -11,7 +11,6 @@ import { UserAccessType } from "../interfaces/usersInterface";
 export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessType): StateRoute[] {
   // Default routes, accessible to everyone
   let allowedRoutes: string[] = []
-  
   switch(accessType?.id) {
     case AccessTypeEnum.Utente:
     case AccessTypeEnum.Ospite:
@@ -25,3 +24,10 @@ export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessT
   return routes.filter((route) => allowedRoutes.includes(route.name))
 
 }
+
+/**
+ *  List of routes that should hide the tab bar
+ */
+export const ProhibitedRoutes = [
+    '(tabs)/(store-tab)/createStore'
+  ];

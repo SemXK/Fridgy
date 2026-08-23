@@ -22,9 +22,9 @@ export default function SignIn() {
   const [password, setPassword] = useState<string>("")
 
   // * State settings
-  const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [authLoading, setAuthLoading] = useState<boolean>(false)
   const [showPass, setShowPass] = useState<boolean>(false)
+  const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
 
 

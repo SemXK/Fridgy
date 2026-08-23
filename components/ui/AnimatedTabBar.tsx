@@ -1,5 +1,5 @@
 import { UserContext } from '@/app/_layout';
-import { GetAllowedRoutes } from '@/constants/functions/AllowedRoutes';
+import { GetAllowedRoutes, ProhibitedRoutes } from '@/constants/functions/AllowedRoutes';
 import { TabBarIcons } from '@/constants/iconConstants';
 import { StateRoute } from '@/constants/interfaces/common';
 import { primaryColor } from '@/constants/theme';
@@ -40,7 +40,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
     setAllowedRoutes(filteredRoutes)
   }, [user])
 
-
   return (
     <View
       style={{
@@ -52,6 +51,7 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
         alignSelf: 'center',
         backgroundColor: 'transparent',
         gap: 4,
+        display: ProhibitedRoutes.includes(route.name) ? 'none' :  'flex'
       }}
     >
       {allowsRoutes.map((route: any, index: number) => {

@@ -1,7 +1,8 @@
 import EmptyStoreListComponent from '@/components/details/EmptyStoreListComponent'
+import StoreDetail from '@/components/details/StoreDetail'
 import ProducerHeader from '@/components/headers/ProducerHeader'
+import PrimaryButton from '@/components/pressable/PrimaryButton'
 import TopSnackbar from '@/components/ui/SnackbarComponent'
-import ThemedText from '@/components/ui/ThemedText'
 import { SnackbarStatus } from '@/constants/enums/common'
 import { Store } from '@/constants/interfaces/store'
 import { primaryColor } from '@/constants/theme'
@@ -19,12 +20,12 @@ const StoreListComponent = () => {
   const [storeList, setStoreList] = useState<Store[]>([])
   const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
+
   // % functions
   const getStoreList = async () => {
     setLoading(true)
     await StoreController.getStoreTypes().then((stores) => {
       setStoreList(stores as Store[])
-      console.log(stores)
     })
     .catch((e) => {
       setBarStatus(SnackbarStatus.Error)
@@ -39,6 +40,7 @@ const StoreListComponent = () => {
   useEffect(() => {
     getStoreList()
   }, [])
+
   return (
     <SafeAreaView>
       <ProducerHeader title="Lista Negozi Gestiti"/>
@@ -57,6 +59,13 @@ const StoreListComponent = () => {
         </View>
         :
         <View className="px-4 h-full mb-32">
+          <View className="mb-4 w-full">
+            <PrimaryButton
+              buttonText='Aggiungi'
+              onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')}
+            />
+          </View>
+
           <FlatList
             data={storeList}
             keyExtractor={item => String(item.id)}
@@ -64,13 +73,12 @@ const StoreListComponent = () => {
             style={{ flex: 1,  }}
             contentContainerStyle={{
               paddingBottom: 160,
-              gap: 64,
+              gap:8
             }}
             ListEmptyComponent={() => <EmptyStoreListComponent onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')} />}
             renderItem={({ item }) => (
             <View>
-              <ThemedText label="Work in progress" />
-              {/* <FridgeMiniCard fridge={item} callbackFunction={getFridgeList} /> */}
+              <StoreDetail store={item}  />
             </View>
             )}
           />
