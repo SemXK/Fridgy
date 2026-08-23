@@ -8,7 +8,7 @@ interface NewStoreInterface {
 }
 const NewStoreHeader = (props: NewStoreInterface) => {
   return (
-  <View className={"flex flex-row justify-between items-center py-4 " + props.headerClass}>
+  <View className={"flex flex-row justify-between items-center py-4 bg-transparent" + props.headerClass}>
       <View className="flex flex-row  items-center">
         <BackButton />
         {props.title && 

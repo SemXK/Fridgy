@@ -4,7 +4,6 @@ import React from 'react';
 
 
 export default function TabLayout() {
-
   return (
     <Tabs
       screenOptions={{
@@ -13,7 +12,7 @@ export default function TabLayout() {
         animation: 'shift',
       }}
       
-      tabBar={(props) => <AnimatedTabBar {...props} />}
+      tabBar={(props) => <AnimatedTabBar {...props} /> }
     >
       <Tabs.Screen
         name="index"

@@ -1,14 +1,19 @@
 import { UserContext } from '@/app/_layout';
-import { GetAllowedRoutes, ProhibitedRoutes } from '@/constants/functions/AllowedRoutes';
+import { ProhibitedRoutes } from '@/constants/arrays/prohibitedRoutes';
+import { GetAllowedRoutes } from '@/constants/functions/AllowedRoutes';
 import { TabBarIcons } from '@/constants/iconConstants';
 import { StateRoute } from '@/constants/interfaces/common';
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSegments } from 'expo-router';
 import { MotiView } from 'moti';
 import React, { useContext, useEffect, useState } from 'react';
-import { Appearance, TouchableOpacity, View } from 'react-native';
+import { Appearance, TouchableOpacity } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
+const ActiveTabbarVertical = 4
+const InactiveTabbarVertical = -100
 
 function getFocusedRouteName(route: any): string {
   let r = route;
@@ -21,18 +26,28 @@ function getFocusedRouteName(route: any): string {
 export default function AnimatedTabBar({ state, descriptors, navigation }: any) {
   // £ Current User
   const { user } =  useContext(UserContext)
-
+  const segments = useSegments()
   // * list the routes with tab bar displayed
   const route = state.routes[state.index];
-  // const focusedChild = getFocusedRouteName(route);
-  // const isHome = route.name === "Home";
-  // const isProductDetail = route.name === "productDetail";
-  // const isFridgeIndex = route.name === "(fridge-tab)";
-  // const isProductCreation = route.name === "ProductCreation";
-  // const isProfilePage = route.name === "(profile-tab)";
 
   // * States
   const [allowsRoutes, setAllowedRoutes] = useState<StateRoute[]>([])
+  
+  // % Animated Variables
+  const tabBarBottom = useSharedValue(ActiveTabbarVertical)
+  const tabBarBottomPosition = useAnimatedStyle(() => ({
+    bottom: tabBarBottom.value
+  }))
+
+  useEffect(() => {
+    if(ProhibitedRoutes.includes(segments.join('/'))) {
+      tabBarBottom.value = withTiming(InactiveTabbarVertical, {duration: 400})
+    }
+    else {
+      tabBarBottom.value = withTiming(ActiveTabbarVertical, {duration: 400})
+    }
+    console.log(segments.join('/'),tabBarBottom.value )
+  }, [segments])
 
   useEffect(() => {
     const allRoutes = state.routes;
@@ -41,18 +56,21 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   }, [user])
 
   return (
-    <View
-      style={{
-        width: "80%",
-        position: 'absolute',
-        bottom: 4,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        backgroundColor: 'transparent',
-        gap: 4,
-        display: ProhibitedRoutes.includes(route.name) ? 'none' :  'flex'
-      }}
+    <Animated.View
+      style={
+        [
+          tabBarBottomPosition,
+          {
+            width: "80%",
+            position: 'absolute',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            backgroundColor: 'transparent',
+            gap: 4,
+          }
+        ]
+      }
     >
       {allowsRoutes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
@@ -96,6 +114,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
           </TouchableOpacity>
         );
       })}
-    </View>
+    </Animated.View>
   );
 }

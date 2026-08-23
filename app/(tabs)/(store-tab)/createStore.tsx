@@ -10,7 +10,7 @@ import { StoreController } from '@/controllers/StoreController';
 import * as ImagePicker from "expo-image-picker";
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, View } from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   type Region
@@ -61,63 +61,69 @@ const CreateStore = () => {
     } 
   }
   return (
-    <View className="h-screen w-screen">
-      {/* Snackbar */}
-      <TopSnackbar
-        status={barStatus}
-        message={showSnackbar} 
-        onHide={() => setShowSnackbar('')} 
-      />
+    <KeyboardAvoidingView
+      className="flex-1"
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
 
-      {/* Gmaps Section */}
-      <View className="h-1/2 w-full">
-        <Image
-          source={require('@/assets/images/placeholder/maps.png')}
-          className="h-full w-full"
-          resizeMode="cover"
+      <View className="flex-1 w-screen">
+        {/* Snackbar */}
+        <TopSnackbar
+          status={barStatus}
+          message={showSnackbar} 
+          onHide={() => setShowSnackbar('')} 
         />
-      </View>
 
-      {/* { Forms Section} */}
-      <View className="h-1/2 w-full">
-        <NewStoreHeader  />
-        <ScrollView className="h-1/2 w-full">
-          <FileUploader image={image} setImage={setImage} />
+        {/* Gmaps Section */}
+        <View className="h-1/2 w-full">
+          <Image
+            source={require('@/assets/images/placeholder/maps.png')}
+            className="h-full w-full"
+            resizeMode="cover"
+          />
+        </View>
 
-          <View className="p-4 flex flex-col justify-between gap-4">
-            <View className="gap-4">
-              <ThemedFormField
-                label={"Nome"}
-                value={name}
-                setValue={setName}
-              />
-              <ThemedFormField
-                label={"Indirizzo"}
-                value={address}
-                setValue={setAddress}
-              />
+        {/* { Forms Section} */}
+        <View className="h-1/2 w-full">
+          <NewStoreHeader  />
+          <ScrollView className="flex-1">
+            <FileUploader image={image} setImage={setImage} />
 
-            </View>
-
-            <View className="align-bottom">
-              {
-                !loading ? 
-
-                <PrimaryButton
-                  buttonText='Crea'
-                  onPress={handleCreateStore}
+            <View className="p-4 flex flex-col justify-between gap-4">
+              <View className="gap-4">
+                <ThemedFormField
+                  label={"Nome"}
+                  value={name}
+                  setValue={setName}
                 />
-              :
-                <View className="w-full flex flex-row justify-center">
-                  <ActivityIndicator animating size={24} color={primaryColor[500]} />
-                </View>
-              }
-            </View>
-          </View>
+                <ThemedFormField
+                  label={"Indirizzo"}
+                  value={address}
+                  setValue={setAddress}
+                />
 
-        </ScrollView>
+              </View>
+
+              <View className="align-bottom">
+                {
+                  !loading ? 
+
+                  <PrimaryButton
+                    buttonText='Crea'
+                    onPress={handleCreateStore}
+                  />
+                :
+                  <View className="w-full flex flex-row justify-center">
+                    <ActivityIndicator animating size={24} color={primaryColor[500]} />
+                  </View>
+                }
+              </View>
+            </View>
+
+          </ScrollView>
+        </View>
       </View>
-    </View>
+  </KeyboardAvoidingView>
 
     // <MapView
     //   provider={PROVIDER_GOOGLE}

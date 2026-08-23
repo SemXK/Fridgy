@@ -11,9 +11,9 @@ const NotificationButton = () => {
   const rotate = useRef(new Animated.Value(0)).current;
 
   const handlePressIn = () => {
-        Haptics.notificationAsync(
-          Haptics.NotificationFeedbackType.Success
-        ) 
+    Haptics.notificationAsync(
+      Haptics.NotificationFeedbackType.Success
+    ) 
     Animated.parallel([
       Animated.timing(scale, {
         toValue: 0.8, // shrink 20 → 16
