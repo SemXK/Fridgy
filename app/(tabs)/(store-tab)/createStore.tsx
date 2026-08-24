@@ -4,7 +4,6 @@ import PrimaryButton from '@/components/pressable/PrimaryButton';
 import FileUploader from '@/components/thirdParty/FileUploader';
 import TopSnackbar from '@/components/ui/SnackbarComponent';
 import { SnackbarStatus } from '@/constants/enums/common';
-import { Store } from '@/constants/interfaces/store';
 import { primaryColor } from '@/constants/theme';
 import { StoreController } from '@/controllers/StoreController';
 import * as ImagePicker from "expo-image-picker";
@@ -31,33 +30,35 @@ const CreateStore = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-  const [lat, setLat] = useState<number>(41.96405671);
-  const [lng, setLng] = useState<number>(12.058631111);
+  const [lat, setLat] = useState<number>(INITIAL_REGION.latitude);
+  const [lng, setLng] = useState<number>(INITIAL_REGION.longitude);
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null)
 
 
   // % Fucntions
   const handleCreateStore = async () => {
-    if(name && lat && lng) {
+    if(name && lat && lng && address) {
       setLoading(true);      
       const formData = new FormData();  
       formData.append("name", name);
       formData.append("address", address);
       formData.append("lat", String(lat));
       formData.append("lng", String(lng));
-
       if (image) {
         const file = {
           uri: image.uri,
           type: image.mimeType || "image/jpeg",
           name: image.fileName || `image.${image.uri.split('.').pop()}`,
         };
-  
-        formData.append("image", file as any);
+        formData.append("profileImage", file as any);
       }
-      await StoreController.setStore(formData).then((res) => {
-        const newStore = res as Store
-        router.navigate(`/(tabs)/(store-tab)/${newStore.id}`)
+      await StoreController.setStore(formData).then(() => {
+        setName('')
+        setAddress('')
+        setLat(0)
+        setLng(0)
+        setImage(null)
+        router.navigate(`/(tabs)/(store-tab)`)
       })
       .finally(() => {
         setLoading(false);      

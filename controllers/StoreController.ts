@@ -21,7 +21,7 @@ export abstract class StoreController extends Controller {
    * @returns the created / updated store
    */
   static setStore = async (payload: FormData): Promise<Store | AxiosError> => {
-    console.log(payload)
+    console.log({...payload, profileImage: payload.get('profileImage')})
     return await this.authenticatedPostCall("producer/store/set", payload).then((res: AxiosResponse<Store>) => {
       if (res.status === 200) {
         const newStore: Store = (res as AxiosResponse).data;

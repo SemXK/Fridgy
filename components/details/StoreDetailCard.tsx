@@ -8,15 +8,16 @@ import { View } from 'react-native';
 import ThemedText from '../ui/ThemedText';
 import UrlImage from '../ui/UrlImage';
 
-interface StoreDetailInterface {
+interface StoreDetailCardInterface {
   store: Store;
 }
 
-const StoreDetail = (props: StoreDetailInterface) => {
+const StoreDetailCard = (props: StoreDetailCardInterface) => {
   return (
     <View className="bg-darkColor-900 rounded-xl w-full h-32 flex flex-row gap-4 p-4 flex-1">
+      
       <View className="bg-darkColor-800 rounded-xl h-full aspect-square">
-        <UrlImage source={props.store.profileImage || ''} />
+        <UrlImage source={props.store.profileImage || ''} resizeMode='cover' className="flex-1 rounded-xl aspect-square" />
       </View>
 
       <View className="flex flex-col flex-1 justify-between">
@@ -46,4 +47,4 @@ const StoreDetail = (props: StoreDetailInterface) => {
   )
 }
 
-export default StoreDetail
+export default StoreDetailCard

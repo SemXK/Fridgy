@@ -1,5 +1,5 @@
 import EmptyStoreListComponent from '@/components/details/EmptyStoreListComponent'
-import StoreDetail from '@/components/details/StoreDetail'
+import StoreDetail from '@/components/details/StoreDetailCard'
 import ProducerHeader from '@/components/headers/ProducerHeader'
 import PrimaryButton from '@/components/pressable/PrimaryButton'
 import TopSnackbar from '@/components/ui/SnackbarComponent'
@@ -7,8 +7,9 @@ import { SnackbarStatus } from '@/constants/enums/common'
 import { Store } from '@/constants/interfaces/store'
 import { primaryColor } from '@/constants/theme'
 import { StoreController } from '@/controllers/StoreController'
+import { useFocusEffect } from '@react-navigation/native'
 import { router } from 'expo-router'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
@@ -37,12 +38,12 @@ const StoreListComponent = () => {
   }
 
   // £ Effect
-  useEffect(() => {
+  useFocusEffect(() => {
     getStoreList()
-  }, [])
+  })
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <ProducerHeader title="Lista Negozi Gestiti"/>
 
       {/* Snackbar */}
@@ -67,13 +68,15 @@ const StoreListComponent = () => {
           </View>
 
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={storeList}
             keyExtractor={item => String(item.id)}
             numColumns={1}
             style={{ flex: 1,  }}
             contentContainerStyle={{
               paddingBottom: 160,
-              gap:8
+              gap:8,
+              marginBottom: 32
             }}
             ListEmptyComponent={() => <EmptyStoreListComponent onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')} />}
             renderItem={({ item }) => (
