@@ -46,7 +46,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
     else {
       tabBarBottom.value = withTiming(ActiveTabbarVertical, {duration: 400})
     }
-    console.log(segments.join('/'),tabBarBottom.value )
   }, [segments])
 
   useEffect(() => {

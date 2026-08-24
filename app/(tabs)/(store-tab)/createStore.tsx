@@ -4,7 +4,7 @@ import PrimaryButton from '@/components/pressable/PrimaryButton';
 import FileUploader from '@/components/thirdParty/FileUploader';
 import TopSnackbar from '@/components/ui/SnackbarComponent';
 import { SnackbarStatus } from '@/constants/enums/common';
-import { CreateStorePayload, Store } from '@/constants/interfaces/store';
+import { Store } from '@/constants/interfaces/store';
 import { primaryColor } from '@/constants/theme';
 import { StoreController } from '@/controllers/StoreController';
 import * as ImagePicker from "expo-image-picker";
@@ -40,14 +40,22 @@ const CreateStore = () => {
   const handleCreateStore = async () => {
     if(name && lat && lng) {
       setLoading(true);      
-      const payload: CreateStorePayload = {
-        name,
-        address,
-        lat,
-        lng,
-        profileImage: image,
+      const formData = new FormData();  
+      formData.append("name", name);
+      formData.append("address", address);
+      formData.append("lat", String(lat));
+      formData.append("lng", String(lng));
+
+      if (image) {
+        const file = {
+          uri: image.uri,
+          type: image.mimeType || "image/jpeg",
+          name: image.fileName || `image.${image.uri.split('.').pop()}`,
+        };
+  
+        formData.append("image", file as any);
       }
-      await StoreController.setStore(payload).then((res) => {
+      await StoreController.setStore(formData).then((res) => {
         const newStore = res as Store
         router.navigate(`/(tabs)/(store-tab)/${newStore.id}`)
       })

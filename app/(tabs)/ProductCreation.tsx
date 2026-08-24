@@ -50,7 +50,6 @@ const ProductCreation = () => {
     })
   }  
   const handleSubmit = async () => {
-    console.log(PERCENTUALI_IVA[0])
     if(productForm.name && productForm.price && productForm.brandId && productForm.uma) {
       setLoadingPreview(true);
       const formData = new FormData();  
@@ -72,7 +71,6 @@ const ProductCreation = () => {
         formData.append("image", file as any);
       }
   
-      console.log({formData: formData.get('uma')})
       try {
         await ProductController.setProduct(formData);
         setProductForm(initialState);
