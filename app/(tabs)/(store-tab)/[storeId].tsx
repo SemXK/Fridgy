@@ -9,9 +9,12 @@ import { useFocusEffect } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
+import moment from 'moment'
 import React, { useState } from 'react'
 import { Appearance, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
+import colors from 'tailwindcss/colors'
 
 const StoreDetail = () => {
   // % Params
@@ -29,7 +32,8 @@ const StoreDetail = () => {
           const storeDetail = res as Store;
           setStore(storeDetail)
         })
-        .finally(() => {
+        .catch(() => {
+          router.back()
         })
     }
     else {
@@ -41,6 +45,8 @@ const StoreDetail = () => {
   useFocusEffect(() => {
     getStoreDetail()
   })
+
+  // * Display
   return (
     <View className="h-screen w-screen flex-1">
       {
@@ -51,14 +57,14 @@ const StoreDetail = () => {
         :
         <View className="flex-1">
 
+          {/* Main Store Info */}
           <View className="bg-darkColor-900 rounded-xl  flex flex-col  w-screen aspect-square relative ">
-
 
             {/* Store Image */}
             <UrlImage 
               source={store.profileImage || ''} 
               resizeMode='cover' 
-              className="flex-1 rounded-xl w-screen aspect-square -z-10" 
+              className="flex-1 rounded-xl w-screen aspect-square" 
             />
 
             {/* Header */}
@@ -118,6 +124,84 @@ const StoreDetail = () => {
             </View>
 
           </View>
+
+          {/* Store Badges */}
+          <ScrollView className="flex-1">
+            
+            <View className=" flex flex-row justify-center gap-8 h-fit ">
+              <View className="flex-1 flex flex-row gap-2 rounded-xl h-24 w-1/2 items-center">
+                <PrimaryIconButton 
+                  className='self-center'
+                  onPress={() => null} 
+                  iconSpecs={{
+                    name: "clock",
+                    color: primaryColor[500],
+                    size: 20
+                  }}
+                />
+                <View className="flex">
+                  <ThemedText
+                    darkModeDisabled
+                    textStyle='text-primary-500 text-md'
+                    font="Nunito-Bold" 
+                    label={`Attivo dal`}
+                  />
+                  <ThemedText
+                    style={{fontSize: 10}}
+                    label={moment(store.created_at).format('DD-MM-yyyy')}
+                  />
+                </View>
+              </View>
+
+              <View className="flex-1 flex flex-row gap-2 rounded-xl h-24 w-1/2 items-center">
+                <PrimaryIconButton 
+                  className='self-center'
+                  onPress={() => null} 
+                  iconSpecs={{
+                    name: "star-half-full",
+                    color: colors.amber[500],
+                    size: 20
+                  }}
+                />
+                <View className="flex">
+                  <ThemedText
+                    darkModeDisabled
+                    textStyle='text-amber-500 text-md'
+                    font="Nunito-Bold" 
+                    label={`${store.rating}`}
+                  />
+                  <ThemedText
+                    label={`${store.reviewsCount || 0} recensioni`}
+                  />
+                </View>
+              </View>
+
+              <View className="flex-1 flex flex-row gap-2 rounded-xl h-24 w-1/2 items-center">
+                <PrimaryIconButton 
+                  className='self-center'
+                  onPress={() => null} 
+                  iconSpecs={{
+                    name: "package-variant-closed",
+                    color: colors.lime[500],
+                    size: 20
+                  }}
+                />
+                <View className="flex ">
+                  <ThemedText
+                    darkModeDisabled
+                    textStyle="text-lime-500"
+                    font="Nunito-Bold" 
+                    label={`Prodotti`}
+                  />
+                  <ThemedText
+                    style={{fontSize: 10}}
+                    label={`${store.productListCount || 0} prodotti`}
+                  />
+                </View>
+              </View>
+            </View>
+
+          </ScrollView>
 
         </View>
       }

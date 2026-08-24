@@ -9,7 +9,7 @@ module.exports = {
   ],
   safelist: [
     {
-      pattern: /bg-(primary|secondary|red|green|blue|emerald|rose|yellow|orange|purple|cyan|teal|amber|lime|pink|sky|indigo|violet|fuchsia|slate|gray|neutral|stone)-(100|200|300|400|500|600|700|800|900)/,
+      pattern: /(bg|text)-(primary|secondary|red|green|blue|emerald|rose|yellow|orange|purple|cyan|teal|amber|lime|pink|sky|indigo|violet|fuchsia|slate|gray|neutral|stone)-(100|200|300|400|500|600|700|800|900)/,
     },
   ],
   presets: [require("nativewind/preset")],

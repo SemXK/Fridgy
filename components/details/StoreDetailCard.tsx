@@ -7,6 +7,7 @@ import React from 'react';
 import { View } from 'react-native';
 import ThemedText from '../ui/ThemedText';
 import UrlImage from '../ui/UrlImage';
+import StoreAccessTypePill from '../ui/badges/StoreAccessTypePill';
 
 interface StoreDetailCardInterface {
   store: Store;
@@ -21,14 +22,26 @@ const StoreDetailCard = (props: StoreDetailCardInterface) => {
       </View>
 
       <View className="flex flex-col flex-1 justify-between">
-        <View>
+        <View className="flex-1">
           <ThemedText 
             darkModeDisabled
             textStyle='text-primary-500 text-2xl'
             font='Nunito-Bold'
             label={props.store.name}
           />
+          <StoreAccessTypePill accessType={props.store.userPivot.accessType} />
+
+          {/* <ThemedText
+            darkModeDisabled
+            textStyle='text-primary-500 bg-primary-500/10 rounded-lg '
+            label={props.store.pivot.accessType.type}
+          /> */}
           <ThemedText 
+            label={props.store.address}
+          />
+          <ThemedText 
+            textStyle='text-stone-800 text-sm'
+            font='Nunito-Italic'
             label={"Aggiornato il " + moment(props.store.updated_at).format('DD-MM-yyyy')}
           />
         </View>

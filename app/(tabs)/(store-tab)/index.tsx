@@ -83,11 +83,7 @@ const StoreListComponent = () => {
               marginBottom: 32
             }}
             ListEmptyComponent={() => <EmptyStoreListComponent onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')} />}
-            renderItem={({ item }) => (
-            <View>
-              <StoreDetail store={item}  />
-            </View>
-            )}
+            renderItem={({ item }) => (<StoreDetail store={item}  />)}
           />
         </View>
       }

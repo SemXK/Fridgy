@@ -1,4 +1,5 @@
 import { primaryColor } from '@/constants/theme';
+import { router } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 import PrimaryIconButton from '../pressable/PrimaryIconButton';
@@ -15,7 +16,7 @@ const StoreDetailHeader = (props: StoreDetailPageInterface) => {
       <View className="flex flex-row  items-center">
         <PrimaryIconButton 
           className='self-center'
-          onPress={() => {}} 
+          onPress={() => router.back()} 
           iconSpecs={{
             name: "chevron-left",
             color: primaryColor[500],
