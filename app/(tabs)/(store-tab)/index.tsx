@@ -60,12 +60,16 @@ const StoreListComponent = () => {
         </View>
         :
         <View className="px-4 h-full mb-32">
-          <View className="mb-4 w-full">
-            <PrimaryButton
-              buttonText='Aggiungi'
-              onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')}
-            />
-          </View>
+          {
+            storeList.length ?
+            <View className="mb-4 w-full">
+              <PrimaryButton
+                buttonText='Aggiungi'
+                onPress={() => router.navigate('/(tabs)/(store-tab)/createStore')}
+              />
+            </View>
+            : null
+          }
 
           <FlatList
             showsVerticalScrollIndicator={false}

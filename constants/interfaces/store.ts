@@ -4,6 +4,7 @@ import { UserAccessType } from "./usersInterface";
 export interface Store {
   id: number;
   name: string;
+  address: string;
   profileImage: string | null;
   lat: number;
   lng: number;

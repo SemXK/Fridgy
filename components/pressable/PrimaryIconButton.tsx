@@ -1,7 +1,8 @@
+import { hexToRgba } from '@/constants/functions/HexToRgba'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
-import { Button } from 'react-native-paper'
+import { ActivityIndicator, TouchableOpacity } from 'react-native'
+import { IconButton } from 'react-native-paper'
 
 interface ButtonInterface {
   onPress: () => void,
@@ -13,27 +14,27 @@ interface ButtonInterface {
   iconComponent?: React.Component,
   className?: string,
   isLoading?: boolean,
-  mode?: "text" | "elevated" | "outlined" | "contained" | "contained-tonal"
+  mode?: 'outlined' | 'contained' | 'contained-tonal'
 }
 
 const PrimaryIconButton = ({ onPress, iconSpecs, className, isLoading, mode }: ButtonInterface) => {
   return (
-    <Button
-      mode="text"
-      disabled={isLoading}
-      onPress={onPress}
-      className="mx-0 px-0 w-[10%] h-auto"
-    >
-      {
-        isLoading ?
-          <ActivityIndicator size={16} color="#ffffff" />
-          :
-          
-          <MaterialCommunityIcons
-            {...iconSpecs}
-          />
-      }
-    </Button>
+    <TouchableOpacity onPress={onPress}>
+      <IconButton
+        icon={() =>
+          isLoading ? (
+            <ActivityIndicator size={16} color="#ffffff" />
+          ) : (
+            <MaterialCommunityIcons {...iconSpecs} />
+          )
+        }
+        mode={mode || 'contained'}
+        containerColor={hexToRgba(iconSpecs.color, 0.1)}
+        disabled={isLoading}
+        size={iconSpecs.size}
+        className={`m-0 ${className ?? ''}`}
+      />
+    </TouchableOpacity>
   )
 }
 

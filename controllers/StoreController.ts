@@ -21,11 +21,24 @@ export abstract class StoreController extends Controller {
    * @returns the created / updated store
    */
   static setStore = async (payload: FormData): Promise<Store | AxiosError> => {
-    console.log({...payload, profileImage: payload.get('profileImage')})
     return await this.authenticatedPostCall("producer/store/set", payload).then((res: AxiosResponse<Store>) => {
       if (res.status === 200) {
         const newStore: Store = (res as AxiosResponse).data;
         return newStore;
+      }
+      throw new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  /**
+   * Get Store Detail
+   * @param storeId Store id to fetch
+   * @returns the store
+   */
+  static getStoreDetail = async (storeId:string): Promise<Store | AxiosError> => {
+    return await this.authenticatedGetCall(`producer/store/${storeId}`).then((res: AxiosResponse<Store>) => {
+      if (res.status === 200) {
+        const storeDetail: Store = (res as AxiosResponse).data;
+        return storeDetail;
       }
       throw new AxiosError("Unexpected response status: " + res.status);
     });

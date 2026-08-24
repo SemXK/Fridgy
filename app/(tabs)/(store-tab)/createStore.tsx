@@ -16,8 +16,8 @@ import {
 } from 'react-native-maps';
 
 const INITIAL_REGION: Region = {
-  latitude: 41.8902,
-  longitude: 12.4922,
+  latitude: 41.890211,
+  longitude: 12.492211,
   latitudeDelta: 0.01,
   longitudeDelta: 0.01,
 };
