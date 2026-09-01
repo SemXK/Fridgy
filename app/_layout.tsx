@@ -42,7 +42,6 @@ export const CartContext = createContext<CartContextInterface>({
 // # Contexts
 export const PaymentWebsocketContext = createContext<PaymentContextInterface>({paymentChannel: null});
 export const OauthContext = createContext<GoogleApiKeys | null>(null)
-export const MapsContext = createContext<MapsPlatformKeyPayload | null>(null)
 export const BottomSheetContext = createContext<any>(() => {});
 
 export default function RootLayout() {
@@ -101,7 +100,6 @@ export default function RootLayout() {
         setUser(userResponse);
       })
       .catch(() => {
-        console.log("User invalid, creating guest account...")
         // 1* /me api returns error if all tokens are invalid
         AuthController.sessionInit().then(() => {
           setGuest(AuthController.currentGuest);
@@ -131,6 +129,7 @@ export default function RootLayout() {
       setMapsTokenCollection({
         androidMapsKey: keyObject.androidMapsKey,
         iosMapsKey: keyObject.iosMapsKey,
+        webAutocompleteKey: keyObject.webAutocompleteKey
       })
     })
 

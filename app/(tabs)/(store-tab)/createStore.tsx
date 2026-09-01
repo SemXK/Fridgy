@@ -2,16 +2,18 @@ import NewStoreHeader from '@/components/headers/NewStoreHeader';
 import ThemedFormField from '@/components/inputs/CustomFormField';
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import FileUploader from '@/components/thirdParty/FileUploader';
+import ThemedGeolocationInput from '@/components/thirdParty/ThemedGeolocationInput';
 import TopSnackbar from '@/components/ui/SnackbarComponent';
 import { SnackbarStatus } from '@/constants/enums/common';
 import { primaryColor } from '@/constants/theme';
 import { StoreController } from '@/controllers/StoreController';
 import * as ImagePicker from "expo-image-picker";
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import {
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
+import MapView, {
+  Marker,
+  PROVIDER_GOOGLE,
   type Region
 } from 'react-native-maps';
 
@@ -23,6 +25,9 @@ const INITIAL_REGION: Region = {
 };
 
 const CreateStore = () => {
+  // ? References
+  const mapRef = useRef<MapView>(null);
+
   // * States
   const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
@@ -30,9 +35,10 @@ const CreateStore = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-  const [lat, setLat] = useState<number>(INITIAL_REGION.latitude);
-  const [lng, setLng] = useState<number>(INITIAL_REGION.longitude);
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setLng] = useState<number>(0);
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null)
+
 
 
   // % Fucntions
@@ -69,6 +75,26 @@ const CreateStore = () => {
       setShowSnackbar("Compila tutti i campi")
     } 
   }
+  const handlePosition = (glat: number, glng: number) => {
+    setLat(glat)
+    setLng(glng)
+  }
+
+  // £ Effects
+  useEffect(() => {
+    if (lat && lng) {
+      mapRef.current?.animateToRegion(
+        {
+          latitude: lat,
+          longitude: lng,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        },
+        500
+      );
+    }
+  }, [lat, lng]);
+
   return (
     <KeyboardAvoidingView
       className="flex-1"
@@ -85,67 +111,91 @@ const CreateStore = () => {
 
         {/* Gmaps Section */}
         <View className="h-1/2 w-full">
-          <Image
-            source={require('@/assets/images/placeholder/maps.png')}
-            className="h-full w-full"
-            resizeMode="cover"
-          />
+          <MapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={{ flex: 1 }}
+            initialRegion={INITIAL_REGION}
+            showsCompass={false}
+            showsTraffic={false}
+            showsBuildings
+            zoomEnabled
+            scrollEnabled
+            rotateEnabled
+            pitchEnabled={false}
+          >
+            {lat && lng ? (
+              <Marker
+                coordinate={{
+                  latitude: lat,
+                  longitude: lng,
+                }}
+              />
+            ):
+            <></>
+          
+          }
+          </MapView>
         </View>
 
         {/* { Forms Section} */}
         <View className="h-1/2 w-full">
-          <NewStoreHeader  />
-          <ScrollView className="flex-1">
-            <FileUploader image={image} setImage={setImage} />
+          <NewStoreHeader />
 
-            <View className="p-4 flex flex-col justify-between gap-4">
-              <View className="gap-4">
-                <ThemedFormField
-                  label={"Nome"}
-                  value={name}
-                  setValue={setName}
-                />
-                <ThemedFormField
-                  label={"Indirizzo"}
-                  value={address}
-                  setValue={setAddress}
+          <FlatList
+            data={[{ key: 'form' }]}
+            keyExtractor={(item) => item.key}
+            keyboardShouldPersistTaps="handled"
+            renderItem={() => (
+              <View>
+                <FileUploader
+                  image={image}
+                  setImage={setImage}
                 />
 
-              </View>
+                <View className="p-4 flex flex-col gap-4">
+                  <View className="gap-4">
 
-              <View className="align-bottom">
-                {
-                  !loading ? 
+                    <ThemedGeolocationInput
+                      label="Indirizzo"
+                      value={address}
+                      setValue={setAddress}
+                      outputPoint={handlePosition}
+                    />
 
-                  <PrimaryButton
-                    buttonText='Crea'
-                    onPress={handleCreateStore}
-                  />
-                :
-                  <View className="w-full flex flex-row justify-center">
-                    <ActivityIndicator animating size={24} color={primaryColor[500]} />
+                    <ThemedFormField
+                      label="Nome"
+                      value={name}
+                      setValue={setName}
+                    />
+
                   </View>
-                }
-              </View>
-            </View>
 
-          </ScrollView>
+                  <View>
+                    {!loading ? (
+                      <PrimaryButton
+                        buttonText="Crea"
+                        onPress={handleCreateStore}
+                      />
+                    ) : (
+                      <View className="w-full flex flex-row justify-center">
+                        <ActivityIndicator
+                          animating
+                          size={24}
+                          color={primaryColor[500]}
+                        />
+                      </View>
+                    )}
+                  </View>
+                </View>
+              </View>
+            )}
+          />
         </View>
       </View>
-  </KeyboardAvoidingView>
+    </KeyboardAvoidingView>
 
-    // <MapView
-    //   provider={PROVIDER_GOOGLE}
-    //   style={{ flex: 1 }}
-    //   initialRegion={INITIAL_REGION}
-    //   showsCompass={false}
-    //   showsTraffic={false}
-    //   showsBuildings
-    //   zoomEnabled
-    //   scrollEnabled
-    //   rotateEnabled
-    //   pitchEnabled={false}
-    // />
+
   );
 };
 
