@@ -2,7 +2,7 @@ import { ImageSourcePropType } from "react-native";
 
 // * Generic interfaces
 export interface PaginatedResponse<T> {
-  currentPage: number;
+  current_page: number;
   data: T[];
   first_page_url: string | null;
   from: number;
@@ -15,6 +15,10 @@ export interface PaginatedResponse<T> {
   prev_page_url: string | null;
   to: number;
   total: number;
+}
+export interface ProductListHomePageResponse {
+  latestProducts: PaginatedResponse<Product>;
+  popularProducts: PaginatedResponse<Product>;
 }
 
 // * Context Interface

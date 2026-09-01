@@ -59,12 +59,6 @@ export abstract class AuthController extends Controller {
     })
   };
   static me = async (): Promise<User | null> => {
-    // console.log({
-    //   currentToken: this.currentToken, 
-    //   getAuthToken: await this.getAuthToken(), 
-    //   setRefreshToken: await this.getRefreshToken(),
-    //   guetsToken: await this.getGuestToken(),
-    // })
     if(this.currentUser) {
       return this.currentUser;
     }
@@ -72,10 +66,14 @@ export abstract class AuthController extends Controller {
       return await this.authenticatedGetCall("me").then((res: AxiosResponse) => {
         if (res.status === 200) {
           const data = (res as AxiosResponse).data as AuthResponse;
-          this.setAuthToken(data.user.token)
-          this.setRefreshToken(data.user.refreshToken)
+          
+          // Check if user is a guest
+          if(data.user.accessType) {
+            this.setAuthToken(data.user.token)
+            this.setRefreshToken(data.user.refreshToken)
+            this.currentToken = data.user.token;
+          }
           this.currentUser = data.user;
-          this.currentToken = data.user.token;
           return data.user;
         }
         throw new Error("Unexpected response");
@@ -87,9 +85,9 @@ export abstract class AuthController extends Controller {
   }
   static logout = async () => {
     if(this.currentUser) {
-      return await this.authenticatedGetCall("logout")
-      .then(async (res: AxiosResponse) => {
-        if (res.status === 200 ) {
+      // return await this.authenticatedGetCall("logout")
+      // .then(async (res: AxiosResponse) => {
+      //   if (res.status === 200 ) {
           this.deleteAuthToken()
           this.deleteRefreshToken()
           this.deleteGuestToken()
@@ -98,15 +96,15 @@ export abstract class AuthController extends Controller {
           this.currentToken = undefined;
           return true;
         }
-        else if (res.status === 401){
-          throw new AxiosError("Unauthorized");
-        }
-        throw new Error(res.statusText);
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-    }
+        // else if (res.status === 401){
+        //   throw new AxiosError("Unauthorized");
+        // }
+        // throw new Error(res.statusText);
+      // })
+      // .catch((e) => {
+      //   console.log(e)
+      // })
+    // }
   } 
   static getOauthToken = async (): Promise<GoogleApiKeys>  => {
     return await this.basicGetCall("get-google-public-key").then((res: AxiosResponse<GoogleApiKeys>) => {

@@ -12,7 +12,9 @@ import UrlImage from '../ui/UrlImage';
 
 interface Props {
   product: Product,
-  onPress: () => void
+  onPress: () => void,
+  likable?: boolean,
+  addableToCart?: boolean,
 }
 
 const ProductMiniCard = (props: Props) => {
@@ -48,31 +50,40 @@ const ProductMiniCard = (props: Props) => {
       onPress={props.onPress}
     >
       {/* Tasto Favourite */}
-      <View className="absolute top-0 right-0 ">
-        <TouchableOpacity
-          onPress={(e) => {
-            handleFavouriteClick(e, props.product);
-          }}
-          activeOpacity={.1}
-          className="rounded-full"
-        >
-          {/* props.product.favourite */}
-          <IconButton
-            icon={false ? "heart" : "heart-outline"}
-            size={26}
-            iconColor={colors.rose[500]}
-            className='text-rose-500'
-          />
-        </TouchableOpacity>
-      </View>
+      {
+        props.likable ? 
+        <View className="absolute top-0 right-0 ">
+          <TouchableOpacity
+            onPress={(e) => {
+              handleFavouriteClick(e, props.product);
+            }}
+            activeOpacity={.1}
+            className="rounded-full"
+          >
+            {/* props.product.favourite */}
+            <IconButton
+              icon={false ? "heart" : "heart-outline"}
+              size={26}
+              iconColor={colors.rose[500]}
+              className='text-rose-500'
+            />
+          </TouchableOpacity>
+        </View>
+        :
+        null
+      }
     
       {/* Descrizione Prodotto */}
       <View className="flex flex-col justify-between h-full">
         <UrlImage
           source={props.product.image}
           className=" self-center "
-          width={100}
-          height={100}
+          style={{
+            width: "50%",
+            height: "50%",
+          }}
+          // width={100}
+          // height={100}
           resizeMode="contain"
         />
         <View>
@@ -95,13 +106,18 @@ const ProductMiniCard = (props: Props) => {
       </View>
 
       {/* Azioni Prodotto */}
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={(e) => addProductToCart(e)}
-        className="absolute bottom-0 right-0 rounded-tl-xl rounded-br-xl bg-primary-500 p-2"
-      >
-        <Ionicons name="add" size={26} color="white" />
-      </TouchableOpacity>
+      {
+        props.addableToCart ?
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={(e) => addProductToCart(e)}
+            className="absolute bottom-0 right-0 rounded-tl-xl rounded-br-xl bg-primary-500 p-2"
+          >
+            <Ionicons name="add" size={26} color="white" />
+          </TouchableOpacity>
+        : 
+        null
+      }
 
     </TouchableOpacity>
   ) 

@@ -4,16 +4,15 @@ import {
   FridgeAction,
   PaginatedResponse,
   Product,
+  ProductListHomePageResponse,
   ProductType,
   UnassignedProduct,
 } from "@/constants/interfaces/productInterface";
+import { AvailableProductPayload } from "@/constants/interfaces/requestPayloads/productPayloads";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
-export interface ProductListHomePageResponse {
-  latestProducts: PaginatedResponse<Product>;
-  popularProducts: PaginatedResponse<Product>;
-}
+
 
 export abstract class ProductController extends Controller {
   // % Tipi prodotto
@@ -83,7 +82,22 @@ export abstract class ProductController extends Controller {
       }
     });
   };
-
+    /**
+   * get a list of all products the producer can add to his store
+   * @returns
+   */
+  static getAvailableProducts = async (payload: AvailableProductPayload): Promise<PaginatedResponse<Product> | AxiosError> => {
+    return await this.authenticatedPostCall(`producer/products/get-available-products?page=${payload.pageNumber}`, payload)
+      .then((res: AxiosResponse<PaginatedResponse<Product>>) => {
+        if (res.status === 200) {
+          return res.data;
+        } 
+        else {
+          throw new Error("Error during product fetch");
+        }
+      });
+  };
+  
   // % Cart
   static getCartItems = async (): Promise<CartItemInterface[] | AxiosError> => {
     return await this.authenticatedGetCall("products/get-cart")

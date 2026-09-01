@@ -6,9 +6,9 @@ import HomePageHeader from '@/components/headers/HomePageHeader';
 import ThemedFormField from '@/components/inputs/CustomFormField';
 import ThemedText from '@/components/ui/ThemedText';
 import { discountList } from '@/constants/interfaces/fakeData';
-import { Discount, Product, ProductType } from '@/constants/interfaces/productInterface';
+import { Discount, Product, ProductListHomePageResponse, ProductType } from '@/constants/interfaces/productInterface';
 import { primaryColor } from '@/constants/theme';
-import { ProductController, ProductListHomePageResponse } from '@/controllers/ProductController';
+import { ProductController } from '@/controllers/ProductController';
 
 import { styleShadows } from '@/constants/styles/style-shadows';
 import { router } from 'expo-router';

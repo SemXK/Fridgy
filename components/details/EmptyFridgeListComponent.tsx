@@ -18,7 +18,7 @@ const EmptyFridgeListComponent = (props: EFLCInterface) => {
       />
       <View className="w-2/3 flex flex-col justify-between">
         <View>
-          <ThemedText darkModeDisabled textStyle='text-white text-xl'  label="Non hai Inventari"></ThemedText>
+          <ThemedText darkModeDisabled textStyle='text-white text-xl' font="Nunito-Bold" label="Non hai Inventari"></ThemedText>
           <ThemedText darkModeDisabled textStyle='text-white'  label="Crea un frigo e inizia ad organizzare i tuoi alimenti"></ThemedText>
         </View>
         <PrimaryButton onPress={props.onPress} buttonText="Crea Frigorifero" buttonColor={Appearance.getColorScheme() === 'dark' ? darkColor[900] : 'white'}/>

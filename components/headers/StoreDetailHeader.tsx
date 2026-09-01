@@ -8,6 +8,7 @@ import ThemedText from '../ui/ThemedText';
 interface StoreDetailPageInterface {
   title?: string;
   headerClass?: string;
+  mapsPress: () => void;
 }
 
 const StoreDetailHeader = (props: StoreDetailPageInterface) => {
@@ -32,9 +33,15 @@ const StoreDetailHeader = (props: StoreDetailPageInterface) => {
           />
         }
       </View>
-      {/* <View className="flex flex-row">
-        <NotificationButton />
-      </View> */}
+        <PrimaryIconButton 
+          className='self-center'
+          onPress={props.mapsPress} 
+          iconSpecs={{
+            name: "map-marker",
+            color: primaryColor[500],
+            size: 32
+          }}
+        />
     </View>
   )
 }

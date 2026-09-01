@@ -1,0 +1,1 @@
+export interface AvailableProductPayload {filterText: string; pageSize:number, pageNumber: number}
