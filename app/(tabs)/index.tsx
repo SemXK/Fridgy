@@ -115,6 +115,7 @@ const HomePage = () => {
       data: discountList,
       renderCard: (item: Discount) => (
         <DiscountMiniCard
+
           onPress={() => discountPress(item)}
           item={item}
         />
@@ -129,6 +130,8 @@ const HomePage = () => {
       data: latestProductList,
       renderCard: (item: Product) => (
         <ProductMiniCard
+          likable
+          addableToCart
           onPress={() => popularProductPress(item)}
           product={item}
         />
@@ -143,6 +146,8 @@ const HomePage = () => {
       data: popularProductList,
       renderCard: (item: Product) => (
         <ProductMiniCard
+          likable
+          addableToCart
           onPress={() => popularProductPress(item)}
           product={item}
         />

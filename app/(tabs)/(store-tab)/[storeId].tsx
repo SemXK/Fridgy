@@ -1,20 +1,23 @@
 import EmptyStoreCard from '@/components/details/EmptyStoreCard'
 import ProductAdditionToStore from '@/components/details/ProductAdditionToStore'
+import ProductInStore from '@/components/details/ProductInStore'
 import StoreDetailHeader from '@/components/headers/StoreDetailHeader'
 import PrimaryIconButton from '@/components/pressable/PrimaryIconButton'
 import MapsCard from '@/components/thirdParty/MapsCard'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import UrlImage from '@/components/ui/UrlImage'
+import { PaginatedResponse, Product } from '@/constants/interfaces/productInterface'
+import { AddProductToQuantityPayload, ProductToQuantity } from '@/constants/interfaces/requestPayloads/productPayloads'
 import { Store } from '@/constants/interfaces/store'
 import { primaryColor } from '@/constants/theme'
+import { ProductController } from '@/controllers/ProductController'
 import { StoreController } from '@/controllers/StoreController'
-import { useFocusEffect } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Appearance, FlatList, View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import colors from 'tailwindcss/colors'
@@ -25,9 +28,18 @@ const StoreDetail = () => {
 
 
   // * States
+  const [prouctLoading, setProductLoading] = useState<boolean>(false)
+
   const [store, setStore] = useState<Store | null>(null)
+  const [productList, setProductList] = useState<Product[]>([])
   const [showMapSheet, setShowMapSheet] = useState<boolean>(false)
   const [showProductAddition, setShowProductAddition] = useState<boolean>(false)
+
+  // $ Effects
+  useEffect(() => {
+    getStoreDetail()
+    getProductList(true)
+  }, [])
 
   // £ Functions
   const getStoreDetail = async () => {
@@ -45,18 +57,39 @@ const StoreDetail = () => {
       router.back()
     }
   }
-  const addProductsToStore = async (payload: {productId: number, quantity: number}[]) => {
-    console.log(payload)
+  const getProductList = async (reset: boolean = false) => {
+    setProductLoading(true)
+    await StoreController.getStoresProducts(storeId)
+      .then((res) =>  {
+        const response = res as PaginatedResponse<Product>;
+        if(reset) {
+          setProductList(response.data)
+        }
+        else {
+          setProductList(prev => [...prev, ...response.data])
+        }
+      })
+      .finally(() => {
+        setProductLoading(false)
+      })
   }
-
-  // $ Effects
-  useFocusEffect(() => {
-    getStoreDetail()
-  })
+  const addProductsToStore = async (data: ProductToQuantity[]) => {
+    if(store) {
+      const payload: AddProductToQuantityPayload = {
+        storeId: store.id,
+        productsToAdd: data
+      }
+      await ProductController.addProductsToStore(payload)
+        .then(() => {
+          getProductList(true)
+          setShowProductAddition(false)
+        })
+    }
+  }
 
   // * Display
   return (
-    <View className="h-screen w-screen flex-1">
+    <View className="h-screen w-screen flex-1 ">
       {
         !store ?
         <View className="w-full flex-1 flex flex-row justify-center">
@@ -208,18 +241,30 @@ const StoreDetail = () => {
                         />
                         <ThemedText
                           style={{fontSize: 10}}
-                          label={`${store.productListCount || 0} prodotti`}
+                          label={`${store.productListCount || productList.length} prodotti`}
                         />
                       </View>
                     </View>
                   </View>
 
                   {/* Lista Prodotti */}
-                  <FlatList 
-                    data={store.productList}
-                    ListEmptyComponent={() => <EmptyStoreCard onPress={() => setShowProductAddition(true)}/>}
-                    renderItem={({item}) => <ThemedText label="item" />}
-                  />
+                  {
+                    !prouctLoading ? 
+                      <FlatList
+                        className="mb-20"
+                        data={productList}
+                        ListEmptyComponent={() => (
+                          <EmptyStoreCard onPress={() => setShowProductAddition(true)} />
+                        )}
+                        contentContainerStyle={{
+                          paddingBottom: 20,
+                        }}
+                        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+                        renderItem={({ item }) => <ProductInStore product={item} />}
+                      />
+                      :
+                        <ActivityIndicator animating size={24} color={primaryColor[500]}  />
+                  }
 
                 </View>
 
@@ -229,7 +274,7 @@ const StoreDetail = () => {
         />
       }
 
-    {/* BottomSheet */}
+    {/* Map BottomSheet */}
     {
       showMapSheet && 
       <BottomSheetComponent
@@ -238,12 +283,14 @@ const StoreDetail = () => {
         ShownComponent={() => <MapsCard lat={store?.lat || 0} lng={store?.lng || 0} />}
       />
     }
+
+    {/* Add Products BottomSheet */}
     {
       showProductAddition && 
       <BottomSheetComponent
         height={.8}
         onClose={() => setShowProductAddition(false)}
-        ShownComponent={() => <ProductAdditionToStore onSubmit={addProductsToStore} />}
+        ShownComponent={() => <ProductAdditionToStore onSubmit={(e) => addProductsToStore(e)} />}
       />
     }
     </View>

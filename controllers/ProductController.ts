@@ -8,7 +8,7 @@ import {
   ProductType,
   UnassignedProduct,
 } from "@/constants/interfaces/productInterface";
-import { AvailableProductPayload } from "@/constants/interfaces/requestPayloads/productPayloads";
+import { AddProductToQuantityPayload, AvailableProductPayload } from "@/constants/interfaces/requestPayloads/productPayloads";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -94,6 +94,17 @@ export abstract class ProductController extends Controller {
         } 
         else {
           throw new Error("Error during product fetch");
+        }
+      });
+  };
+  static addProductsToStore = async (payload: AddProductToQuantityPayload): Promise<string | AxiosError> => {
+    return await this.authenticatedPostCall(`producer/products/add-products-to-store`, payload)
+      .then((res: AxiosResponse<string>) => {
+        if (res.status === 200) {
+          return res.data;
+        } 
+        else {
+          throw new Error("Error during product product addition");
         }
       });
   };
