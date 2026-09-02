@@ -9,22 +9,20 @@ import { primaryColor } from '@/constants/theme';
 import { StoreController } from '@/controllers/StoreController';
 import * as ImagePicker from "expo-image-picker";
 import { router } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
 import MapView, {
   Marker,
-  PROVIDER_GOOGLE,
-  type Region
+  PROVIDER_GOOGLE
 } from 'react-native-maps';
+import { StoreContext } from './_layout';
 
-const INITIAL_REGION: Region = {
-  latitude: 41.890211,
-  longitude: 12.492211,
-  latitudeDelta: 0.01,
-  longitudeDelta: 0.01,
-};
+
 
 const CreateStore = () => {
+  // $ Context
+  const { storeDetail } = useContext(StoreContext);
+
   // ? References
   const mapRef = useRef<MapView>(null);
 
@@ -46,6 +44,9 @@ const CreateStore = () => {
     if(name && lat && lng && address) {
       setLoading(true);      
       const formData = new FormData();  
+      if(storeDetail) {
+        formData.append("id", String(storeDetail.id));
+      }
       formData.append("name", name);
       formData.append("address", address);
       formData.append("lat", String(lat));
@@ -79,9 +80,7 @@ const CreateStore = () => {
     setLat(glat)
     setLng(glng)
   }
-
-  // £ Effects
-  useEffect(() => {
+  const setMapCenter = () => {
     if (lat && lng) {
       mapRef.current?.animateToRegion(
         {
@@ -93,6 +92,22 @@ const CreateStore = () => {
         500
       );
     }
+  }
+
+  // £ Effects
+  useEffect(()=> {
+    console.log("store", !!storeDetail)
+    if(storeDetail) {
+      setName(storeDetail.name)
+      setName(storeDetail.name)
+      setAddress(storeDetail.address)
+      setLat(storeDetail.lat)
+      setLng(storeDetail.lng)
+    }
+  }, [])
+
+  useEffect(() => {
+    setMapCenter()
   }, [lat, lng]);
 
   return (
@@ -110,12 +125,11 @@ const CreateStore = () => {
         />
 
         {/* Gmaps Section */}
-        <View className="h-1/2 w-full">
+        <View className="h-1/3 w-full">
           <MapView
             ref={mapRef}
             provider={PROVIDER_GOOGLE}
             style={{ flex: 1 }}
-            initialRegion={INITIAL_REGION}
             showsCompass={false}
             showsTraffic={false}
             showsBuildings
@@ -139,7 +153,7 @@ const CreateStore = () => {
         </View>
 
         {/* { Forms Section} */}
-        <View className="h-1/2 w-full">
+        <View className="h-2/3 w-full">
           <NewStoreHeader />
 
           <FlatList

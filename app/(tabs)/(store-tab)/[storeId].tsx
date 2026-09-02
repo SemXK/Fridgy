@@ -17,15 +17,18 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Appearance, FlatList, View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import colors from 'tailwindcss/colors'
+import { StoreContext } from './_layout'
 
 const StoreDetail = () => {
   // % Params
   const {storeId} = useLocalSearchParams<{ storeId: string }>()
 
+  // $ Context
+  const { setStoreDetail } = useContext(StoreContext);
 
   // * States
   const [prouctLoading, setProductLoading] = useState<boolean>(false)
@@ -39,6 +42,9 @@ const StoreDetail = () => {
   useEffect(() => {
     getStoreDetail()
     getProductList(true)
+    return () => {
+      setStoreDetail(null)
+    }
   }, [])
 
   // £ Functions
@@ -48,6 +54,7 @@ const StoreDetail = () => {
         .then((res) =>  {
           const storeDetail = res as Store;
           setStore(storeDetail)
+          setStoreDetail(storeDetail) //allows the current store to be accessed by all store pages
         })
         .catch(() => {
           router.back()
@@ -158,7 +165,7 @@ const StoreDetail = () => {
                       />
                       <PrimaryIconButton 
                         className='self-center'
-                        onPress={() => {}} 
+                        onPress={() => {router.navigate('/(tabs)/(store-tab)/createStore')}} 
                         iconSpecs={{
                           name: "store-edit",
                           color: primaryColor[500],
