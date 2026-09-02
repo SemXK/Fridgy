@@ -1,4 +1,5 @@
-import { Product } from '@/constants/interfaces/productInterface'
+import { hexToRgba } from '@/constants/functions/HexToRgba'
+import { StoredProduct } from '@/constants/interfaces/productInterface'
 import { primaryColor } from '@/constants/theme'
 import React from 'react'
 import { Animated, TouchableOpacity, View } from 'react-native'
@@ -7,7 +8,7 @@ import ThemedText from '../ui/ThemedText'
 import UrlImage from '../ui/UrlImage'
 
 interface PISInterface {
-  product: Product
+  product: StoredProduct
 }
 const ProductInStore = ({product}:PISInterface) => {
   return (
@@ -32,11 +33,25 @@ const ProductInStore = ({product}:PISInterface) => {
               label={product.name}
             />
 
-              <ThemedText
-                font="Nunito-Light"
-                textStyle='text-balance line-clamp-2'
-                label={product.description || 'Nessuna descrizione al prodotto'}
-              />
+            <ThemedText
+              style={{
+                backgroundColor: hexToRgba(primaryColor[500], 0.5),
+                borderRadius: 10,
+                paddingHorizontal: 4
+              }}
+              font="Nunito-Light"
+              textStyle='text-balance line-clamp-2'
+              label={`${product.quantityInStore[0].quantity} Unità in negozio`}
+            />
+
+            <ThemedText
+              font="Nunito-Light"
+              textStyle='text-balance line-clamp-2'
+              label={product.description || 'Nessuna descrizione al prodotto'}
+            />
+
+
+
           </Animated.View>
 
         <PrimaryIconButton

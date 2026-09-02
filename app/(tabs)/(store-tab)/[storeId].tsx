@@ -7,7 +7,7 @@ import MapsCard from '@/components/thirdParty/MapsCard'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import UrlImage from '@/components/ui/UrlImage'
-import { PaginatedResponse, Product } from '@/constants/interfaces/productInterface'
+import { PaginatedResponse, StoredProduct } from '@/constants/interfaces/productInterface'
 import { AddProductToQuantityPayload, ProductToQuantity } from '@/constants/interfaces/requestPayloads/productPayloads'
 import { Store } from '@/constants/interfaces/store'
 import { primaryColor } from '@/constants/theme'
@@ -34,7 +34,7 @@ const StoreDetail = () => {
   const [prouctLoading, setProductLoading] = useState<boolean>(false)
 
   const [store, setStore] = useState<Store | null>(null)
-  const [productList, setProductList] = useState<Product[]>([])
+  const [productList, setProductList] = useState<StoredProduct[]>([])
   const [showMapSheet, setShowMapSheet] = useState<boolean>(false)
   const [showProductAddition, setShowProductAddition] = useState<boolean>(false)
 
@@ -68,7 +68,7 @@ const StoreDetail = () => {
     setProductLoading(true)
     await StoreController.getStoresProducts(storeId)
       .then((res) =>  {
-        const response = res as PaginatedResponse<Product>;
+        const response = res as PaginatedResponse<StoredProduct>;
         if(reset) {
           setProductList(response.data)
         }

@@ -150,3 +150,13 @@ export interface CreateProductPayload {
   taxPercent: number;
   image: string;
 }
+
+// * Relationship holding Interfaces
+export interface StoredProduct extends Product {
+  quantityInStore: {
+    id: number;
+    storeId: number;
+    productId: number;
+    quantity: number;
+  }[]
+}

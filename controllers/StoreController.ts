@@ -1,4 +1,4 @@
-import { PaginatedResponse, Product } from "@/constants/interfaces/productInterface";
+import { PaginatedResponse, StoredProduct } from "@/constants/interfaces/productInterface";
 import { Store } from "@/constants/interfaces/store";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
@@ -34,11 +34,11 @@ export abstract class StoreController extends Controller {
    * get a paginated list of a store
    * @param storeId the id of the store that contains the products
    */
-  static getStoresProducts = async (storeId: string): Promise<PaginatedResponse<Product> | AxiosError> => {
+  static getStoresProducts = async (storeId: string): Promise<PaginatedResponse<StoredProduct> | AxiosError> => {
     return await this.authenticatedPostCall("producer/store/get-products", { storeId })
-      .then((res: AxiosResponse<PaginatedResponse<Product>>) => {
+      .then((res: AxiosResponse<PaginatedResponse<StoredProduct>>) => {
         if (res.status === 200) {
-          const newStore: PaginatedResponse<Product> = (res as AxiosResponse).data;
+          const newStore: PaginatedResponse<StoredProduct> = (res as AxiosResponse).data;
           return newStore;
         }
         throw new AxiosError("Unexpected response status: " + res.status);

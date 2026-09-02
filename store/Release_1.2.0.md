@@ -2,14 +2,10 @@
 - [x] Registrazione Proprio Negozio
 - [x] Lista Negozio
 - [x] Creazione Prodotto ( o registrazione di prodotto esistente )
-- [] Dettaglio Negozio
-  - [] Mappa del negozio nel dettaglio
-  - [] Aggiunta / Eliminazione prodotto
-  - [] Modifica negozio
-- [] Modifica Prodotto Websocket
+- [x] Dettaglio Negozio
+  - [x] Mappa del negozio nel dettaglio
+  - [x] Modifica negozio
+
 - [] Implementazione Bucket S3
 - [] Publish backend on EC2
-
-
-
 
