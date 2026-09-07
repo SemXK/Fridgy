@@ -11,7 +11,6 @@ export default function TabLayout() {
         tabBarHideOnKeyboard: true,
         animation: 'shift',
       }}
-      
       tabBar={(props) => <AnimatedTabBar {...props} /> }
     >
 
@@ -23,6 +22,7 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+
       <Tabs.Screen
         name="(fridge-tab)"
         options={{
@@ -62,6 +62,7 @@ export default function TabLayout() {
           href:null
         }}
       />
+
       <Tabs.Screen
         name="ProductCreation"
         options={{
@@ -69,6 +70,7 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+
       <Tabs.Screen
         name="[productId]"
         options={{
@@ -77,6 +79,7 @@ export default function TabLayout() {
           href:null
         }}
       />
+
       <Tabs.Screen
         name="(profile-tab)"
         options={{

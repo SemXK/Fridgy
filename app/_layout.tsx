@@ -135,19 +135,15 @@ export default function RootLayout() {
       })
   }
   const websocketSetup = async() => {
-    console.log("WSS init ")
     const echo = await getEcho() as any;
     echo.connector.pusher.connection.bind('state_change', (states: any) => {
-      console.log('Pusher state:', states.current);
+      console.log('Payment Pusher State:', states.current);
     });
     echo.connector.pusher.connection.bind('error', (err: any) => {
-      console.log('Pusher error', err);
+      console.log('Payment Pusher Error', err);
     });
     
     setPaymentChannel(echo.channel('payment-confirmation'));
-      // .listen('.PaymentCompletion', (e: any) => {
-      //   console.log('WS event received:', e);
-      // })
   }
 
   // $ Effects
@@ -168,6 +164,9 @@ export default function RootLayout() {
     // 1* Websockets
     if(!paymentChannel) {
       websocketSetup()
+    }
+    else {
+      console.log(!!paymentChannel)
     }
     return () => {
       if(paymentChannel) {
