@@ -32,6 +32,7 @@ export const UserContext = createContext<AuthType>({
     throw new Error('Function not implemented.');
   }
 });
+
 export const CartContext = createContext<CartContextInterface>({
   cart: [],
   setCart: function (value: React.SetStateAction<CartItemInterface[]>): void {
@@ -92,64 +93,81 @@ export default function RootLayout() {
     onClose: () => {}
   });
 
-  useEffect(() => {
-    // 1* Imposta user
-    if(!user) {
-      AuthController.me()
+  // % Functions
+  const initUser = async () => {
+    await AuthController.me()
       .then(async (userResponse: User | null) => {
         setUser(userResponse);
       })
-      .catch(() => {
+      .catch(async () => {
         // 1* /me api returns error if all tokens are invalid
-        AuthController.sessionInit().then(() => {
+        await AuthController.sessionInit().then(() => {
           setGuest(AuthController.currentGuest);
+
         })
       })
-    }
-
-    // 1* Cart API
-    ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {
+  }
+  const getCartItem = async () => {
+    await ProductController.getCartItems().then((res: CartItemInterface[] | AxiosError) => {
       if (!(res instanceof AxiosError)) {
         setCart(res);
       }
     })
-
-    // 1* Stripe Public Key
+  }
+  const getStripeKeys = async () => {
     StripeController.getPublicKey().then((key: string) => {
       setStripePublicKey(key)
     })
+  }
+  const getGoogleAPIKey = async () => {
+    await AuthController.getOauthToken()
+      .then((keyObject: GoogleApiKeys) => {
+        setOauthTokenCollection({
+          androidClientId: keyObject.androidClientId,
+          iosClientId: keyObject.androidClientId,
+          webClientId: keyObject.webClientId,
+        })
+        setMapsTokenCollection({
+          androidMapsKey: keyObject.androidMapsKey,
+          iosMapsKey: keyObject.iosMapsKey,
+          webAutocompleteKey: keyObject.webAutocompleteKey
+        })
+      })
+  }
+  const websocketSetup = async() => {
+    console.log("WSS init ")
+    const echo = await getEcho() as any;
+    echo.connector.pusher.connection.bind('state_change', (states: any) => {
+      console.log('Pusher state:', states.current);
+    });
+    echo.connector.pusher.connection.bind('error', (err: any) => {
+      console.log('Pusher error', err);
+    });
+    
+    setPaymentChannel(echo.channel('payment-confirmation'));
+      // .listen('.PaymentCompletion', (e: any) => {
+      //   console.log('WS event received:', e);
+      // })
+  }
+
+  // $ Effects
+  useEffect(() => {
+    // 1* Imposta user
+    if(!user) {
+      initUser()
+    }
+    // 1* Cart API
+    getCartItem()
+
+    // 1* Stripe Public Key
+    getStripeKeys()
 
     // 1* OAuth Public Key
-    AuthController.getOauthToken().then((keyObject: GoogleApiKeys) => {
-      setOauthTokenCollection({
-        androidClientId: keyObject.androidClientId,
-        iosClientId: keyObject.androidClientId,
-        webClientId: keyObject.webClientId,
-      })
-      setMapsTokenCollection({
-        androidMapsKey: keyObject.androidMapsKey,
-        iosMapsKey: keyObject.iosMapsKey,
-        webAutocompleteKey: keyObject.webAutocompleteKey
-      })
-    })
+    getGoogleAPIKey()
 
     // 1* Websockets
     if(!paymentChannel) {
-      (async () => {
-        console.log("WSS init ")
-        const echo = await getEcho() as any;
-        echo.connector.pusher.connection.bind('state_change', (states: any) => {
-          console.log('Pusher state:', states.current);
-        });
-        echo.connector.pusher.connection.bind('error', (err: any) => {
-          console.log('Pusher error', err);
-        });
-        
-        setPaymentChannel(echo.channel('payment-confirmation'));
-          // .listen('.PaymentCompletion', (e: any) => {
-          //   console.log('WS event received:', e);
-          // })
-      })();
+      websocketSetup()
     }
     return () => {
       if(paymentChannel) {

@@ -6,6 +6,6 @@
   - [x] Mappa del negozio nel dettaglio
   - [x] Modifica negozio
 
-- [] Implementazione Bucket S3
-- [] Publish backend on EC2
+- [x] Implementazione Bucket S3
+- [x] Publish backend on EC2
 

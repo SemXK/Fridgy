@@ -11,7 +11,6 @@ import { UserAccessType } from "../interfaces/usersInterface";
 export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessType): StateRoute[] {
   // Default routes, accessible to everyone
   let allowedRoutes: string[] = []
-  console.log("id", accessType?.id)
   switch(accessType?.id) {
     case AccessTypeEnum.Utente:
       allowedRoutes = ['index', '(fridge-tab)', 'productDetail', '(profile-tab)']
@@ -19,6 +18,10 @@ export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessT
 
     case AccessTypeEnum.Produttore:
       allowedRoutes = ['index', '(store-tab)', '(profile-tab)']
+      break;
+
+    case AccessTypeEnum.Nutrizionista:
+      allowedRoutes = ['index','(diet-tab)', '(nutritionist-users-tab)', '(profile-tab)']
       break;
 
     default:

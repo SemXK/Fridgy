@@ -15,7 +15,8 @@ interface Credentials {
 }
 export interface AuthResponse {
   user: User;
-
+  token: string;
+  refreshToken: string;
 }
 
 export abstract class AuthController extends Controller {
@@ -25,23 +26,24 @@ export abstract class AuthController extends Controller {
   static tokenType: string | undefined; // Maybe this isnt even needed
   static expiresIn: number | undefined; // Maybe this isnt even needed
 
-  static register = async (credentials: Credentials): Promise<AxiosResponse<unknown, AuthResponse> | AxiosError> => {
+  static register = async (credentials: Credentials): Promise<User | AxiosError> => {
     return await this.basicPostCall("register", credentials).then((res: AxiosResponse) => {
       if (res.status === 200) {
-        const data = (res as AxiosResponse).data;
+        const data = (res as AxiosResponse<AuthResponse>).data;
         this.setAuthToken(data.token)
         this.setRefreshToken(data.refreshToken)
         this.currentUser = data.user;
         this.currentToken = data.token;
-        return data;
+        return data.user;
       }
       else if (res.status === 422) {
         throw new AxiosError("Un altro account è associato a questa E-mail");
       }
-      return res as AxiosResponse<unknown, AuthResponse> | AxiosError;
+      throw new AxiosError("Qualcosa è andato storto, riprova!");
+
     })
   };
-  static login = async (credentials: Partial<Credentials>): Promise<AxiosResponse<unknown, AuthResponse> | AxiosError> => {
+  static login = async (credentials: Partial<Credentials>): Promise<User | AxiosError> => {
     return await this.basicPostCall("login", credentials).then((res: AxiosResponse) => {
       if (res.status === 200) {
         const data = (res as AxiosResponse).data;
@@ -51,7 +53,7 @@ export abstract class AuthController extends Controller {
         this.currentToken = data.token;
         this.tokenType = data.tokenType;
         this.expiresIn = data.expiresIn;
-        return res as AxiosResponse<unknown, AuthResponse>;
+        return data.user;
       }
       else {
         throw new AxiosError("Credenziali Errate");
@@ -80,14 +82,14 @@ export abstract class AuthController extends Controller {
       });
     }
     else {
-      return null;
+      throw new AxiosError("Utente non autenticato");
     }
   }
   static logout = async () => {
     if(this.currentUser) {
-      // return await this.authenticatedGetCall("logout")
-      // .then(async (res: AxiosResponse) => {
-      //   if (res.status === 200 ) {
+      return await this.authenticatedGetCall("logout")
+      .then(async (res: AxiosResponse) => {
+        if (res.status === 200 ) {
           this.deleteAuthToken()
           this.deleteRefreshToken()
           this.deleteGuestToken()
@@ -96,15 +98,15 @@ export abstract class AuthController extends Controller {
           this.currentToken = undefined;
           return true;
         }
-        // else if (res.status === 401){
-        //   throw new AxiosError("Unauthorized");
-        // }
-        // throw new Error(res.statusText);
-      // })
-      // .catch((e) => {
-      //   console.log(e)
-      // })
-    // }
+        else if (res.status === 401){
+          throw new AxiosError("Unauthorized");
+        }
+        throw new Error(res.statusText);
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+    }
   } 
   static getOauthToken = async (): Promise<GoogleApiKeys>  => {
     return await this.basicGetCall("get-google-public-key").then((res: AxiosResponse<GoogleApiKeys>) => {

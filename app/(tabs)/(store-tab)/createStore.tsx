@@ -96,7 +96,6 @@ const CreateStore = () => {
 
   // £ Effects
   useEffect(()=> {
-    console.log("store", !!storeDetail)
     if(storeDetail) {
       setName(storeDetail.name)
       setName(storeDetail.name)

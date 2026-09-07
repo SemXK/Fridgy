@@ -44,7 +44,6 @@ const ProductDetail = () => {
   const getProductDetail = async(productId: string) => {
     const productDetail = await ProductController.getProduct(productId)
     if (productDetail && 'id' in productDetail) {
-      console.log({productDetail: productDetail.image})
       setProduct(productDetail)
     }
   } 

@@ -6,16 +6,18 @@ import GoogleLogin from '@/components/thirdParty/GoogleLogin';
 import TopSnackbar from '@/components/ui/SnackbarComponent';
 import ThemedText from '@/components/ui/ThemedText';
 import { SnackbarStatus } from '@/constants/enums/common';
+import { User } from '@/constants/interfaces/usersInterface';
 import { AuthController } from '@/controllers/AuthController';
 import { AxiosError } from 'axios';
 import { Link, router } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
-import { OauthContext } from '../_layout';
+import { OauthContext, UserContext } from '../_layout';
 
 export default function SignIn() {
   // & Context
   const  oauthTokenCollection  = useContext(OauthContext);
+  const { setUser } =  useContext(UserContext)
 
   // * inputs
   const [email, setEmail] = useState<string>("consumatore@swantech.it")
@@ -34,7 +36,9 @@ export default function SignIn() {
     if (email && password) {
       await AuthController
         .login({ email, password})
-        .then(() => {
+        .then((res) => {
+          const user = res as User
+          setUser(user)
           setBarStatus(SnackbarStatus.Success)
           setShowSnackbar('Benvenuto')
           router.navigate('/(tabs)/Home');

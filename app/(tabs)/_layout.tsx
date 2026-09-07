@@ -14,6 +14,7 @@ export default function TabLayout() {
       
       tabBar={(props) => <AnimatedTabBar {...props} /> }
     >
+
       <Tabs.Screen
         name="index"
         options={{
@@ -31,12 +32,26 @@ export default function TabLayout() {
         }}
       />
 
-        <Tabs.Screen
-          name="(store-tab)"
-          options={{
-            headerShown: false,
-          }}
-        />  
+      <Tabs.Screen
+        name="(store-tab)"
+        options={{
+          headerShown: false,
+        }}
+      />  
+
+      <Tabs.Screen
+        name="(diet-tab)"
+        options={{
+          headerShown: false,
+        }}
+      />    
+
+      <Tabs.Screen
+        name="(nutritionist-users-tab)"
+        options={{
+          headerShown: false,
+        }}
+      />     
 
       <Tabs.Screen
         name="Cart"

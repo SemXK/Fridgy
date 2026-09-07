@@ -10,6 +10,7 @@ import ThemedSelectField from '../inputs/CustomSelect';
 
 import PrimaryButton from '@/components/pressable/PrimaryButton';
 import FileUploader from '@/components/thirdParty/FileUploader';
+import { ProductController } from '@/controllers/ProductController';
 import ThemedFormField from '../inputs/CustomFormField';
 import ThemedTextArea from '../inputs/CustomTextArea';
 

@@ -40,7 +40,6 @@ const RoleOptionStepper = () => {
   const swapRoles = async (accessTypeId: number): Promise<void> => {
     setRoleLoading(true)
     await AuthController.changeAccessType(accessTypeId).then((res) => {
-      console.log(res)
       setUser(res as User)
       router.back()
     })
@@ -87,7 +86,7 @@ const RoleOptionStepper = () => {
               accessType={item}
               onPress={swapRoles}
               disabled={roleLoading}
-              currentActiveType={user.accessTypeId}
+              currentActiveType={user?.accessTypeId || 1}
             />
           )}
         />

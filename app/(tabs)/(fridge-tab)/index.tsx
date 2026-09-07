@@ -64,7 +64,6 @@ const FridgeList = () => {
   const assignProductToFridge = async (unsignedProductId: number) => {
     const fridgeId = currentHoldingFridge.current;
     if(fridgeId) {
-      console.log({ fridgeId: currentHoldingFridge.current, unsignedProductId })
       await ProductController.assignProductToFridge(
         fridgeId,
         unsignedProductId

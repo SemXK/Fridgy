@@ -61,7 +61,6 @@ const ProductConsumptionBottomSheet = (props: ConsumingProduct) => {
       quantity: currentQuantityRecorder as number,
       prevQuantity,
     }).then(() => {
-      console.log("Saved")
       getFridgeDetail(String(props.product.pivot.fridgeId))
       setSelectedIndex(null)
     }).catch((e) => {
