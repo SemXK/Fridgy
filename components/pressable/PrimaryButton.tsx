@@ -8,7 +8,7 @@ import ThemedText from '../ui/ThemedText';
 
 
 interface ButtonInterface {
-  onPress: () => void,
+  onPress: (...args: any) => void,
   buttonText: string,
   buttonColor?: string;
   className?: string,
@@ -47,6 +47,7 @@ const PrimaryButton = ({ onPress,
       disabled={disabled}
       onPress={!isLoading ? onPress : undefined}
       className={className}
+      
     >      
       {
         isLoading ? 

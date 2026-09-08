@@ -35,7 +35,6 @@ const FridgeMiniCard = (props: FMCInterface) => {
   // * display
   return (
     <View 
-
       className="bg-primary-600 pt-4 rounded-xl h-48 relative"
     >
 

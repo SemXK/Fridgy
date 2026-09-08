@@ -1,8 +1,9 @@
+import PrimaryButton from '@/components/pressable/PrimaryButton';
+import ThemedText from '@/components/ui/ThemedText';
 import { darkColor } from '@/constants/theme';
 import React from 'react';
 import { Appearance, Image, View } from 'react-native';
-import PrimaryButton from '../pressable/PrimaryButton';
-import ThemedText from '../ui/ThemedText';
+
 
 interface EFLCInterface{
   onPress: () => void;
@@ -14,7 +15,7 @@ const EmptyFridgeListComponent = (props: EFLCInterface) => {
       <Image
         className="w-1/4 h-32"
         resizeMode='contain'
-        source={require('../../assets/images/illustrations/emptyFridge.png')}
+        source={require('@/assets/images/illustrations/emptyFridge.png')}
       />
       <View className="w-2/3 flex flex-col justify-between">
         <View>

@@ -1,30 +1,25 @@
 import { UserContext } from '@/app/_layout';
-import HomePageHeader from '@/components/headers/HomePageHeader';
 import { getEcho } from '@/scripts/LaravelEcho';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
-import { Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const NutritionistLayout = () => {
   // % Context
   const { user } =  useContext(UserContext)
   
   // * State
-  const [ws, setWs] = useState<any>(null);
+  const [nutritionistWebSocket, setWs] = useState<any>(null);
 
   // £ Functions
   const setupWebSocket = async () => {
     console.log('Wss nutr Init:');
     const echo = await getEcho() as any;
-    const channel = echo.channel('nutritionist-channel')
+    const channel = echo.channel(`nutritionist-channel-${user?.id}`)
 
     setWs(channel)
-    channel
-    .listen(`.NutritionistLinkAccept`, (res: any) => {
-      console.log("Websocket nutritionist", res)
+    channel.listen(`.NutritionistLinkAccept`, () => {
+      
     })
-    // setWs(echo.listen(`nutritionist-chanel-${user?.id}`))
   }
 
   // $ Effects
@@ -35,20 +30,21 @@ const NutritionistLayout = () => {
     setupWebSocket()
 
     return () => {
-      ws?.stopListening('nutritionist-channel');
+      nutritionistWebSocket?.stopListening(`nutritionist-channel-${user?.id}`);
       setWs(null)
     };
 
   }, [])
 
   return (
-    <SafeAreaView>
-      
-      {/* * Auth Header */}
-      <HomePageHeader />
-
-      <Text>NutritionistLayout</Text>
-    </SafeAreaView>
+    <>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            animation: "slide_from_right",
+          }}
+        />
+    </>
   )
 }
 

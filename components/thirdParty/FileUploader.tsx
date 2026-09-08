@@ -67,7 +67,7 @@ export default function FileUploader(props: ImageUploader) {
         <View className="" />
       }
 
-      <View className="flex flex-row justify-center gap-8">
+      <View className="flex flex-row justify-center items-center gap-8">
         <PrimaryButton 
           onPress={pickFromGallery} 
           mode="text" 

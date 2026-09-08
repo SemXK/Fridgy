@@ -1,4 +1,4 @@
-import EmptyStoreCard from '@/components/details/EmptyStoreCard'
+import EmptyStoreCard from '@/components/details/EmptyCards/EmptyStoreCard'
 import ProductAdditionToStore from '@/components/details/ProductAdditionToStore'
 import ProductInStore from '@/components/details/ProductInStore'
 import StoreDetailHeader from '@/components/headers/StoreDetailHeader'

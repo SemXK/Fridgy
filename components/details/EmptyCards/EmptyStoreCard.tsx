@@ -1,8 +1,8 @@
 import { darkColor } from '@/constants/theme';
 import React from 'react';
 import { Appearance, Image, View } from 'react-native';
-import PrimaryButton from '../pressable/PrimaryButton';
-import ThemedText from '../ui/ThemedText';
+import PrimaryButton from '../../pressable/PrimaryButton';
+import ThemedText from '../../ui/ThemedText';
 
 interface ESCInterface {
   onPress: () => void;
@@ -14,7 +14,7 @@ const EmptyStoreCard = (props: ESCInterface) => {
       <Image
         className="w-1/4 h-32"
         resizeMode='contain'
-        source={require('../../assets/images/illustrations/empty_store.png')}
+        source={require('@/assets/images/illustrations/empty_store.png')}
       />
       <View className="w-2/3 flex flex-col justify-between">
         <View>

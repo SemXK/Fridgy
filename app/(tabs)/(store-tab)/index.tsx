@@ -1,4 +1,4 @@
-import EmptyStoreListComponent from '@/components/details/EmptyStoreListComponent'
+import EmptyStoreListComponent from '@/components/details/EmptyCards/EmptyStoreListComponent'
 import StoreDetail from '@/components/details/StoreDetailCard'
 import ProducerHeader from '@/components/headers/ProducerHeader'
 import PrimaryButton from '@/components/pressable/PrimaryButton'
