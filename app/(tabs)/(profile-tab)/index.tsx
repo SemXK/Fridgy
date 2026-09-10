@@ -20,19 +20,14 @@ const ProfilePage = () => {
   // $Context
   const { user, setUser } =  useContext(UserContext)
   
-  // % States
-
   // * functions
   const logout = async () => {
     await AuthController.logout()
     .then(() => {
-      setUser(null)
+      router.replace('/sign-in')
     })
     .catch((e) => {
       console.log(e)
-    })
-    .finally(() => {
-      router.navigate('/(auth)/sign-in')
     })
   }
   const openEditRolesBottomSheet = () => {

@@ -42,7 +42,7 @@ export default function SignUp() {
         .then(() => {
           setBarStatus(SnackbarStatus.Success)
           setShowSnackbar('Benvenuto!')
-          router.navigate('/(tabs)/Home');
+          router.navigate('/(tabs)');
         })
         .catch(e => {
           setBarStatus(SnackbarStatus.Error)

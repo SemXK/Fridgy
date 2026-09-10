@@ -41,7 +41,7 @@ export default function SignIn() {
           setUser(user)
           setBarStatus(SnackbarStatus.Success)
           setShowSnackbar('Benvenuto')
-          router.navigate('/(tabs)/Home');
+          router.navigate('/(tabs)');
         })
         .catch((e: AxiosError) => {
           setBarStatus(SnackbarStatus.Error)
@@ -112,6 +112,7 @@ export default function SignIn() {
 
           <View className="w-full">
             <PrimaryButton
+              textStyle="text-white"
               isLoading={authLoading}
               buttonText='Accedi'
               onPress={handleRegister}
