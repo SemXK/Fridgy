@@ -10,11 +10,11 @@ interface LCDInterface {
 const LinkCodeDisplay = ({linkCode, onPress}: LCDInterface) => {
 
   // * Functions
-  const onSharePress = (e) => {
+  const onSharePress = (e: any) => {
     e.preventDefault()
   }
   return (
-    <View className="dark:bg-darkColor-800 w-3/4 aspect-square rounded-xl items-center flex justify-between relative">
+    <View className="dark:bg-darkColor-800 bg-white rounded-xl  w-3/4 aspect-square  items-center flex justify-between relative ">
 
       <View className="w-full h-1/3 bg-primary-500 rounded-t-xl flex flex-row align-start justify-center">
         <Image

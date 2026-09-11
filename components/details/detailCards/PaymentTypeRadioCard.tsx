@@ -1,7 +1,7 @@
+import UrlImage from '@/components/ui/UrlImage'
 import { PaymentType } from '@/constants/interfaces/paymentInterface'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
-import UrlImage from '../ui/UrlImage'
 
 interface PaymentRadioInterface {
   paymentType: PaymentType

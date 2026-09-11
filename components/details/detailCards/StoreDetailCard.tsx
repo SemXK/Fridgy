@@ -1,3 +1,6 @@
+import StoreAccessTypePill from '@/components/ui/badges/StoreAccessTypePill';
+import ThemedText from '@/components/ui/ThemedText';
+import UrlImage from '@/components/ui/UrlImage';
 import { Store } from '@/constants/interfaces/store';
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -5,9 +8,7 @@ import { router } from 'expo-router';
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
-import ThemedText from '../ui/ThemedText';
-import UrlImage from '../ui/UrlImage';
-import StoreAccessTypePill from '../ui/badges/StoreAccessTypePill';
+
 
 interface StoreDetailCardInterface {
   store: Store;
@@ -23,7 +24,7 @@ const StoreDetailCard = (props: StoreDetailCardInterface) => {
 
       <View className="flex flex-col flex-1 justify-between">
         <View className="flex-1">
-          <ThemedText 
+          <ThemedText
             darkModeDisabled
             textStyle='text-primary-500 text-2xl'
             font='Nunito-Bold'

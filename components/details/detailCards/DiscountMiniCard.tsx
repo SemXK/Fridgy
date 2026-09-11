@@ -1,8 +1,9 @@
+import WhiteButton from '@/components/pressable/WhiteButton';
+import ThemedText from '@/components/ui/ThemedText';
 import { Discount } from '@/constants/interfaces/productInterface';
 import React from 'react';
 import { GestureResponderEvent, ImageBackground, TouchableOpacity, View } from 'react-native';
-import WhiteButton from '../pressable/WhiteButton';
-import ThemedText from '../ui/ThemedText';
+
 
 interface Props {
   item: Discount,

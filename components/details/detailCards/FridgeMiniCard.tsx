@@ -1,3 +1,6 @@
+import PrimaryButton from '@/components/pressable/PrimaryButton';
+import PrimaryIconButton from '@/components/pressable/PrimaryIconButton';
+import ThemedText from '@/components/ui/ThemedText';
 import { Fridge } from '@/constants/interfaces/productInterface';
 import { styleShadows } from '@/constants/styles/style-shadows';
 import { primaryColor } from '@/constants/theme';
@@ -5,9 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import PrimaryButton from '../pressable/PrimaryButton';
-import PrimaryIconButton from '../pressable/PrimaryIconButton';
-import ThemedText from '../ui/ThemedText';
+
 
 interface FMCInterface {
   fridge: Fridge;

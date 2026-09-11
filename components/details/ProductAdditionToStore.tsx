@@ -8,7 +8,7 @@ import ThemedFormField from '../inputs/CustomFormField'
 import PrimaryButton from '../pressable/PrimaryButton'
 import PrimaryIconButton from '../pressable/PrimaryIconButton'
 import ThemedText from '../ui/ThemedText'
-import ProductMiniCard from './ProductMiniCard'
+import ProductMiniCard from './detailCards/ProductMiniCard'
 
 interface PATSInterface {
   onSubmit: (chosenProds: ProductToQuantity[]) => void

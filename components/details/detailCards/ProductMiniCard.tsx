@@ -1,4 +1,6 @@
 import { CartContext } from '@/app/_layout';
+import ThemedText from '@/components/ui/ThemedText';
+import UrlImage from '@/components/ui/UrlImage';
 import { CartContextInterface, CartItemInterface, Product } from '@/constants/interfaces/productInterface';
 import { ProductController } from '@/controllers/ProductController';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,8 +9,7 @@ import React, { useContext } from 'react';
 import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import colors from "tailwindcss/colors";
-import ThemedText from '../ui/ThemedText';
-import UrlImage from '../ui/UrlImage';
+
 
 interface Props {
   product: Product,

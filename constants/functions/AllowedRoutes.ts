@@ -13,7 +13,7 @@ export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessT
   let allowedRoutes: string[] = []
   switch(accessType?.id) {
     case AccessTypeEnum.Utente:
-      allowedRoutes = ['index', '(fridge-tab)', 'productDetail', '(profile-tab)']
+      allowedRoutes = ['index', '(fridge-tab)','(user-diet-tab)', '(profile-tab)']
       break;
 
     case AccessTypeEnum.Produttore:
@@ -21,11 +21,11 @@ export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessT
       break;
 
     case AccessTypeEnum.Nutrizionista:
-      allowedRoutes = ['index','(diet-tab)', '(nutritionist-users-tab)', '(profile-tab)']
+      allowedRoutes = ['index','(nutritionist-diet-tab)', '(nutritionist-users-tab)', '(profile-tab)']
       break;
 
     default:
-      allowedRoutes = ['index', '(fridge-tab)', 'productDetail', '(profile-tab)']
+      allowedRoutes = ['index', '(fridge-tab)', '(profile-tab)']
       break;
     }
   return routes.filter((route) => allowedRoutes.includes(route.name))

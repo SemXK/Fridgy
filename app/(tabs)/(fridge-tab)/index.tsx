@@ -1,6 +1,6 @@
 import CreateNewFridgeComponent from "@/components/details/CreateNewFridgeComponent"
+import FridgeMiniCard from "@/components/details/detailCards/FridgeMiniCard"
 import EmptyFridgeListComponent from "@/components/details/EmptyCards/EmptyFridgeListComponent"
-import FridgeMiniCard from "@/components/details/FridgeMiniCard"
 import AnimatedUnassignedProductDetail from "@/components/details/UnassignedProductDetail"
 import HomePageHeader from "@/components/headers/HomePageHeader"
 import BottomSheetComponent from "@/components/ui/BottomSheet"

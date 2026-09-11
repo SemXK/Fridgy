@@ -33,6 +33,13 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="(user-diet-tab)"
+        options={{
+          headerShown: false,
+        }}
+      />   
+
+      <Tabs.Screen
         name="(store-tab)"
         options={{
           headerShown: false,
@@ -40,7 +47,7 @@ export default function TabLayout() {
       />  
 
       <Tabs.Screen
-        name="(diet-tab)"
+        name="(nutritionist-diet-tab)"
         options={{
           headerShown: false,
         }}

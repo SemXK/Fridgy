@@ -1,75 +1,76 @@
 import { styleShadows } from '@/constants/styles/style-shadows';
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { Modal, Pressable, StyleSheet } from 'react-native';
+import {
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 interface CustomModalInterface {
   visible: boolean;
   onClose: () => void;
   ChildComponent: React.ComponentType<any>;
-  animation?:  "fade" | "none" | "slide";
+  animation?: 'fade' | 'none' | 'slide';
 }
 
 const CustomModal = ({
   visible,
   onClose,
   ChildComponent,
-  animation = "fade"
-
+  animation = 'fade',
 }: CustomModalInterface) => {
   return (
     <Modal
       animationType={animation}
-      transparent={true}
+      transparent
       visible={visible}
-      className='relative'
-      onRequestClose={onClose}>
-      <BlurView intensity={50} tint="default" style={styles.centeredView} >
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
-        <ChildComponent />
-      </BlurView>
-    
-    </Modal>
-  )
-}
+      onRequestClose={onClose}
+    >
+      <View style={styles.container}>
+        {Platform.OS === 'ios' ? (
+          <BlurView
+            intensity={50}
+            tint="dark"
+            style={StyleSheet.absoluteFill}
+          />
+        ) : (
+          <View style={styles.androidBackdrop} />
+        )}
 
-export default CustomModal
+        <Pressable
+          style={StyleSheet.absoluteFill}
+          onPress={onClose}
+        />
+
+        <ChildComponent />
+      </View>
+    </Modal>
+  );
+};
+
+export default CustomModal;
 
 const styles = StyleSheet.create({
-  blurBackground: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  centeredView: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  androidBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+
   modalView: {
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    ...styleShadows.shadow
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+    ...styleShadows.shadow,
   },
 });

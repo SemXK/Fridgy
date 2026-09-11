@@ -2,9 +2,9 @@ import { SnackbarStatus } from "@/constants/enums/common";
 import React from "react";
 
 import { primaryColor } from "@/constants/theme";
+import { Appearance } from "react-native";
 import { Portal, Snackbar } from "react-native-paper";
 import ThemedText from "./ThemedText";
-
 
 export interface TopSnackbarProps {
   message: string;
@@ -12,7 +12,6 @@ export interface TopSnackbarProps {
   duration?: number;
   status?: SnackbarStatus;
 }
-
 
 const TopSnackbar: React.FC<TopSnackbarProps> = ({
   message,
@@ -46,8 +45,8 @@ const TopSnackbar: React.FC<TopSnackbarProps> = ({
           marginHorizontal: 16,
           marginBottom: 16,
           width: '100%',
-          backgroundColor: '#18181B',
-
+          backgroundColor: Appearance.getColorScheme() === 'dark' ? '#18181B' : 'white',
+          zIndex: 1000,
           borderWidth: 1,
           borderColor: snackbarColor,
           borderRadius: 12,

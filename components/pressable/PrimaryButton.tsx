@@ -60,7 +60,7 @@ const PrimaryButton = ({ onPress,
             <ThemedText
               font='Nunito-Bold'
               label={buttonText}
-              textStyle={textStyle}
+              textStyle={`${textStyle}`}
               />
 
             {rightIcon}

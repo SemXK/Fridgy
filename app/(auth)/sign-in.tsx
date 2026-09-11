@@ -102,7 +102,7 @@ export default function SignIn() {
         </View>
 
         {/* Actions + Router */}
-        <View className="flex flex-col justify-center items-center gap-4 mb-20">
+        <View className="flex flex-col justify-center items-center gap-4 mb-10">
           {
             oauthTokenCollection && 
             <GoogleLogin
@@ -112,8 +112,8 @@ export default function SignIn() {
 
           <View className="w-full">
             <PrimaryButton
-              textStyle="text-white"
               isLoading={authLoading}
+              textStyle='text-white'
               buttonText='Accedi'
               onPress={handleRegister}
             />

@@ -56,7 +56,7 @@ export default  function  GoogleLogin({ oauthTokenCollection }: GoogleLoginInter
       { 
         !DevelopmentMode && 
         <PrimaryButton
-          textStyle="text-white"
+          textStyle='text-white'
           // isLoading={authLoading}
           buttonText="Login con Google"
           onPress={signIn}

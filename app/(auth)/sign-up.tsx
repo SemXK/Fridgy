@@ -111,6 +111,7 @@ export default function SignUp() {
 
             <PrimaryButton
               isLoading={authLoading}
+              textStyle='text-white'
               buttonText='Registrati'
               onPress={handleRegister}
             />
