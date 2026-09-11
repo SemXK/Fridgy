@@ -1,6 +1,6 @@
 import ThemedText from '@/components/ui/ThemedText';
 import UrlImage from '@/components/ui/UrlImage';
-import { CustomertPivot } from '@/constants/interfaces/pivots';
+import { NutritionistPivot } from '@/constants/interfaces/pivots';
 import { User } from '@/constants/interfaces/usersInterface';
 import { primaryColor } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,15 +10,15 @@ import React from 'react';
 import { View } from 'react-native';
 
 interface CCCInterface {
-  customer: CustomertPivot<User>;
+  nutritionist: NutritionistPivot<User>;
 }
 
-const CustomerCardComponent = ({customer}: CCCInterface) => {
+const NutritionistCardComponent = ({nutritionist}: CCCInterface) => {
   return (
-    <View className="dark:bg-darkColor-900 bg-stone-200  rounded-xl w-full h-32 flex flex-row gap-4 p-4 flex-1">
+    <View className="dark:bg-darkColor-900 bg-stone-200 rounded-xl w-full h-32 flex flex-row gap-4 p-4 flex-1">
       
       <View className="dark:bg-darkColor-800 bg-white rounded-full h-full aspect-square">
-        <UrlImage source={customer?.profilePic|| ''} resizeMode='cover' className="flex-1 rounded-xl aspect-square" />
+        <UrlImage source={nutritionist?.profilePic|| ''} resizeMode='cover' className="flex-1 rounded-xl aspect-square" />
       </View>
 
       <View className="flex flex-col flex-1 justify-between">
@@ -27,7 +27,7 @@ const CustomerCardComponent = ({customer}: CCCInterface) => {
             darkModeDisabled
             textStyle='text-primary-500 text-2xl'
             font='Nunito-Bold'
-            label={`${customer.name} ${customer.surname}`}
+            label={`${nutritionist.name} ${nutritionist.surname}`}
           />
           {/* <ThemedText
             darkModeDisabled
@@ -40,13 +40,13 @@ const CustomerCardComponent = ({customer}: CCCInterface) => {
           <ThemedText 
             textStyle='text-stone-800 text-sm'
             font='Nunito-Italic'
-            label={"Aggiunto il " + moment(customer.customerPivot?.created_at).format('DD-MM-yyyy')}
+            label={"Aggiunto il " + moment(nutritionist.nutritionistPivot?.created_at).format('DD-MM-yyyy')}
           />
         </View>
 
         <View className="flex flex-row justify-end self-end h-auto ">
           <MaterialCommunityIcons
-            onPress={() => { router.navigate(`/(tabs)/(nutritionist-users-tab)/${customer.id}`); } } 
+            onPress={() => { router.navigate(`/(tabs)/(nutritionist-users-tab)/${nutritionist.id}`); } } 
             name='chevron-right'
             color={primaryColor[500]}
             size={32}
@@ -58,4 +58,4 @@ const CustomerCardComponent = ({customer}: CCCInterface) => {
   )
 }
 
-export default CustomerCardComponent
+export default NutritionistCardComponent

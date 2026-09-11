@@ -25,6 +25,7 @@ export interface User {
   address: Address;
   created_at: Date;
   updated_at: Date;
+  profilePic?: string;
 
   token: string;
   refreshToken: string;

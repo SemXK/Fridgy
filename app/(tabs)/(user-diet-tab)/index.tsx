@@ -1,8 +1,9 @@
 import InvitationAcceptCode from '@/components/details/customerComponents/InvitationAcceptCode'
+import NutritionistCardComponent from '@/components/details/detailCards/NutritionistCardComponent'
 import EmptyNutritionistList from '@/components/details/EmptyCards/EmptyNutritionistList'
 import HomePageHeader from '@/components/headers/HomePageHeader'
 import CustomModal from '@/components/ui/CustomModal'
-import ThemedText from '@/components/ui/ThemedText'
+import { NutritionistPivot } from '@/constants/interfaces/pivots'
 import { User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { ConsumerController } from '@/controllers/ConsumerController'
@@ -16,7 +17,7 @@ const NutritionistListComponent = () => {
   const [showCodeModal, setShowCodeModal] = useState<boolean>(false)
 
 
-  const [nutritionistList, setNutritionistList] = useState<User[]>([]);
+  const [nutritionistList, setNutritionistList] = useState<NutritionistPivot<User>[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   // % Functions
@@ -28,7 +29,8 @@ const NutritionistListComponent = () => {
     setLoading(true)
     await ConsumerController.getOwnNutritionistList()
       .then((res) => {
-        setNutritionistList(res as  User[])
+        console.log(res)
+        setNutritionistList(res as NutritionistPivot<User>[])
       })
       .finally(() => {
         setLoading(false)
@@ -55,13 +57,7 @@ const NutritionistListComponent = () => {
             <FlatList 
               data={nutritionistList}
               ListEmptyComponent={() => <EmptyNutritionistList onPress={() => setShowCodeModal(true)} />}
-              renderItem={({item}) => {
-                return (
-                  <View>
-                    <ThemedText label="item" />
-                  </View>
-                )
-              }}
+              renderItem={({item}) => <NutritionistCardComponent nutritionist={item} />}
             />
             
           </View>

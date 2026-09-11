@@ -5,6 +5,7 @@ import NutritionistPageHeader from '@/components/headers/NutritionistHeader'
 import LinkCodeDisplay from '@/components/nutritionistComponents/LinkCodeDisplay'
 import CustomModal from '@/components/ui/CustomModal'
 import { NutritionistLinkCode } from '@/constants/interfaces/nutritionist'
+import { CustomertPivot } from '@/constants/interfaces/pivots'
 import { User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { NutritionistController } from '@/controllers/NutritionistController'
@@ -24,7 +25,7 @@ const NutritionstClientList = () => {
   const [linkCode, setLinkCode] = useState<string>("")    //Displayed Link Code
   const [showCodeModal, setShowCodeModal] = useState<boolean>(false)
 
-  const [clientList, setClientList] = useState<User[]>([]);
+  const [clientList, setClientList] = useState<CustomertPivot<User>[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   // $ Functions
@@ -40,7 +41,7 @@ const NutritionstClientList = () => {
     setLoading(true)
     await NutritionistController.getClientList()
       .then((res) => {
-        setClientList(res as  User[])
+        setClientList(res as CustomertPivot<User>[])
       })
       .finally(() => {
         setLoading(false)

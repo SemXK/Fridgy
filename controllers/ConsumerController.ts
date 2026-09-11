@@ -27,7 +27,7 @@ export abstract class ConsumerController extends Controller {
    * @returns list of nutritionists
    */
   static getOwnNutritionistList = async (): Promise<User[] | AxiosError> => {
-    return await this.authenticatedGetCall("consumer/get-own-nutritionists")
+    return await this.authenticatedGetCall("customer/get-own-nutritionists")
     .then((res: AxiosResponse<User[]>) => {
       console.log(res.status)
       if (res.status === 200) {
