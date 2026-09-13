@@ -37,9 +37,9 @@ const NutritionstClientList = () => {
         setShowCodeModal(true)
       })
   }
-  const getClientList = async () => {
+  const getCustomerList = async () => {
     setLoading(true)
-    await NutritionistController.getClientList()
+    await NutritionistController.getCustomerList()
       .then((res) => {
         setClientList(res as CustomertPivot<User>[])
       })
@@ -54,13 +54,13 @@ const NutritionstClientList = () => {
     setNutritionistWebSocket(channel)
     channel.listen(`.NutritionistLinkAccept`, () => {
       setShowCodeModal(false)
-      getClientList()
+      getCustomerList()
     })
   }
 
   useEffect(() => {
     setupWebSocket()
-    getClientList()
+    getCustomerList()
 
     return () => {
       nutritionistWebSocket?.stopListening(`nutritionist-channel-${user?.id}`);
@@ -85,7 +85,6 @@ const NutritionstClientList = () => {
             ListEmptyComponent={() => <EmptyClientList onPress={createInviteCode} />}
             renderItem={({item}) => <CustomerCardComponent customer={item} />}
           />
-          
         </View>
       }
 

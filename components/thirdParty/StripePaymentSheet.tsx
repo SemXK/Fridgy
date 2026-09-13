@@ -38,8 +38,7 @@ const TestPaymentComponent = () => {
       }
 
       // * Mostra PaymentSheet
-      const ans = await presentPaymentSheet();
-      console.log(ans);
+      await presentPaymentSheet();
       // if (presentError) {
       //   if (presentError.code === 'Canceled') return; // utente chiude sheet
       //   Alert.alert('Pagamento fallito', presentError.message);

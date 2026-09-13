@@ -1,7 +1,7 @@
+import MiniProfileComponent from '@/components/details/MiniSections/MiniProfileComponent'
 import ProfilePageHeader from '@/components/headers/ProfilePageHeader'
 import DefaultBadge from '@/components/ui/badges/DefaultBadge'
 import ThemedText from '@/components/ui/ThemedText'
-import UserProfileImage from '@/components/ui/UserProfileImage'
 import { User } from '@/constants/interfaces/usersInterface'
 import { AuthController } from '@/controllers/AuthController'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -43,23 +43,7 @@ const ProfilePage = () => {
       <View className="h-1/5 w-full bg-primary-500 flex flex-column p-8">
 
         {/* Users Main Info */}
-        <View className="flex flex-row gap-4 justify-between">
-
-          {/* User Image */}
-          <UserProfileImage user={user as User}/>
-          <View className="w-5/6 h-full rounded-2xl p-2">
-            <ThemedText 
-              label={user ? user.username : 'Utente'} 
-              textStyle='text-white text-2xl'
-              font='Nunito-Bold'
-            />
-            <ThemedText 
-              label={user?.accessType?.type || 'Ospite (Non Autenticato)'} 
-              textStyle='text-white '
-            />            
-          </View>
-
-        </View>
+        <MiniProfileComponent user={user as User} />
 
         {/* Users Address */}
         <View className="flex flex-row gap-4 justify-between">

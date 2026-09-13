@@ -18,7 +18,7 @@ const CustomerCardComponent = ({customer}: CCCInterface) => {
     <View className="dark:bg-darkColor-900 bg-stone-200  rounded-xl w-full h-32 flex flex-row gap-4 p-4 flex-1">
       
       <View className="dark:bg-darkColor-800 bg-white rounded-full h-full aspect-square">
-        <UrlImage source={customer?.profilePic|| ''} resizeMode='cover' className="flex-1 rounded-xl aspect-square" />
+        <UrlImage source={customer?.profilePic|| ''} resizeMode='cover' className="flex-1 rounded-full aspect-square" />
       </View>
 
       <View className="flex flex-col flex-1 justify-between">

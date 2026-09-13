@@ -57,7 +57,6 @@ export abstract class ProductController extends Controller {
     if (response.status === 200) return response.data;
     // else if (response.status === 401) throw new AxiosError("Invalid Credentials");
     else {
-      console.log(response);
       throw new AxiosError("Unexpected response status: " + response.data);
     }
   };
@@ -268,7 +267,6 @@ export abstract class ProductController extends Controller {
    * @key prevQuantity the quantity before consuming the product
    */
   static consumeProduct = async (payload: {productId: number, fridgeId: number, quantity: number, prevQuantity: number}): Promise<boolean | AxiosError> => {
-    console.log({payload})
     return await this.authenticatedPostCall(`products/consume-product`, payload)
       .then((res: AxiosResponse<Fridge>) => {
         if (res.status === 200) {
@@ -276,7 +274,6 @@ export abstract class ProductController extends Controller {
         } else if (res.status === 401) {
           throw new AxiosError("Invalid Credentials");
         }
-        console.log(res)
         throw new Error("Unexpected response status: " + res.status);
       })
       .catch((e) => {

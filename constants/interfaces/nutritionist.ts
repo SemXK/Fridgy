@@ -6,3 +6,7 @@ export interface NutritionistLinkCode {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface DietDetail {
+  
+}

@@ -17,13 +17,23 @@ export abstract class NutritionistController extends Controller {
    * get current nutritionist's clients
    * @returns list of users
    */
-  static getClientList = async (): Promise<User[] | AxiosError> => {
+  static getCustomerList = async (): Promise<User[] | AxiosError> => {
     return await this.authenticatedGetCall("nutritionist/get-client-list").then((res: AxiosResponse<NutritionistLinkCode>) => {
       if (res.status === 200) {
         const linkCode: User[] = (res as AxiosResponse).data;
         return linkCode;
       }
       return new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  static getCustomerDetail = async (customerId: string): Promise<User | AxiosError> => {
+    return await this.authenticatedGetCall(`nutritionist/get-client-detail/${customerId}`)
+      .then((res: AxiosResponse<NutritionistLinkCode>) => {
+        if (res.status === 200) {
+          const customerDetail: User= (res as AxiosResponse).data;
+          return customerDetail;
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
     });
   };
 }
