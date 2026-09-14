@@ -16,9 +16,9 @@ interface StoreDetailCardInterface {
 
 const StoreDetailCard = (props: StoreDetailCardInterface) => {
   return (
-    <View className="bg-darkColor-900 rounded-xl w-full h-32 flex flex-row gap-4 p-4 flex-1">
+    <View className="dark:bg-darkColor-900 bg-stone-2 rounded-xl w-full h-32 flex flex-row gap-4 p-4 flex-1">
       
-      <View className="bg-darkColor-800 rounded-xl h-full aspect-square">
+      <View className="dark:bg-darkColor-800 bg-white rounded-xl h-full aspect-square">
         <UrlImage source={props.store.profileImage || ''} resizeMode='cover' className="flex-1 rounded-xl aspect-square" />
       </View>
 

@@ -1,4 +1,4 @@
-import { NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
+import { DietDetail, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
@@ -31,6 +31,16 @@ export abstract class NutritionistController extends Controller {
       .then((res: AxiosResponse<NutritionistLinkCode>) => {
         if (res.status === 200) {
           const customerDetail: User= (res as AxiosResponse).data;
+          return customerDetail;
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  static getDietList = async (secondUserId: number): Promise<DietDetail[] | AxiosError> => {
+    return await this.authenticatedPostCall(`diet-plans/get-diet-list`, {secondUserId})
+      .then((res: AxiosResponse<DietDetail[]>) => {
+        if (res.status === 200) {
+          const customerDetail: DietDetail[] = (res as AxiosResponse).data;
           return customerDetail;
         }
         return new AxiosError("Unexpected response status: " + res.status);

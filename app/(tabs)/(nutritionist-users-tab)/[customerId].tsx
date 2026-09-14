@@ -1,4 +1,4 @@
-import GenericEmptyCardComponent from '@/components/details/EmptyCards/GenericEmptyCard'
+import DietListComponent from '@/components/details/Lists/DietListComponent'
 import MiniProfileComponent from '@/components/details/MiniSections/MiniProfileComponent'
 import CustomerBodyFatComponent from '@/components/graphs/CustomerBodyFatComponent'
 import CustomerCaloryConsumptionComponent from '@/components/graphs/CustomerCaloryConsumptionComponent'
@@ -6,7 +6,6 @@ import CustomerMuscularMassComponent from '@/components/graphs/CustomerMuscolarM
 import CustomerWeightComponent from '@/components/graphs/CustomerWeightComponent'
 import CartPageHeader from '@/components/headers/CartPageHeader'
 import ThemedText from '@/components/ui/ThemedText'
-import { DietDetail } from '@/constants/interfaces/nutritionist'
 import { User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { NutritionistController } from '@/controllers/NutritionistController'
@@ -22,7 +21,6 @@ const CustomerDetailPage = () => {
 
   const [customer, setCustomer] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [dietList, setDietList] = useState<DietDetail[]>([]);
 
   // $ Functions
   const getCustomerDetail = async () => {
@@ -48,13 +46,14 @@ const CustomerDetailPage = () => {
   }, [customerId])
 
   return (
-    <SafeAreaView className="">
+    <SafeAreaView className="flex-1 h-screen">
       <CartPageHeader />
       {
         !loading && customer ?
-        <View className="p-4 gap-4 h-full ">
+        <View className="p-4 gap-4 h-full flex-1">
           <FlatList
             data={[1]}
+            showsVerticalScrollIndicator={false}
             renderItem={() => {
               return (
                 <>
@@ -78,30 +77,7 @@ const CustomerDetailPage = () => {
                   </View>
 
                   {/* Lista Piani Alimentari */}
-                  <View>
-                    <ThemedText
-                      label="Lista Piani Alimentari"
-                      darkModeDisabled
-                      textStyle='text-primary-500 text-2xl'
-                      font="Nunito-Bold"
-                    />
-                    <View className="flex flex-row flex-wrap gap-4 w-full ">
-                      <FlatList
-                        data={dietList}
-                        ListEmptyComponent={() => { return (
-                          <GenericEmptyCardComponent 
-                            title="Nessun Piano Alimentare"
-                            message={`Crea il primo piano alimentare per ${customer.name}`}
-                            image={require('@/assets/images/illustrations/emptyFridge.png')}
-                            buttonText='Crea Il Piano'
-                            onPress={() => null} 
-                          />
-                          )
-                        }}
-                        renderItem={({item}) => null}
-                      />
-                    </View>
-                  </View>
+                  <DietListComponent  customer={customer}/>
                 </>
               )
             }}
@@ -114,8 +90,6 @@ const CustomerDetailPage = () => {
           <ActivityIndicator animating size={24} color={primaryColor[500]}  />
         </View>
       }
-      {/* * Users Main Info */}
-        
     </SafeAreaView>
   )
 }

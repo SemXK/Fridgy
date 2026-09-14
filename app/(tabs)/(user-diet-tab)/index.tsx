@@ -29,7 +29,6 @@ const NutritionistListComponent = () => {
     setLoading(true)
     await ConsumerController.getOwnNutritionistList()
       .then((res) => {
-        console.log(res)
         setNutritionistList(res as NutritionistPivot<User>[])
       })
       .finally(() => {
@@ -53,7 +52,7 @@ const NutritionistListComponent = () => {
             <ActivityIndicator animating size={24} color={primaryColor[500]}  />
           </View>
           :
-          <View className="px-4">
+          <View className="px-4 flex-1">
             <FlatList 
               data={nutritionistList}
               ListEmptyComponent={() => <EmptyNutritionistList onPress={() => setShowCodeModal(true)} />}
