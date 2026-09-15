@@ -1,4 +1,6 @@
 import { DietDetail, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
+import { CustomertPivot } from "@/constants/interfaces/pivots";
+import { CreateDietPlanInterface } from "@/constants/interfaces/requestPayloads/nutritionistPayloads";
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
@@ -26,11 +28,11 @@ export abstract class NutritionistController extends Controller {
       return new AxiosError("Unexpected response status: " + res.status);
     });
   };
-  static getCustomerDetail = async (customerId: string): Promise<User | AxiosError> => {
+  static getCustomerDetail = async (customerId: string): Promise<CustomertPivot<User> | AxiosError> => {
     return await this.authenticatedGetCall(`nutritionist/get-client-detail/${customerId}`)
-      .then((res: AxiosResponse<NutritionistLinkCode>) => {
+      .then((res: AxiosResponse<CustomertPivot<User>>) => {
         if (res.status === 200) {
-          const customerDetail: User= (res as AxiosResponse).data;
+          const customerDetail: CustomertPivot<User> = (res as AxiosResponse).data;
           return customerDetail;
         }
         return new AxiosError("Unexpected response status: " + res.status);
@@ -42,6 +44,15 @@ export abstract class NutritionistController extends Controller {
         if (res.status === 200) {
           const customerDetail: DietDetail[] = (res as AxiosResponse).data;
           return customerDetail;
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  static createDietPlan = async (payload: CreateDietPlanInterface): Promise<boolean | AxiosError> => {
+    return await this.authenticatedPostCall(`nutritionist/create-diet-plan`, payload)
+      .then((res: AxiosResponse<boolean>) => {
+        if (res.status === 200) {
+          return true
         }
         return new AxiosError("Unexpected response status: " + res.status);
     });

@@ -1,11 +1,15 @@
 import DietListComponent from '@/components/details/Lists/DietListComponent'
 import MiniProfileComponent from '@/components/details/MiniSections/MiniProfileComponent'
+import DietForm from '@/components/forms/DietForm'
 import CustomerBodyFatComponent from '@/components/graphs/CustomerBodyFatComponent'
 import CustomerCaloryConsumptionComponent from '@/components/graphs/CustomerCaloryConsumptionComponent'
 import CustomerMuscularMassComponent from '@/components/graphs/CustomerMuscolarMassComponent'
 import CustomerWeightComponent from '@/components/graphs/CustomerWeightComponent'
 import CartPageHeader from '@/components/headers/CartPageHeader'
+import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
+import { CustomertPivot } from '@/constants/interfaces/pivots'
+import { CreateDietPlanInterface } from '@/constants/interfaces/requestPayloads/nutritionistPayloads'
 import { User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { NutritionistController } from '@/controllers/NutritionistController'
@@ -19,20 +23,37 @@ const CustomerDetailPage = () => {
   // * Context
   const { customerId } = useLocalSearchParams<{ customerId: string }>()
 
-  const [customer, setCustomer] = useState<User | null>(null);
+  const [customer, setCustomer] = useState<CustomertPivot<User> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showNewDietSheet, setShowNewDietSheet] = useState<boolean>(false)
 
   // $ Functions
   const getCustomerDetail = async () => {
     setLoading(true)
     await NutritionistController.getCustomerDetail(customerId)
       .then((res) => {
-        const user = res as User;
+        const user = res as CustomertPivot<User>;
         setCustomer(user)
       })
       .finally(() => {
         setLoading(false)
       });
+  }
+  const handleSubmit = async (name: string, description: string) => {
+    setLoading(true)
+    setShowNewDietSheet(false)
+    const payload: CreateDietPlanInterface = {
+      name,
+      description,
+      linkedRelationshipId: customer?.customerPivot?.id as number
+    }
+    await NutritionistController.createDietPlan(payload)
+      .then(() => {
+        getCustomerDetail()
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   // * Effects
@@ -77,7 +98,7 @@ const CustomerDetailPage = () => {
                   </View>
 
                   {/* Lista Piani Alimentari */}
-                  <DietListComponent  customer={customer}/>
+                  <DietListComponent newDietPress={() => setShowNewDietSheet(true)} customer={customer}/>
                 </>
               )
             }}
@@ -90,6 +111,17 @@ const CustomerDetailPage = () => {
           <ActivityIndicator animating size={24} color={primaryColor[500]}  />
         </View>
       }
+
+    {/* BottomSheet */}
+    {
+      showNewDietSheet && 
+      <BottomSheetComponent
+        height={.8}
+        onClose={() => setShowNewDietSheet(false)}
+        ShownComponent={() => <DietForm onSubmit={handleSubmit} />}
+      />
+    }
+
     </SafeAreaView>
   )
 }

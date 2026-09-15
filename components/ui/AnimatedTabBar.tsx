@@ -40,7 +40,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
   }))
 
   useEffect(() => {
-    console.log("CurrentSegment: ", segments.join('/'))
     if(ProhibitedRoutes.includes(segments.join('/'))) {
       tabBarBottom.value = withTiming(InactiveTabbarVertical, {duration: 400})
     }

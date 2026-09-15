@@ -1,8 +1,9 @@
 interface NutritionistToCustomerPivot {
-    customerId: number;
-    nutritionistId: number;
-    created_at: Date;
-    updated_at: Date;
+  id: number;
+  customerId: number;
+  nutritionistId: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export type NutritionistPivot<T > = T & {

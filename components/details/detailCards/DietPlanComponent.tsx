@@ -13,7 +13,7 @@ const DietPlanComponent = ({dietDetail}: DPCInterface) => {
   return (
     <View style={{backgroundColor: dietDetail.isActive ? primaryColor[500] : ''}} className="bg-primary-500 pt-2 rounded-lg mb-4 ">
 
-      <View className="dark:bg-darkColor-900 bg-stone-200 rounded-xl flex flex-row gap-4 p-4 flex-1 ">
+      <View className="dark:bg-darkColor-800 bg-stone-200 rounded-xl flex flex-row gap-4 p-4 flex-1 ">
         <View className="flex flex-col flex-1 gap-8 justify-between w-full h-full">
           <View className="">
             <ThemedText

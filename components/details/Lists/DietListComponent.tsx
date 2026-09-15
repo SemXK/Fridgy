@@ -11,9 +11,10 @@ import DietPlanComponent from '../detailCards/DietPlanComponent';
 
 interface DLCInterface {
   customer: User;
+  newDietPress: () => void;
 }
 
-const DietListComponent = ({customer}: DLCInterface) => {
+const DietListComponent = ({customer, newDietPress}: DLCInterface) => {
   const [dietList, setDietList] = useState<DietDetail[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -29,6 +30,7 @@ const DietListComponent = ({customer}: DLCInterface) => {
       })
   }
 
+  // % Effects
   useEffect(() => {
     getDietList()
   }, [])
@@ -42,16 +44,16 @@ const DietListComponent = ({customer}: DLCInterface) => {
         :
         <View className="flex-1">
 
-          <View className="flex flex-row justify-between items-center">
+          <View className="flex flex-row justify-between items-center mb-4 ">
             <ThemedText
               label="Lista Piani Alimentari"
               darkModeDisabled
-              textStyle='text-primary-500 text-2xl mb-4'
+              textStyle='text-primary-500 text-2xl'
               font="Nunito-Bold"
             />
             <MaterialCommunityIcons
-              onPress={() => null } 
-              name='chevron-right'
+              onPress={newDietPress} 
+              name='file-document-plus-outline'
               color={primaryColor[500]}
               size={24}
             />
@@ -82,6 +84,8 @@ const DietListComponent = ({customer}: DLCInterface) => {
           </View>
         </View>
     }
+
+
     </View>
   )
 }
