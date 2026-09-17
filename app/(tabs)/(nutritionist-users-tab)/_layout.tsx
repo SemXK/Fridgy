@@ -3,7 +3,7 @@ import React from 'react';
 
 const NutritionistLayout = () => {
   return (
-    <>
+    < >
         <Stack
           screenOptions={{
             headerShown: false,

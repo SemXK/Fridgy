@@ -1,7 +1,7 @@
 import AssignProductToFridgeDetail from '@/components/details/AssignProductToFridgeDetail'
 import CartTotalView from '@/components/details/CartTotalView'
 import ProductCartItem from '@/components/details/ProductCartItem'
-import CartPageHeader from '@/components/headers/CartPageHeader'
+import BackButtonHeader from '@/components/headers/BackButtonHeader'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
 import LoadingDuringPayment from '@/components/ui/LoadingDuringPayment'
 import TopSnackbar from '@/components/ui/SnackbarComponent'
@@ -138,7 +138,7 @@ const CartComponent = () => {
 
           {/* Header */}
           <View className="w-full " >
-            <CartPageHeader />
+            <BackButtonHeader />
           </View>
 
           {/* Lista */}

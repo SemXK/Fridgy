@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import BackButton from '../pressable/BackButton';
 import NotificationButton from '../pressable/NotificationButton';
 
-const CartPageHeader = () => {
+const BackButtonHeader = () => {
   // * Context
 
   return (
@@ -28,4 +28,4 @@ const CartPageHeader = () => {
   )
 }
 
-export default CartPageHeader
+export default BackButtonHeader

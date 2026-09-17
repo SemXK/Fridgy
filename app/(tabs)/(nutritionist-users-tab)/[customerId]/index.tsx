@@ -5,7 +5,7 @@ import CustomerBodyFatComponent from '@/components/graphs/CustomerBodyFatCompone
 import CustomerCaloryConsumptionComponent from '@/components/graphs/CustomerCaloryConsumptionComponent'
 import CustomerMuscularMassComponent from '@/components/graphs/CustomerMuscolarMassComponent'
 import CustomerWeightComponent from '@/components/graphs/CustomerWeightComponent'
-import CartPageHeader from '@/components/headers/CartPageHeader'
+import BackButtonHeader from '@/components/headers/BackButtonHeader'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import { CustomertPivot } from '@/constants/interfaces/pivots'
@@ -68,7 +68,7 @@ const CustomerDetailPage = () => {
 
   return (
     <SafeAreaView className="flex-1 h-screen">
-      <CartPageHeader />
+      <BackButtonHeader />
       {
         !loading && customer ?
         <View className="p-4 gap-4 h-full flex-1">

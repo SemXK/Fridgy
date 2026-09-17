@@ -13,10 +13,10 @@ import { View } from 'react-native';
 
 export default function SignUp() {
   // * inputs
-  const [username, setUsername] = useState<string>("username")
-  const [email, setEmail] = useState<string>("emailsss@gmail.com")
-  const [password, setPassword] = useState<string>("password")
-  const [confirmPassword, setConfirmPassword] = useState<string>(password)
+  const [username, setUsername] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [confirmPassword, setConfirmPassword] = useState<string>("")
 
   // * State settings
   const [showSnackbar, setShowSnackbar] = useState<string>("")

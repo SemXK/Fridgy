@@ -29,7 +29,7 @@ const DietForm = ({onSubmit}: DFInterface) => {
       <ThemedFormField 
         value={name}
         setValue={setName}
-        label='Denominazione'
+        label='Nome'
       />
       <ThemedFormField 
         value={description}

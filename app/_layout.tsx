@@ -215,16 +215,14 @@ export default function RootLayout() {
 
                 <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                   <PaperProvider>
-
-                    <StripeProvider
-                      publishableKey={stripePublicKey}
-                      >
+                    <StripeProvider publishableKey={stripePublicKey}>
 
                       {/* Main stack */}
                       <Stack initialRouteName="(tabs)">
                         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                       </Stack>
+
                     </StripeProvider>
 
                     {/* Global Bottomsheet */}

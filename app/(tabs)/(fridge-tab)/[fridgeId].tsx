@@ -2,7 +2,7 @@ import AssignedProductToFridgeDetail from "@/components/details/AssignedProductD
 import EditFridgeComponent from "@/components/details/EditFridgeComponent"
 import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
 import ProductConsumptionBottomSheet from "@/components/details/ProductConsumptionBottomSheet"
-import CartPageHeader from "@/components/headers/CartPageHeader"
+import BackButtonHeader from "@/components/headers/BackButtonHeader"
 import FridgeActionDailyAgenda from "@/components/thirdParty/FridgeActionDailyAgenda"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
 import ThemedText from "@/components/ui/ThemedText"
@@ -92,7 +92,7 @@ const FridgeDetail = () => {
           <View className="mb-8 flex-1 p-2 gap-2">
             {/* Descrizione principale Frigo */}
             <View >
-              <CartPageHeader />
+              <BackButtonHeader />
               <View className="flex flex-row justify-between">
                 <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-4xl text-primary-500" label={fridgeDetail.name} />
                 <TouchableOpacity onPress={editFridge} >

@@ -41,7 +41,7 @@ const NutritionistListComponent = () => {
   }, [])
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="h-screen">
       {/* * Auth Header */}
       <HomePageHeader />
 

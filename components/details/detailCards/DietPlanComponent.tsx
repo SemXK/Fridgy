@@ -45,7 +45,7 @@ const DietPlanComponent = ({dietDetail}: DPCInterface) => {
                       customerId: customerId,
                       dietPlanId: dietDetail.id,
                     },
-                  });                  
+                  });
                 } } 
                 name='chevron-right'
                 color={primaryColor[500]}

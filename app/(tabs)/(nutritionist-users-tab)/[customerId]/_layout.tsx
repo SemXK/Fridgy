@@ -4,12 +4,12 @@ import React from 'react';
 const CustomerDetailLayout = () => {
   return (
     <>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            animation: "slide_from_right",
-          }}
-        />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "slide_from_right",
+        }}
+      />
     </>
   )
 }

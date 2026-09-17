@@ -74,7 +74,7 @@ const DietListComponent = ({customer, newDietPress}: DLCInterface) => {
                   message={`Crea il primo piano alimentare per ${customer.name}`}
                   image={require('@/assets/images/illustrations/emptyFridge.png')}
                   buttonText='Crea Il Piano'
-                  onPress={() => null} 
+                  onPress={newDietPress} 
                 />
                 )
               }}

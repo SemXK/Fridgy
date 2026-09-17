@@ -1,5 +1,5 @@
 import { UserContext } from '@/app/_layout';
-import CartPageHeader from '@/components/headers/CartPageHeader';
+import BackButtonHeader from '@/components/headers/BackButtonHeader';
 import RoleSwapCardComponent from '@/components/profileComponents/RoleSwapCardComponent';
 import { User, UserAccessType } from '@/constants/interfaces/usersInterface';
 import { primaryColor } from '@/constants/theme';
@@ -50,7 +50,7 @@ const RoleOptionStepper = () => {
 
   return (
     <SafeAreaView className="flex-1">
-      <CartPageHeader />
+      <BackButtonHeader />
       {
         roleLoading ? 
         <View className="w-full flex flex-row justify-center">

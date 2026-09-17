@@ -20,7 +20,7 @@ export default function SignIn() {
   const { setUser } =  useContext(UserContext)
 
   // * inputs
-  const [email, setEmail] = useState<string>("consumatore@swantech.it")
+  const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
   // * State settings
