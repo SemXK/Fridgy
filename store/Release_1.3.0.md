@@ -2,12 +2,12 @@
 - [x] Codice Invito Live per Clienti
 - [x] Elenco Clienti
 - [x] Elenco Nutrizionisti
-- [] Creazione Dieta
-- [] Generalizza Empty Card
-- [] Dettaglio Clienti
+- [x] Creazione Dieta
+- [x] Dettaglio Clienti
   - [] Grafici Stats Cliente
-  - [] Cards Dettaglio Piano Alimentare
+  - [x] Cards Dettaglio Piano Alimentare
   - [] Export piano come PDF
+  - [] Eliminazione Pasti dalla dieta
 
 
 - [] Dettaglio Nutrizionista
@@ -15,3 +15,4 @@
 - [] Profilazione
 - [] Export Dieta in PDF / XSLX
 - [] Mappa con venditori di prodotti (?)
+- [] Generalizza Empty Card

@@ -57,11 +57,13 @@ const MealCardComponent = ({meal}: MCCInterface) => {
           <ThemedText
             label={meal.description || ''}
           />
-          {prodMacros && 
+          {prodMacros?.carbs ? 
             <MacroBarGraphComponent 
               macros={prodMacros }
               mealQuantity={meal.quantity}
             />
+            :
+            null
         }
 
         </View>
