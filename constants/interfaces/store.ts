@@ -1,6 +1,7 @@
 import * as ImagePicker from "expo-image-picker";
+import { UserToStorePivot } from "./pivots";
 import { Product } from "./productInterface";
-import { User, UserAccessType } from "./usersInterface";
+import { User } from "./usersInterface";
 
 export interface Store {
   id: number;
@@ -12,12 +13,7 @@ export interface Store {
   lng: number;
   created_at: string;
   updated_at: string;
-  userPivot: {
-    userId: number;
-    storeId: number;
-    accessTypeId: number;
-    accessType: UserAccessType; 
-  }
+  userPivot: UserToStorePivot;
   reviews?: Review[]
   reviewsCount?: number;
   productList?: Product[]

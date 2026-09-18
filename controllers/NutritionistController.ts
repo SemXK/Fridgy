@@ -1,6 +1,6 @@
-import { DietDetail, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
+import { DietDetail, Meal, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
 import { CustomertPivot } from "@/constants/interfaces/pivots";
-import { CreateDietPlanInterface } from "@/constants/interfaces/requestPayloads/nutritionistPayloads";
+import { CreateDietPlanInterface, DailyMealsPayload } from "@/constants/interfaces/requestPayloads/nutritionistPayloads";
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
@@ -53,6 +53,18 @@ export abstract class NutritionistController extends Controller {
       .then((res: AxiosResponse<boolean>) => {
         if (res.status === 200) {
           return true
+        }
+        return new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  /**
+   * Returns the meals assigned to a day of the week
+   */
+  static getDayMeal= async (payload: DailyMealsPayload): Promise<Meal[] | AxiosError> => {
+    return await this.authenticatedPostCall(`diet-plans/get-meals-by-day`, payload)
+      .then((res: AxiosResponse<Meal[]>) => {
+        if (res.status === 200) {
+          return res.data
         }
         return new AxiosError("Unexpected response status: " + res.status);
     });

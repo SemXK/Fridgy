@@ -1,7 +1,7 @@
 import { UserContext } from '@/app/_layout';
 import BackButtonHeader from '@/components/headers/BackButtonHeader';
 import RoleSwapCardComponent from '@/components/profileComponents/RoleSwapCardComponent';
-import { User, UserAccessType } from '@/constants/interfaces/usersInterface';
+import { TypeObject, User } from '@/constants/interfaces/usersInterface';
 import { primaryColor } from '@/constants/theme';
 import { AuthController } from '@/controllers/AuthController';
 import { FieldController } from '@/controllers/FeldController';
@@ -17,7 +17,7 @@ const RoleOptionStepper = () => {
   
 
   // * States
-  const [accessTypes, setAccessType] = useState<UserAccessType[]>([])
+  const [accessTypes, setAccessType] = useState<TypeObject[]>([])
   const [roleLoading, setRoleLoading] = useState<boolean>(false)
 
 
@@ -34,7 +34,7 @@ const RoleOptionStepper = () => {
   // $ FUnctions
   const getAccessTypes = async () => {
     await FieldController.getAccessTypes().then((res) => {
-      setAccessType(res as  UserAccessType[]);
+      setAccessType(res as  TypeObject[]);
     })
   }
   const swapRoles = async (accessTypeId: number): Promise<void> => {

@@ -1,5 +1,5 @@
 import { StoreAccessType } from '@/constants/enums/storeAccessType'
-import { UserAccessType } from '@/constants/interfaces/usersInterface'
+import { TypeObject } from '@/constants/interfaces/usersInterface'
 import React from 'react'
 import { View } from 'react-native'
 import ThemedText from '../ThemedText'
@@ -7,7 +7,7 @@ import ThemedText from '../ThemedText'
 
 
 interface SAPinterface {
-  accessType: UserAccessType
+  accessType: TypeObject
 }
 const StoreAccessTypePill = ({accessType}: SAPinterface) => {
 

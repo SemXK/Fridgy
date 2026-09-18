@@ -1,10 +1,24 @@
+import { Meal } from '@/constants/interfaces/nutritionist';
+import { primaryColor } from '@/constants/theme';
 import React, { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { ActivityIndicator } from 'react-native-paper';
 import XDate from 'xdate';
+import MealCardComponent from '../details/detailCards/MealCardComponent';
+import GenericEmptyCardComponent from '../details/EmptyCards/GenericEmptyCard';
+import ThemedText from '../ui/ThemedText';
 
-const DAYS = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
+const DAYS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
-export default function CustomCalendarHeader() {
+interface CCHInterface {
+  mealList: Meal[];
+  onDayChange: (day: number) => void;
+  onEmptyListPress: () => void;
+  loading: boolean;
+}
+
+export default function CustomCalendarHeader({mealList, onDayChange, onEmptyListPress, loading}: CCHInterface) {
   const [selectedDate, setSelectedDate] = useState(new XDate());
 
   const week = useMemo(() => {
@@ -16,17 +30,17 @@ export default function CustomCalendarHeader() {
 
     date.addDays(diff);
 
-    return Array.from({length: 7}, (_, index) => {
-      return date.clone().addDays(index);
+    return Array.from({length: 7}, (_, dayOfWeekIndex) => {
+      return date.clone().addDays(dayOfWeekIndex);
     });
   }, [selectedDate]);
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
 
-      {/* Days */}
+      {/* Days  Header */}
       <View style={styles.days}>
-        {week.map((date, index) => {
+        {week.map((date, dayOfWeekIndex) => {
           const isSelected = date.toString('yyyy-MM-dd') ===
             selectedDate.toString('yyyy-MM-dd');
 
@@ -36,12 +50,12 @@ export default function CustomCalendarHeader() {
               style={styles.day}
               onPress={() => {
                 setSelectedDate(date);
-                console.log('Selected:', date.toString('yyyy-MM-dd'));
+                onDayChange(dayOfWeekIndex)
               }}
             >
-              <Text style={styles.dayName}>
-                {DAYS[index]}
-              </Text>
+
+
+              <ThemedText label={DAYS[dayOfWeekIndex] } />
 
               <View
                 style={[
@@ -62,6 +76,41 @@ export default function CustomCalendarHeader() {
           );
         })}
       </View>
+
+      {/* Meal List */}
+      { !loading ? 
+        <View className="p-4 gap-4 h-full flex-1 w-full ">
+          <FlatList
+            data={mealList}
+            showsVerticalScrollIndicator={false}
+            style={{flex: 1}}
+            ListEmptyComponent={() => {
+              return (
+                <GenericEmptyCardComponent 
+                  title={'Piano Alimentare non implementato'} 
+                  message={'Il piano alimentare non include alcun pasto per questa giornata. Crea dei pasti da assegnare per il giorno corrente'} 
+                  image={require('@/assets/images/illustrations/empty_meal_list.png')}
+                  buttonText='Crea Il Piano'
+                  onPress={onEmptyListPress}
+                />
+              )
+            }}  
+            renderItem={({item}) => {
+              return (
+                <View className="h-32 mb-4">
+                  <MealCardComponent meal={item} />
+                </View>
+              )
+            }}
+          />
+
+
+        </View>
+        :
+        <View className="w-full flex flex-row justify-center">
+          <ActivityIndicator animating size={24} color={primaryColor[500]}  />
+        </View>
+      }
     </View>
   );
 }

@@ -7,7 +7,7 @@ export interface AuthType {
   setGuest: React.Dispatch<Guest>;
 
 };
-export interface UserAccessType {
+export interface TypeObject {
   id: number;
   type: string;
 }
@@ -19,7 +19,7 @@ export interface User {
   username: string;
   email: string;
   accessTypeId: number;
-  accessType: UserAccessType;
+  accessType: TypeObject;
   favouriteProducts: Product[];
   hatedProducts: Product[];
   address: Address;

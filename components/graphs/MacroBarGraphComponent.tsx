@@ -1,29 +1,53 @@
-import React from 'react'
-import { View } from 'react-native'
-import ThemedText from '../ui/ThemedText'
+import { ProductMacros } from '@/constants/interfaces/productInterface';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import ThemedText from '../ui/ThemedText';
 
+{/* <ThemedText font='Nunito-Bold' textStyle="text-center" label={`${macros.carbs} g`} /> */}
 interface MBGCInterface {
+  macros: ProductMacros,
+  mealQuantity: number;
+}
 
-} 
+const MacroBarGraphComponent = ({macros, mealQuantity}: MBGCInterface) => {
+  const [macroQuantity] = useState<number>(macros.carbs + macros.fats + macros.proteins);
 
-const MacroBarGraphComponent = () => {
   return (
-    <View>
-      <ThemedText font='Nunito-Bold' textStyle='text-xl' label="2200 cal/gg" />
+    <View className="flex-1 ">
+      <ThemedText font='Nunito-Bold' textStyle='text-xl' label={`${macros.kcalories} kcal`} />
 
-      <View className="w-full flex flex-row">
-        <View className="bg-indigo-500 h-4  rounded-l-xl" style={{width: "50%"}}>
-          <ThemedText font='Nunito-Bold' textStyle="text-center" label="Carboidrati (50%)" />
-        </View>
-        <View className="bg-amber-500 h-4  " style={{width: "30%"}}>
-          <ThemedText font='Nunito-Bold' textStyle="text-center" label="Proteine (30%)" />
-
-        </View>
-        <View className="bg-emerald-500 h-4  rounded-r-xl" style={{width: "20%"}}>
-          <ThemedText font='Nunito-Bold' textStyle="text-center" label="Grassi (20%)" />
-        </View>
-
+      {/* Bar Graph */}
+      <View className="w-full flex flex-row flex-1 " style={{marginBottom: 4}}>
+        <View className="bg-indigo-500 h-4  rounded-l-xl"  style={{width: `${(macros.carbs / macroQuantity) * 100}%`}} />
+        <View className="bg-amber-500 h-4"                 style={{width: `${(macros.proteins / macroQuantity) * 100}%`}} />
+        <View className="bg-emerald-500 h-4 rounded-r-xl"  style={{width: `${(macros.fats / macroQuantity) * 100}%`}} />
+        {/* <View className="bg-rose-500 h-4"              style={{width: `${(macros.saturatedAcidFats || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-rose-400 h-4"                  style={{width: `${(macros.monosaturatedAcidFats || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-rose-600 h-4"                  style={{width: `${(macros.polysaturatedAcidFats || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-emerald-500 h-4"               style={{width: `${(macros.carbs || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-emerald-500 h-4"               style={{width: `${(macros.sugars || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-emerald-500 h-4"               style={{width: `${(macros.fibers || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-emerald-500 h-4"               style={{width: `${(macros.proteins || 0) / mealQuantity * 100}%`}} />
+        <View className="bg-rose-500 h-4  rounded-r-xl"    style={{width: `${(macros.salt || 0) / mealQuantity * 100}%`}} /> */}
       </View>
+
+      {/* Macros Labels */}
+      <View className="w-full flex flex-row flex-1 justify-between items-center">
+        <View className="flex flex-row gap-2 items-center align-center">
+          <View className="h-2  aspect-square rounded-lg bg-indigo-500" />
+          <ThemedText label="Carboidrati" />
+        </View>
+        <View className="flex flex-row gap-2 items-center align-center">
+          <View className="h-2  aspect-square rounded-lg bg-amber-500" />
+          <ThemedText label="Grassi" />
+        </View>   
+        <View className="flex flex-row gap-2 items-center align-center">
+          <View className="h-2  aspect-square rounded-lg bg-emerald-500" />
+          <ThemedText label="Proteine" />
+        </View>              
+      </View>
+
+
     </View>
   )
 }

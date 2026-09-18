@@ -1,12 +1,12 @@
 import { accessTypeArray } from '@/constants/arrays/accessTypeArray';
-import { UserAccessType } from '@/constants/interfaces/usersInterface';
+import { TypeObject } from '@/constants/interfaces/usersInterface';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import ThemedText from '../ui/ThemedText';
 import UrlImage from '../ui/UrlImage';
 
 interface RoleSwapInterface {
-  accessType: UserAccessType;
+  accessType: TypeObject;
   onPress: (accessTypeId: number) => Promise<void>;
   disabled: boolean;
   currentActiveType: number;

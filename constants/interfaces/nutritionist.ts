@@ -1,3 +1,6 @@
+import { Product } from "./productInterface";
+import { TypeObject } from "./usersInterface";
+
 export interface NutritionistLinkCode {
   id: number;
   linkCode: string;
@@ -21,13 +24,16 @@ export interface DietDetail {
 
 export interface Meal {
   id: number;
-  name: string;
   quantity: number;
+  description: string;
   uma: string | null;
   mealTypeId: number;
   productId: number;
   dietId: number;
   timesPerWeek: number | null;
+  dayOfWeek: number;
   created_at: Date;
   updated_at: Date;
+  product: Product;
+  mealType?: TypeObject
 }

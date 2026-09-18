@@ -3,3 +3,8 @@ export interface CreateDietPlanInterface {
   description: string;
   linkedRelationshipId: number;
 }
+export interface DailyMealsPayload {
+  secondUserId: number;
+  dietId: number;
+  dayOfWeek: number;
+}

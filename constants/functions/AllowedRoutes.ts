@@ -1,6 +1,6 @@
 import { AccessTypeEnum } from "../enums/accessType";
 import { StateRoute } from "../interfaces/common";
-import { UserAccessType } from "../interfaces/usersInterface";
+import { TypeObject } from "../interfaces/usersInterface";
 
 /**
  * Filters the tab bar based on the user type
@@ -8,7 +8,7 @@ import { UserAccessType } from "../interfaces/usersInterface";
  * @param accessType the access type of the user
  * @returns list of filtered user to pass to the tab bar
  */
-export function GetAllowedRoutes (routes: StateRoute[], accessType?: UserAccessType): StateRoute[] {
+export function GetAllowedRoutes (routes: StateRoute[], accessType?: TypeObject): StateRoute[] {
   // Default routes, accessible to everyone
   let allowedRoutes: string[] = []
   switch(accessType?.id) {

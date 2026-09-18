@@ -1,42 +1,69 @@
 import BackButtonHeader from '@/components/headers/BackButtonHeader';
 import DietAgendaComponent from '@/components/thirdParty/DietAgendaComponent';
-import React from 'react';
-import { View } from 'react-native';
+import BottomSheetComponent from '@/components/ui/BottomSheet';
+import { Meal } from '@/constants/interfaces/nutritionist';
+import { DailyMealsPayload } from '@/constants/interfaces/requestPayloads/nutritionistPayloads';
+import { NutritionistController } from '@/controllers/NutritionistController';
+import { useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
 const DietPlanDetail = () => {
-  // const { customerId, dietPlanId } =
-  //   useLocalSearchParams<{
-  //     customerId: string
-  //     dietPlanId: string
-  //   }>()
+  // ? Params
+  const { customerId, dietPlanId } = useLocalSearchParams<{
+    customerId: string
+    dietPlanId: string
+  }>()
 
-  // const colorScheme = Appearance.getColorScheme()
-  // const isDark = colorScheme === 'dark'
+  // * States
+  const [mealList, setMealList] = useState<Meal[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [showNewMeal, setShowNewMeal] = useState<boolean>(false)
 
-  // const agendaTheme = useMemo(
-  //   () => ({
-  //     calendarBackground: isDark ? darkColor[800] : 'white',
-  //     arrowColor: primaryColor[500],
-  //     agendaDayTextColor: primaryColor[500],
-  //     monthTextColor: primaryColor[500],
-  //     textMonthFontWeight: '700' as const,
-  //     textMonthFontSize: 12,
-  //   }),
-  //   [isDark]
-  // )
+  // $ functions
+  const handleChangeDay = async(dayOfWeek: number = new Date().getUTCDay() - 1) => {
+    setLoading(true)
+    const payload: DailyMealsPayload = {
+      secondUserId: Number(customerId),
+      dietId: Number(dietPlanId),
+      dayOfWeek
+    }
+    await NutritionistController.getDayMeal(payload)
+      .then((res) => {
+        setMealList(res as Meal[])
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
 
+  // £ Effects
+  useEffect(() => {
+    handleChangeDay()
+  }, [])
   return (
     <SafeAreaView className="h-screen ">
       <BackButtonHeader />
 
-      <View className="bg-rose-800 h-24">
+      <DietAgendaComponent 
+        mealList={mealList}
+        onDayChange={handleChangeDay} 
+        onEmptyListPress={() => setShowNewMeal(true)}
+        loading={loading} 
+      />
 
-      </View>
+    {/* BottomSheet */}
+    {
+      showNewMeal && 
+      <BottomSheetComponent
+        height={.8}
+        onClose={() => setShowNewMeal(false)}
+        ShownComponent={() => null}
+      />
+    }
 
-      <DietAgendaComponent />
     </SafeAreaView>
   )
 }

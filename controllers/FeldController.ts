@@ -1,5 +1,5 @@
 import { Brand } from "@/constants/interfaces/productInterface";
-import { UserAccessType } from "@/constants/interfaces/usersInterface";
+import { TypeObject } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -20,10 +20,10 @@ export abstract class FieldController extends Controller {
   /**
    * Calls api to get the full brand list registered in the application
    */
-  static getAccessTypes = async (): Promise<UserAccessType[] | AxiosError> => {
+  static getAccessTypes = async (): Promise<TypeObject[] | AxiosError> => {
     return await this.basicGetCall("field/get-access-types" ).then((res: AxiosResponse) => {
       if (res.status === 200) {
-        return res.data as UserAccessType[];
+        return res.data as TypeObject[];
       }
       throw new Error("Error during access type fetching");
     })

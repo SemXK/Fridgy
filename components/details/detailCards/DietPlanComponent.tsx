@@ -1,4 +1,3 @@
-import MacroBarGraphComponent from '@/components/graphs/MacroBarGraphComponent'
 import ThemedText from '@/components/ui/ThemedText'
 import { DietDetail } from '@/constants/interfaces/nutritionist'
 import { primaryColor } from '@/constants/theme'
@@ -52,7 +51,7 @@ const DietPlanComponent = ({dietDetail}: DPCInterface) => {
                 size={32}
               />
           </View>
-          <MacroBarGraphComponent />
+          {/* <MacroBarGraphComponent /> */}
           {/* <View className="flex flex-row justify-end self-end h-auto ">
             <MaterialCommunityIcons
               onPress={() => { router.navigate(`/(tabs)/(nutritionist-users-tab)/${dietDetail.id}`); } } 

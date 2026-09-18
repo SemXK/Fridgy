@@ -1,4 +1,5 @@
 import { ImageSourcePropType } from "react-native";
+import { ConsumedProductToFridgePivot, ProductToFridgePivot } from "./pivots";
 
 // * Generic interfaces
 export interface PaginatedResponse<T> {
@@ -67,21 +68,21 @@ export interface Product {
   created_at: string;
   updated_at: string;
 
-  // * Pivot Tables
-  pivot: {
-    id: number;
-    fridgeId: number;
-    productId: number;
-    quantity: number;   // Numero di prodotti interi (4 cartoni di latte)
-  };
-  pivotConsumption?: {
-    id: number;
-    fridgeId: number;
-    productId: number;
-    quantity: number;   // quantità rimasta (250ml di latte)
-    created_at: Date;
-    updated_at: Date;
-  }[];
+  // 1* Macros
+  kcalories: number;
+  fats: number;
+  saturatedAcidFats: number;
+  monosaturatedAcidFats: number;
+  polysaturatedAcidFats: number;
+  carbs: number;
+  sugars: number;
+  fibers: number;
+  proteins: number;
+  salt: number;
+
+  // 1* Pivot Tables
+  pivot: ProductToFridgePivot;
+  pivotConsumption?: ConsumedProductToFridgePivot[];
 }
 export interface Discount {
   id: number;
@@ -136,6 +137,18 @@ export interface FridgeAction {
 export interface FridgeActionType {
   id: number;
   name: string;
+}
+export interface ProductMacros {
+  kcalories: number;
+  fats: number;
+  saturatedAcidFats: number;
+  monosaturatedAcidFats: number;
+  polysaturatedAcidFats: number;
+  carbs: number;
+  sugars: number;
+  fibers: number;
+  proteins: number;
+  salt: number;
 }
 
 // * Payload
