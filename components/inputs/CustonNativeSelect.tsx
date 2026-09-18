@@ -1,4 +1,5 @@
 import { primaryColor } from "@/constants/theme";
+import { BlurView } from "expo-blur";
 import React, { useState } from "react";
 import {
   Appearance,
@@ -47,7 +48,7 @@ const NativeSelect = ({
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <BlurView style={[styles.container, style]}>
 
       {/* Inactive Select Display */}
       <TouchableOpacity style={styles.button} onPress={openPicker}>
@@ -104,7 +105,7 @@ const NativeSelect = ({
           </View>
         </TouchableOpacity>
       </Modal>
-    </View>
+    </BlurView>
   );
 };
 

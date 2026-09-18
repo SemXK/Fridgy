@@ -68,10 +68,12 @@ const HomePage = () => {
         const response = res as ProductListHomePageResponse
         setPopularProductList(response.popularProducts.data)
         setLatestProductList(response.latestProducts.data)
-        setFilterLoading(false)
       })
       .catch(e => {
         setShowSnackbar(true)
+      })
+      .finally(() => {
+        setFilterLoading(false)
       })
   }
   const getProductTypes = async () => {

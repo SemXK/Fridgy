@@ -1,6 +1,6 @@
 import { DietDetail, Meal, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
 import { CustomertPivot } from "@/constants/interfaces/pivots";
-import { CreateDietPlanInterface, DailyMealsPayload } from "@/constants/interfaces/requestPayloads/nutritionistPayloads";
+import { CreateDietPlanInterface, CreateMealPayload, DailyMealsPayload } from "@/constants/interfaces/requestPayloads/nutritionistPayloads";
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
@@ -67,6 +67,20 @@ export abstract class NutritionistController extends Controller {
           return res.data
         }
         return new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  /**
+   * 
+   * @param payload an object with necessary ID to create the meal for a given dietPlan
+   * @returns result of the creation API process
+   */
+  static createMeal = async (payload: CreateMealPayload): Promise<boolean> => {
+    return await this.authenticatedPostCall(`nutritionist/create-meal`, payload)
+      .then((res: AxiosResponse<boolean>) => {
+        if (res.status === 200) {
+          return true
+        }
+        throw new AxiosError("Unexpected response status: " + res.status);
     });
   };
 }

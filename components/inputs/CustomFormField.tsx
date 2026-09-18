@@ -6,7 +6,7 @@ import { Icon, TextInput } from 'react-native-paper';
 
 interface CFF {
   value: string | number,
-  setValue: (value: string) => void,
+  setValue: (value: any) => void,
   label: string,
   secureTextEntry?: boolean,
   secureTextEntryChange?: (value: boolean) => void,

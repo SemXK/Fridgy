@@ -8,3 +8,12 @@ export interface DailyMealsPayload {
   dietId: number;
   dayOfWeek: number;
 }
+
+export interface CreateMealPayload {
+  description: string;
+  quantity: number;
+  mealTypeId: number;
+  productId: number;
+  dietId: number;
+  dayOfWeek: number;
+}

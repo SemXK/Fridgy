@@ -1,8 +1,10 @@
+import MealForm from '@/components/forms/MealForm';
 import BackButtonHeader from '@/components/headers/BackButtonHeader';
+import PrimaryButton from '@/components/pressable/PrimaryButton';
 import DietAgendaComponent from '@/components/thirdParty/DietAgendaComponent';
 import BottomSheetComponent from '@/components/ui/BottomSheet';
 import { Meal } from '@/constants/interfaces/nutritionist';
-import { DailyMealsPayload } from '@/constants/interfaces/requestPayloads/nutritionistPayloads';
+import { CreateMealPayload, DailyMealsPayload } from '@/constants/interfaces/requestPayloads/nutritionistPayloads';
 import { NutritionistController } from '@/controllers/NutritionistController';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -21,10 +23,12 @@ const DietPlanDetail = () => {
   const [mealList, setMealList] = useState<Meal[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [showNewMeal, setShowNewMeal] = useState<boolean>(false)
+  const [dayOfWeek, setDayOfWeek] = useState<number>( new Date().getUTCDay() - 1)
 
   // $ functions
-  const handleChangeDay = async(dayOfWeek: number = new Date().getUTCDay() - 1) => {
+  const handleChangeDay = async(dayOfWeek: number) => {
     setLoading(true)
+    
     const payload: DailyMealsPayload = {
       secondUserId: Number(customerId),
       dietId: Number(dietPlanId),
@@ -36,16 +40,34 @@ const DietPlanDetail = () => {
       })
       .finally(() => {
         setLoading(false)
+        setDayOfWeek(dayOfWeek)
+
+      })
+  }
+  const handleNewMeal = async(payload: Partial<CreateMealPayload>) => {
+    payload.dietId = Number(dietPlanId)
+    payload.dayOfWeek = dayOfWeek
+    NutritionistController.createMeal(payload as CreateMealPayload)
+      .then((res) => {
+        handleChangeDay(dayOfWeek)
+        setShowNewMeal(false)
       })
   }
 
   // £ Effects
   useEffect(() => {
-    handleChangeDay()
+    handleChangeDay(dayOfWeek)
   }, [])
+
   return (
-    <SafeAreaView className="h-screen ">
+    <SafeAreaView className="h-screen gap-4">
       <BackButtonHeader />
+
+      {/* Actions */}
+      <PrimaryButton 
+        buttonText='Aggiungi Pasto'
+        onPress={() => setShowNewMeal(true)}
+      />
 
       <DietAgendaComponent 
         mealList={mealList}
@@ -60,7 +82,7 @@ const DietPlanDetail = () => {
       <BottomSheetComponent
         height={.8}
         onClose={() => setShowNewMeal(false)}
-        ShownComponent={() => null}
+        ShownComponent={() => <MealForm onSubmit={handleNewMeal} />}
       />
     }
 
