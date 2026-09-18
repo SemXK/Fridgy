@@ -4,12 +4,12 @@
 - [x] Elenco Nutrizionisti
 - [x] Creazione Dieta
 - [x] Dettaglio Clienti
-  - [] Grafici Stats Cliente
   - [x] Cards Dettaglio Piano Alimentare
+  - [] Grafici Stats Cliente
   - [] Export piano come PDF
   - [] Eliminazione Pasti dalla dieta
 
-
+- [] Stats utenti customer
 - [] Dettaglio Nutrizionista
 - [] Clonazione / Export Dieta
 - [] Profilazione

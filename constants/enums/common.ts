@@ -6,9 +6,9 @@ export enum SnackbarStatus {
 }
 
 export enum MealTypes {
-  Colazione,
-  Spuntino,
-  Pranzo,
-  Merenda,
-  Cena,
+  Colazione = 1,
+  Spuntino = 2,
+  Pranzo = 3,
+  Merenda = 4,
+  Cena = 5,
 }

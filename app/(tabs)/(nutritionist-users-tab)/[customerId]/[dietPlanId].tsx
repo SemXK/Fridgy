@@ -4,7 +4,7 @@ import PrimaryButton from '@/components/pressable/PrimaryButton';
 import DietAgendaComponent from '@/components/thirdParty/DietAgendaComponent';
 import BottomSheetComponent from '@/components/ui/BottomSheet';
 import { Meal } from '@/constants/interfaces/nutritionist';
-import { CreateMealPayload, DailyMealsPayload } from '@/constants/interfaces/requestPayloads/nutritionistPayloads';
+import { DailyMealsPayload } from '@/constants/interfaces/requestPayloads/nutritionistPayloads';
 import { NutritionistController } from '@/controllers/NutritionistController';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -26,6 +26,7 @@ const DietPlanDetail = () => {
   const [dayOfWeek, setDayOfWeek] = useState<number>( new Date().getUTCDay() - 1)
 
   // $ functions
+  //Gets all meals in the given day
   const handleChangeDay = async(dayOfWeek: number) => {
     setLoading(true)
     
@@ -44,14 +45,10 @@ const DietPlanDetail = () => {
 
       })
   }
-  const handleNewMeal = async(payload: Partial<CreateMealPayload>) => {
-    payload.dietId = Number(dietPlanId)
-    payload.dayOfWeek = dayOfWeek
-    NutritionistController.createMeal(payload as CreateMealPayload)
-      .then((res) => {
-        handleChangeDay(dayOfWeek)
-        setShowNewMeal(false)
-      })
+  const handleSubmit = () => {
+    setShowNewMeal(false)
+    handleChangeDay(dayOfWeek)
+
   }
 
   // £ Effects
@@ -82,7 +79,15 @@ const DietPlanDetail = () => {
       <BottomSheetComponent
         height={.8}
         onClose={() => setShowNewMeal(false)}
-        ShownComponent={() => <MealForm onSubmit={handleNewMeal} />}
+        ShownComponent={() => { 
+        return (
+          <MealForm 
+            onSubmit={handleSubmit} 
+            dietPlanId={Number(dietPlanId)}
+            dayOfWeek={dayOfWeek}
+          />
+        )
+      }}
       />
     }
 

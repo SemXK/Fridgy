@@ -3,6 +3,7 @@ import { MealPeriodArray } from '@/constants/arrays/common';
 import { Product, ProductListHomePageResponse } from '@/constants/interfaces/productInterface';
 import { CreateMealPayload } from '@/constants/interfaces/requestPayloads/nutritionistPayloads';
 import { primaryColor } from '@/constants/theme';
+import { NutritionistController } from '@/controllers/NutritionistController';
 import { ProductController } from '@/controllers/ProductController';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
@@ -13,10 +14,12 @@ import ThemedText from '../ui/ThemedText';
 import UrlImage from '../ui/UrlImage';
 
 interface MFInterface {
-  onSubmit: (payload: Partial<CreateMealPayload>) => void
+  onSubmit: () => void;
+  dayOfWeek: number;
+  dietPlanId: number;
 }
 
-const MealForm = ({onSubmit}: MFInterface) => {
+const MealForm = ({onSubmit, dayOfWeek, dietPlanId}: MFInterface) => {
   // * States
   const [prodName, setProdName] = useState<string>('');
   const [productList, setProductList] = useState<Product[]>([])
@@ -26,6 +29,8 @@ const MealForm = ({onSubmit}: MFInterface) => {
   const [quantity, setQuantity] = useState<number>(0);
 
   const [loading, setLoading] = useState<boolean>(false)
+  const [creationLoading, setCreationLoading] = useState<boolean>(false)
+
 
   // $Functions
   const getProducts = async () => {
@@ -48,6 +53,18 @@ const MealForm = ({onSubmit}: MFInterface) => {
       setProductId(product.id)
     } 
   }
+  const handleNewMeal = async(payload: Partial<CreateMealPayload>) => {
+    setCreationLoading(true)
+    payload.dietId = Number(dietPlanId)
+    payload.dayOfWeek = dayOfWeek 
+    NutritionistController.createMeal(payload as CreateMealPayload)
+      .then(() => {
+        onSubmit()
+      })
+      .finally(() => {
+        setCreationLoading(false)
+      })
+  }
 
   // £ Effects
   useEffect(() => {
@@ -65,18 +82,6 @@ const MealForm = ({onSubmit}: MFInterface) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View className="flex flex-col gap-8 h-full ">
-          {/* Submit Button */}
-          <View>
-            <PrimaryButton
-              buttonText="Crea Pasto"
-              onPress={() => onSubmit({
-                description,
-                productId,
-                quantity,
-                mealTypeId,
-              })}
-            />
-          </View>
 
           {/* Form */}
           <View className="flex flex-col gap-4">
@@ -156,6 +161,20 @@ const MealForm = ({onSubmit}: MFInterface) => {
             />
           </View>
 
+          {/* Submit Button */}
+          <View className="mb-20">
+            <PrimaryButton
+              buttonText="Crea Pasto"
+              onPress={() => handleNewMeal({
+                description,
+                productId,
+                quantity,
+                mealTypeId,
+              })}
+              isLoading={creationLoading}
+              disabled={creationLoading}
+            />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

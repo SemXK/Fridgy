@@ -18,9 +18,10 @@ const MacroBarGraphComponent = ({macros, mealQuantity}: MBGCInterface) => {
 
       {/* Bar Graph */}
       <View className="w-full flex flex-row flex-1 " style={{marginBottom: 4}}>
-        <View className="bg-indigo-500 h-4  rounded-l-xl"  style={{width: `${(macros.carbs / macroQuantity) * 100}%`}} />
-        <View className="bg-amber-500 h-4"                 style={{width: `${(macros.proteins / macroQuantity) * 100}%`}} />
-        <View className="bg-emerald-500 h-4 rounded-r-xl"  style={{width: `${(macros.fats / macroQuantity) * 100}%`}} />
+        <View className={`bg-indigo-500 h-4  ${macroQuantity === macros.carbs ? 'rounded-xl' : 'rounded-l-xl'} `}    style={{width: `${(macros.carbs / macroQuantity) * 100}%`}} />
+        <View className={`bg-amber-500 h-4 ${macroQuantity === macros.fats ? 'rounded-xl' : ''}`}                    style={{width: `${(macros.fats / macroQuantity) * 100}%`}} />
+        <View className={`bg-emerald-500 h-4 ${macroQuantity === macros.proteins ? 'rounded-xl' : 'rounded-r-xl'}`}  style={{width: `${(macros.proteins / macroQuantity) * 100}%`}} />
+
         {/* <View className="bg-rose-500 h-4"              style={{width: `${(macros.saturatedAcidFats || 0) / mealQuantity * 100}%`}} />
         <View className="bg-rose-400 h-4"                  style={{width: `${(macros.monosaturatedAcidFats || 0) / mealQuantity * 100}%`}} />
         <View className="bg-rose-600 h-4"                  style={{width: `${(macros.polysaturatedAcidFats || 0) / mealQuantity * 100}%`}} />

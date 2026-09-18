@@ -1,3 +1,4 @@
+import { MealTypes } from '@/constants/enums/common';
 import { Meal } from '@/constants/interfaces/nutritionist';
 import { primaryColor } from '@/constants/theme';
 import React, { useMemo, useState } from 'react';
@@ -5,8 +6,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
 import XDate from 'xdate';
-import MealCardComponent from '../details/detailCards/MealCardComponent';
 import GenericEmptyCardComponent from '../details/EmptyCards/GenericEmptyCard';
+import MealListByMealType from '../details/Lists/MealListByMealType';
 import ThemedText from '../ui/ThemedText';
 
 const DAYS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
@@ -81,8 +82,7 @@ export default function CustomCalendarHeader({mealList, onDayChange, onEmptyList
       { !loading ? 
         <View className="p-4 gap-4 h-full flex-1 w-full ">
           <FlatList
-            data={mealList}
-            showsVerticalScrollIndicator={false}
+            data={mealList.length ? [1] : []}
             style={{flex: 1}}
             ListEmptyComponent={() => {
               return (
@@ -97,9 +97,14 @@ export default function CustomCalendarHeader({mealList, onDayChange, onEmptyList
             }}  
             renderItem={({item}) => {
               return (
-                <View className="h-32 mb-4">
-                  <MealCardComponent meal={item} />
-                </View>
+                <>
+                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Colazione)} title='Colazione' />
+                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Spuntino)} title='Spuntino' />
+                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Pranzo)} title='Pranzo' />
+                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Merenda)} title='Merenda' />
+                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Cena)} title='Cena' />
+
+                </>
               )
             }}
           />
