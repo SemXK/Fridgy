@@ -26,14 +26,18 @@ const DietPlanDetail = () => {
   const [dayOfWeek, setDayOfWeek] = useState<number>( new Date().getUTCDay() - 1)
 
   // $ functions
-  //Gets all meals in the given day
-  const handleChangeDay = async(dayOfWeek: number) => {
+  /*
+    Gets all meals in the given day. If the day is missing, uses the previous one
+  */
+  const handleChangeDay = async(givenDay?: number) => {
     setLoading(true)
-    
+    if(givenDay === undefined) {
+      givenDay = dayOfWeek
+    }
     const payload: DailyMealsPayload = {
       secondUserId: Number(customerId),
       dietId: Number(dietPlanId),
-      dayOfWeek
+      dayOfWeek: givenDay as number
     }
     await NutritionistController.getDayMeal(payload)
       .then((res) => {
@@ -41,7 +45,7 @@ const DietPlanDetail = () => {
       })
       .finally(() => {
         setLoading(false)
-        setDayOfWeek(dayOfWeek)
+        setDayOfWeek(givenDay as number)
 
       })
   }

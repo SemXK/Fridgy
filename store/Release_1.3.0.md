@@ -5,14 +5,15 @@
 - [x] Creazione Dieta
 - [x] Dettaglio Clienti
   - [x] Cards Dettaglio Piano Alimentare
-  - [] Grafici Stats Cliente
-  - [] Export piano come PDF
-  - [] Eliminazione Pasti dalla dieta
+  - [x] Eliminazione Pasti dalla dieta
 
+- [] Grafici Stats Cliente
 - [] Stats utenti customer
 - [] Dettaglio Nutrizionista
 - [] Clonazione / Export Dieta
 - [] Profilazione
 - [] Export Dieta in PDF / XSLX
+
 - [] Mappa con venditori di prodotti (?)
 - [] Generalizza Empty Card
+- [] Export piano come PDF

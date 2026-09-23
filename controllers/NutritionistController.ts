@@ -83,4 +83,18 @@ export abstract class NutritionistController extends Controller {
         throw new AxiosError("Unexpected response status: " + res.status);
     });
   };
+  /**
+   * 
+   * @param mealId the id of the meal to delete
+   * @returns a message that describes the status of the deletion, that converts toa  boolean if the status is 200
+   */
+  static deleteMeal = async (mealId:number): Promise<boolean> => {
+    return await this.authenticatedDeleteCall(`nutritionist/delete-meal/${mealId}`)
+      .then((res: AxiosResponse<boolean>) => {
+        if (res.status === 200) {
+          return true
+        }
+        throw new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
 }

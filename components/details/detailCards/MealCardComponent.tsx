@@ -36,7 +36,7 @@ const MealCardComponent = ({meal}: MCCInterface) => {
   }, [])
 
   return (
-    <View className="dark:bg-darkColor-900 bg-stone-2 rounded-xl w-full h-48 flex flex-row gap-4 p-2 flex-1">
+    <View style={{height: 200}} className="dark:bg-darkColor-900 bg-stone-2 rounded-xl w-full flex flex-row gap-4 p-2 flex-1">
       
       <View className="dark:bg-darkColor-800 bg-white rounded-xl h-full aspect-square">
         <UrlImage 
@@ -48,15 +48,24 @@ const MealCardComponent = ({meal}: MCCInterface) => {
 
       <View className="flex flex-col flex-1 justify-between">
         <View className="flex-1">
-          <ThemedText
-            darkModeDisabled
-            textStyle='text-primary-500 text-2xl'
-            font='Nunito-Bold'
-            label={meal.product?.name || ''}
-          />
+          <View className="flex flex-row items-center justify-between">
+            <ThemedText
+              darkModeDisabled
+              textStyle='text-primary-500 text-xl line-clamp-1 w-2/3'
+              font='Nunito-Bold'
+              label={meal.product?.name || ''}
+            />      
+            <ThemedText
+              textStyle='text-primary-500 text-xl'
+              font='Nunito-Bold'
+              darkModeDisabled
+              label={` (${Math.round(meal.quantity)} g)`}
+            />
+          </View>
           <ThemedText
             label={meal.description || ''}
           />
+
           {prodMacros?.carbs ? 
             <MacroBarGraphComponent 
               macros={prodMacros }

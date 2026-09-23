@@ -1,7 +1,8 @@
 import { MealTypes } from '@/constants/enums/common';
 import { Meal } from '@/constants/interfaces/nutritionist';
 import { primaryColor } from '@/constants/theme';
-import React, { useMemo, useState } from 'react';
+import { NutritionistController } from '@/controllers/NutritionistController';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
@@ -14,13 +15,26 @@ const DAYS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
 interface CCHInterface {
   mealList: Meal[];
-  onDayChange: (day: number) => void;
+  onDayChange: (day?: number) => void;
   onEmptyListPress: () => void;
   loading: boolean;
 }
 
 export default function CustomCalendarHeader({mealList, onDayChange, onEmptyListPress, loading}: CCHInterface) {
   const [selectedDate, setSelectedDate] = useState(new XDate());
+  const [dailyCalories, setDailyCalories] = useState<number>(0);
+  const [dailyCarbs, setDailyCarbs] = useState<number>(0);
+  const [dailyFats, setDailyFats] = useState<number>(0);
+  const [dailyProteins, setDailyProteins] = useState<number>(0);
+
+  // * Functions
+  const deleteMeal = async(mealId: number) => {
+    await NutritionistController.deleteMeal(mealId)
+      .then(() => {
+        onDayChange()
+      })
+  }
+
 
   const week = useMemo(() => {
     const date = selectedDate.clone();
@@ -36,8 +50,91 @@ export default function CustomCalendarHeader({mealList, onDayChange, onEmptyList
     });
   }, [selectedDate]);
 
+  useEffect(() => {
+    let caloriesCount = 0;
+    let carbsCount = 0;
+    let fatsCount = 0;
+    let proteinsCount = 0;
+
+    mealList.map((meal) => {
+      const quantityRatio = meal.quantity / meal.product.quantity;
+      caloriesCount += quantityRatio * meal.product.kcalories;
+      carbsCount += quantityRatio * meal.product.carbs;
+      fatsCount += quantityRatio * meal.product.fats;
+      proteinsCount += quantityRatio * meal.product.proteins;
+
+    });
+
+    setDailyCalories(Number(caloriesCount.toFixed(2)))
+    setDailyCarbs(Number(carbsCount.toFixed(2)))
+    setDailyFats(Number(fatsCount.toFixed(2)))
+    setDailyProteins(Number(proteinsCount.toFixed(2)))
+
+  }, [mealList])
+
   return (
-    <View className="flex-1">
+    <View className="flex-1 gap-4 p-4">
+
+      {/* MealAgenda Desc */}
+      <View className="flex flex-col gap-4 bg-stone-200 dark:bg-darkColor-800 rounded-xl p-4">
+
+        <View className="flex flex-row justify-between">
+          <ThemedText
+            darkModeDisabled
+            textStyle='text-primary-500 text-xl'
+            font='Nunito-Bold'
+            label={`Apporto Calorico Giornagliero`}
+          />
+          <ThemedText
+            textStyle=' text-xl'
+            font='Nunito-Bold'
+            label={`${dailyCalories} kcal`}
+          />
+        </View>
+
+        <View className="flex flex-row justify-between">
+          <ThemedText
+            darkModeDisabled
+            textStyle='text-primary-500 text-xl'
+            font='Nunito-Bold'
+            label={`Carboidrati`}
+          />
+          <ThemedText
+            textStyle=' text-xl'
+            font='Nunito-Bold'
+            label={`${dailyCarbs} g`}
+          />
+        </View>
+
+        <View className="flex flex-row justify-between">
+          <ThemedText
+            darkModeDisabled
+            textStyle='text-primary-500 text-xl'
+            font='Nunito-Bold'
+            label={`Grassi`}
+          />
+          <ThemedText
+            textStyle=' text-xl'
+            font='Nunito-Bold'
+            label={`${dailyFats} g`}
+          />
+        </View>
+
+        <View className="flex flex-row justify-between">
+          <ThemedText
+            darkModeDisabled
+            textStyle='text-primary-500 text-xl'
+            font='Nunito-Bold'
+            label={`Proteine`}
+          />
+          <ThemedText
+            textStyle=' text-xl'
+            font='Nunito-Bold'
+            label={`${dailyProteins} g`}
+          />
+        </View>
+
+      </View>
 
       {/* Days  Header */}
       <View style={styles.days}>
@@ -78,9 +175,11 @@ export default function CustomCalendarHeader({mealList, onDayChange, onEmptyList
         })}
       </View>
 
+
+
       {/* Meal List */}
       { !loading ? 
-        <View className="p-4 gap-4 h-full flex-1 w-full ">
+        <View className=" gap-4 h-full flex-1 w-full">
           <FlatList
             data={mealList.length ? [1] : []}
             style={{flex: 1}}
@@ -95,14 +194,14 @@ export default function CustomCalendarHeader({mealList, onDayChange, onEmptyList
                 />
               )
             }}  
-            renderItem={({item}) => {
+            renderItem={() => {
               return (
                 <>
-                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Colazione)} title='Colazione' />
-                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Spuntino)} title='Spuntino' />
-                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Pranzo)} title='Pranzo' />
-                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Merenda)} title='Merenda' />
-                  <MealListByMealType meals={mealList.filter((item) => item.mealTypeId === MealTypes.Cena)} title='Cena' />
+                  <MealListByMealType onDelete={deleteMeal} meals={mealList.filter((item) => item.mealTypeId === MealTypes.Colazione)} title='Colazione' />
+                  <MealListByMealType onDelete={deleteMeal} meals={mealList.filter((item) => item.mealTypeId === MealTypes.Spuntino)} title='Spuntino' />
+                  <MealListByMealType onDelete={deleteMeal} meals={mealList.filter((item) => item.mealTypeId === MealTypes.Pranzo)} title='Pranzo' />
+                  <MealListByMealType onDelete={deleteMeal} meals={mealList.filter((item) => item.mealTypeId === MealTypes.Merenda)} title='Merenda' />
+                  <MealListByMealType onDelete={deleteMeal} meals={mealList.filter((item) => item.mealTypeId === MealTypes.Cena)} title='Cena' />
 
                 </>
               )
