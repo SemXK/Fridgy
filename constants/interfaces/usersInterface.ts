@@ -23,6 +23,7 @@ export interface User {
   favouriteProducts: Product[];
   hatedProducts: Product[];
   address: Address;
+  fitnessStats: FitnessStat[];
   created_at: Date;
   updated_at: Date;
   profilePic?: string;
@@ -46,4 +47,19 @@ export interface Address {
   comune: string;
   regione: string;
   stato: string;
+}
+
+export interface FitnessStat {
+  id: number;
+  weight: number;
+  weightGoal: number;
+  height: number;
+  age: number;
+  isMale: boolean;
+  bodyFatPercentage: number;
+  muscularMassPercentage: number;
+  dailyCalories: number;
+  userId: number;
+  created_at: Date;
+  updated_at: Date;
 }

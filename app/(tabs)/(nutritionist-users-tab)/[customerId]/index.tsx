@@ -6,14 +6,15 @@ import CustomerCaloryConsumptionComponent from '@/components/graphs/CustomerCalo
 import CustomerMuscularMassComponent from '@/components/graphs/CustomerMuscolarMassComponent'
 import CustomerWeightComponent from '@/components/graphs/CustomerWeightComponent'
 import BackButtonHeader from '@/components/headers/BackButtonHeader'
+import { DataPoint } from '@/components/thirdParty/LineGraph'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
-import ThemedText from '@/components/ui/ThemedText'
 import { CustomertPivot } from '@/constants/interfaces/pivots'
 import { CreateDietPlanInterface } from '@/constants/interfaces/requestPayloads/nutritionistPayloads'
 import { User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { NutritionistController } from '@/controllers/NutritionistController'
 import { router, useLocalSearchParams } from 'expo-router'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
@@ -26,6 +27,12 @@ const CustomerDetailPage = () => {
   const [customer, setCustomer] = useState<CustomertPivot<User> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showNewDietSheet, setShowNewDietSheet] = useState<boolean>(false)
+  
+  const [weightList, setWeightList] = useState<DataPoint[]>([])
+  const [fatList, setFatList] = useState<DataPoint[]>([])
+  const [muscleList, setMuscleList] = useState<DataPoint[]>([])
+  const [fitnessDateList, setFitnessDateList] = useState<DataPoint[]>([])
+  const [caloriesList, setCaloriesList] = useState<DataPoint[]>([])
 
   // $ Functions
   const getCustomerDetail = async () => {
@@ -34,6 +41,28 @@ const CustomerDetailPage = () => {
       .then((res) => {
         const user = res as CustomertPivot<User>;
         setCustomer(user)
+        const weightData: DataPoint[] = []
+        const fatData: DataPoint[] = []
+        const muscleData: DataPoint[] = []
+        const caloriesData: DataPoint[] = []
+        const periodData: DataPoint[] = []
+
+        // 1$ Create Data from user to create Graphs
+        user.fitnessStats.map((item) => {
+          weightData.push({value: item.weight, label: 'kg'})
+          fatData.push({value: item.bodyFatPercentage, label: '%'})
+          muscleData.push({value: item.muscularMassPercentage, label: '%'})
+          periodData.push({value: item.id, label: moment(item.created_at).format('DD/MM').toString()})
+          caloriesData.push({value: item.dailyCalories, label: 'kcal'})
+        })
+        setWeightList(weightData)
+        setFatList(fatData)
+        setMuscleList(muscleData)
+        setCaloriesList(caloriesData)
+        setFitnessDateList(periodData)
+        
+        
+
       })
       .finally(() => {
         setLoading(false)
@@ -77,29 +106,24 @@ const CustomerDetailPage = () => {
             showsVerticalScrollIndicator={false}
             renderItem={() => {
               return (
-                <>
+                <View className='gap-4'>
                   {/* Users Main Info */}
                   <MiniProfileComponent user={customer as User} />
 
+                  {/* Lista Piani Alimentari */}
+                  <DietListComponent newDietPress={() => setShowNewDietSheet(true)} customer={customer}/>
+
                   {/* Grafici Statistiche */}
                   <View className="mb-4">
-                    <ThemedText
-                      label="Descrizioni Principali"
-                      darkModeDisabled
-                      textStyle='text-primary-500 text-2xl mb-4'
-                      font="Nunito-Bold"
-                    />
-                    <View className="flex flex-row flex-wrap gap-4 w-full ">
-                      <CustomerWeightComponent />
-                      <CustomerBodyFatComponent />
-                      <CustomerMuscularMassComponent />
-                      <CustomerCaloryConsumptionComponent />
+                    <View className="flex flex-col  gap-4 w-full ">
+                      <CustomerWeightComponent dataList={weightList} periodList={fitnessDateList} />
+                      <CustomerBodyFatComponent dataList={fatList} periodList={fitnessDateList} />
+                      <CustomerMuscularMassComponent dataList={muscleList} periodList={fitnessDateList}/>
+                      <CustomerCaloryConsumptionComponent dataList={caloriesList} periodList={fitnessDateList}/>
                     </View>
                   </View>
 
-                  {/* Lista Piani Alimentari */}
-                  <DietListComponent newDietPress={() => setShowNewDietSheet(true)} customer={customer}/>
-                </>
+                </View>
               )
             }}
           />

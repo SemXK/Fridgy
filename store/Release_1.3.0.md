@@ -6,7 +6,8 @@
 - [x] Dettaglio Clienti
   - [x] Cards Dettaglio Piano Alimentare
   - [x] Eliminazione Pasti dalla dieta
-
+  - [] Attivazione Dieta per l'utente
+  
 - [] Grafici Stats Cliente
 - [] Stats utenti customer
 - [] Dettaglio Nutrizionista

@@ -1,10 +1,15 @@
-import { darkColor, primaryColor } from "@/constants/theme";
+import { primaryColor } from "@/constants/theme";
 import React, { FC, useMemo, useState } from "react";
-import { GestureResponderEvent, StyleSheet, View } from "react-native";
+import {
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+} from "react-native";
 import Svg, {
   Circle,
   Defs,
   LinearGradient,
+  NumberProp,
   Path,
   Stop,
   Text as SvgText,
@@ -12,42 +17,132 @@ import Svg, {
 import ThemedText from "../ui/ThemedText";
 
 export interface DataPoint {
-  labelX?: string; // date (optional)
-  value: number;   // numeric price
+  label: string;  // Measurement for xlabel
+  value?: number;
+  showValue?: boolean;
 }
+
+export interface CWCInterface {
+  dataList: DataPoint[];
+  periodList: DataPoint[];
+}
+
 interface LineGraphProps {
-  data: DataPoint[];
-  width?: number;
-  height?: number;
+  verticalData: DataPoint[];
+  horizontalData: DataPoint[];
   padding?: number;
+  yAxisWidth?: number;
+  xAxisHeight?: number;
   strokeWidth?: number;
   lineColor?: string;
   gradientFrom?: string;
   gradientTo?: string;
   showDots?: boolean;
   yTicks?: number;
-  priceFormatter?: (value: number) => string;
+  xTicks?: number;
 }
 
 const LineGraph: FC<LineGraphProps> = ({
-  data = [],
-  width = 360,
-  height = 200,
-  padding = 36,
+  verticalData = [],
+  horizontalData = [],
+  padding = 12,
+  yAxisWidth = 80,
+  xAxisHeight = 28,
   strokeWidth = 3,
   lineColor = primaryColor[500],
   gradientFrom = primaryColor[500],
   gradientTo = primaryColor[900],
   showDots = true,
-  yTicks = Math.min(data.length, 4),
-  priceFormatter = (v) => `${v} €`,
+  yTicks = Math.min(verticalData.length, 4),
+  xTicks = Math.min(horizontalData.length, 4),
 }) => {
+  const [size, setSize] = useState({
+    width: 0,
+    height: 0,
+  });
 
-  // * State
-  const [graphValid, setGraphValid] = useState<boolean>(false)
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
 
-  // * Graphs variables
-  const {
+    setSize({
+      width,
+      height,
+    });
+  };
+
+const graph = useMemo(() => {
+  const { width, height } = size;
+
+  if (
+    !verticalData.length ||
+    !horizontalData.length ||
+    width <= 0 ||
+    height <= 0
+  ) {
+    return null;
+  }
+
+  const chartLeft = yAxisWidth;
+  const chartBottom = xAxisHeight;
+
+  const chartWidth = Math.max(
+    width - chartLeft - padding,
+    1
+  );
+
+  const chartHeight = Math.max(
+    height - padding * 2 - chartBottom,
+    1
+  );
+
+  // ----------------------------------------
+  // Data
+  // ----------------------------------------
+
+  const values = verticalData.map((d) =>
+    Number(d.value)
+  );
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+
+  const stepX =
+    chartWidth / Math.max(values.length - 1, 1);
+
+  const points = values.map((value, i) => {
+    const x = chartLeft + i * stepX;
+
+    const y =
+      padding +
+      (1 - (value - min) / (max - min || 1)) *
+        chartHeight;
+
+    return { x, y };
+  });
+
+  // ----------------------------------------
+  // Paths
+  // ----------------------------------------
+
+  const linePath = points
+    .map(
+      (p, i) =>
+        `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`
+    )
+    .join(" ");
+
+  const areaPath = `
+    ${linePath}
+    L ${points[points.length - 1].x} ${
+      padding + chartHeight
+    }
+    L ${points[0].x} ${padding + chartHeight}
+    Z
+  `;
+
+  return {
+    width,
+    height,
     points,
     linePath,
     areaPath,
@@ -55,113 +150,101 @@ const LineGraph: FC<LineGraphProps> = ({
     max,
     stepX,
     chartHeight,
-  } = useMemo(() => {
-    if(data.length) {
-      setGraphValid(true)
+    chartLeft,
+    chartWidth,
+  };
+}, [
+  verticalData,
+  horizontalData,
+  size,
+  padding,
+  yAxisWidth,
+  xAxisHeight,
+]);
 
-      const values = data.map((d) => d.value);
-      const min = Math.min(...values);
-      const max = Math.max(...values);
-  
-      const stepX = (width - padding * 2) / (data.length - 1 || 1);
-      const chartHeight = height - padding * 2;
-  
-      const points = data.map((d, i) => {
-        const x = padding + i * stepX;
-        const y =
-          padding +
-          (1 - (d.value - min) / (max - min || 1)) * chartHeight;
-  
-        return { x, y };
-      });
-  
-      const linePath = points
-        .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-        .join(" ");
-  
-      const areaPath = `
-        ${linePath}
-        L ${points[points.length - 1].x} ${height - padding}
-        L ${points[0].x} ${height - padding}
-        Z
-      `;
-  
-      return {
-        points,
-        linePath,
-        areaPath,
-        min,
-        max,
-        stepX,
-        chartHeight,
-      };
-    }
-    else {
-      setGraphValid(false)
-      return {
-        points: [{x: 0, y: 0}],
-        linePath: 0,
-        areaPath: 0,
-        min: 0,
-        max: 0,
-        stepX: 0,
-        chartHeight: 0,
-      };
-    }
-  }, [data, width, height, padding]);
 
-  // * functions
-  const showDotInfo = (e: GestureResponderEvent) => {
-
-  }
-
-  // * Display
   return (
-    <View style={styles.container}>
-      {
-        graphValid ?
-        <Svg width={width} height={height}>
+    <View
+      style={styles.container}
+      onLayout={handleLayout}
+    >
+      {graph ? (
+        <Svg
+          width={graph.width}
+          height={graph.height}
+        >
           <Defs>
-            {/* Gradient under the line */}
-            <LinearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-              <Stop offset="0%" stopColor={gradientFrom} stopOpacity={0.3} />
-              <Stop offset="100%" stopColor={gradientTo} stopOpacity={0} />
+            <LinearGradient
+              id="areaGradient"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <Stop
+                offset="0%"
+                stopColor={gradientFrom}
+                stopOpacity={0.3}
+              />
+              <Stop
+                offset="100%"
+                stopColor={gradientTo}
+                stopOpacity={0}
+              />
             </LinearGradient>
 
-            {/* Gradient stroke */}
-            <LinearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-              <Stop offset="0%" stopColor={gradientFrom} />
-              <Stop offset="100%" stopColor={gradientTo} />
+            <LinearGradient
+              id="lineGradient"
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="0"
+            >
+              <Stop
+                offset="0%"
+                stopColor={gradientFrom}
+              />
+              <Stop
+                offset="100%"
+                stopColor={gradientTo}
+              />
             </LinearGradient>
           </Defs>
 
           {/* Y-axis labels */}
-          {Array.from({ length: yTicks + 1 }).map((_, i) => {
-            const value = 
-              min + ((max - min) / yTicks) * (yTicks - i);
+          {verticalData.map((item, i) => {
+            const value = Number(item.value);
+
             const y =
-              padding + (chartHeight / yTicks) * i;
+              padding +
+              (1 - (value - graph.min) / (graph.max - graph.min || 1)) *
+                graph.chartHeight;
 
             return (
               <SvgText
                 key={`y-${i}`}
-                x={6}
+                x={yAxisWidth - 8}
                 y={y + 4}
                 fontSize={10}
                 fill={primaryColor[200]}
                 opacity={0.6}
+                textAnchor="end"
               >
-                {priceFormatter(value)}
+                {`${value} ${item.label}`}
               </SvgText>
             );
           })}
 
+
           {/* Area */}
-          <Path d={areaPath as string} fill="url(#areaGradient)" />
+          <Path
+            d={graph.areaPath}
+            fill="url(#areaGradient)"
+          />
 
           {/* Line */}
           <Path
-            d={linePath as string}
+            d={graph.linePath}
             fill="none"
             stroke="url(#lineGradient)"
             strokeWidth={strokeWidth}
@@ -170,42 +253,55 @@ const LineGraph: FC<LineGraphProps> = ({
           />
 
           {/* Points */}
-          {showDots &&
-            points.map((p, i) => (
-              <Circle
-                onPress={(e) => showDotInfo(e)}
-                key={i}
-                cx={p.x}
-                cy={p.y}
-                r={4}
-                fill={lineColor}
-              />
-            ))}
+          {
+          showDots &&
+            graph.points.map(
+              (
+                p: {
+                  x: NumberProp | undefined;
+                  y: NumberProp | undefined;
+                },
+                i
+              ) => (
+                <Circle
+                  key={i}
+                  cx={p.x}
+                  cy={p.y}
+                  r={4}
+                  fill={lineColor}
+                />
+              )
+            )}
 
-          {/* X-axis labels (dates) */}
-          {data.map((d, i) => {
-            if (!d.labelX) return null;
-            const show = data.length <= 6 || i % 2 === 0;
+          {/* X-axis labels */}
+          {horizontalData.map((item, i) => {
+            const show =
+              horizontalData.length <= 6 ||
+              i % 2 === 0;
+
             if (!show) return null;
 
             return (
               <SvgText
                 key={`x-${i}`}
-                x={padding + i * stepX}
-                y={height - 8}
+                x={
+                  graph.chartLeft +
+                  i * graph.stepX
+                }
+                y={graph.height - 8}
                 fontSize={10}
                 fill={primaryColor[200]}
                 opacity={0.6}
                 textAnchor="middle"
               >
-                {d.labelX}
+                {`${item.label}`}
               </SvgText>
             );
           })}
         </Svg>
-        :
+      ) : (
         <ThemedText label="Non ci sono dati sufficienti" />
-      }
+      )}
     </View>
   );
 };
@@ -214,8 +310,9 @@ export default LineGraph;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: darkColor[900],
+    width: "100%",
+    height: "100%",
     borderRadius: 16,
-    padding: 12,
   },
 });
+
