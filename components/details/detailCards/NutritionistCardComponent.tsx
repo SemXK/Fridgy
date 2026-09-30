@@ -46,7 +46,7 @@ const NutritionistCardComponent = ({nutritionist}: CCCInterface) => {
 
         <View className="flex flex-row justify-end self-end h-auto ">
           <MaterialCommunityIcons
-            onPress={() => { router.navigate(`/(tabs)/(nutritionist-users-tab)/${nutritionist.id}`); } } 
+            onPress={() => { router.navigate(`/(tabs)/(user-diet-tab)/${nutritionist.id}`);}} 
             name='chevron-right'
             color={primaryColor[500]}
             size={32}

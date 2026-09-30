@@ -15,7 +15,7 @@ export interface DietDetail {
   name: string;
   description: string;
   linkedRelationshipId: number;
-  public: boolean;
+  isPublic: boolean;
   isActive: boolean;
   created_at: Date;
   updated_at: Date;

@@ -300,7 +300,14 @@ const graph = useMemo(() => {
           })}
         </Svg>
       ) : (
-        <ThemedText label="Non ci sono dati sufficienti" />
+        <View className="h-full w-full flex flex-row justify-center items-center">
+          <ThemedText 
+            label="Non ci sono dati sufficienti"  
+            font="Nunito-Italic"
+            darkModeDisabled
+            textStyle="text-primary-500"
+          />
+        </View>
       )}
     </View>
   );

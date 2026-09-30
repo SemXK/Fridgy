@@ -1,9 +1,15 @@
 import { NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
+import { NutritionistPivot } from "@/constants/interfaces/pivots";
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
 export abstract class ConsumerController extends Controller {
+  /**
+   * send code and check if it exists to accept nutritionist's invite
+   * @param insertedCode 6 charachter code the nutritionist sent
+   * @returns a boolean, whether the intitation succeded or not
+   */
   static acceptInviteCode = async (insertedCode: string): Promise<boolean | undefined>  => {
     return await this.authenticatedPostCall("customer/accept-invite-code", {insertedCode})
       .then((res: AxiosResponse<NutritionistLinkCode>) => {
@@ -29,7 +35,6 @@ export abstract class ConsumerController extends Controller {
   static getOwnNutritionistList = async (): Promise<User[] | AxiosError> => {
     return await this.authenticatedGetCall("customer/get-own-nutritionists")
     .then((res: AxiosResponse<User[]>) => {
-      console.log(res.status)
       if (res.status === 200) {
         const linkCode: User[] = (res as AxiosResponse).data;
         return linkCode;
@@ -37,4 +42,20 @@ export abstract class ConsumerController extends Controller {
       return new AxiosError("Unexpected response status: " + res.status);
     });
   };
+  /**
+   * get nutritionist detail with sufficient data for the customer
+   */
+  static getNutritionistDetail = async (nutritionistId: string): Promise<NutritionistPivot<User>> => {
+    return await this.authenticatedGetCall(`customer/get-nutritionist-detail/${nutritionistId}`)
+    .then((res: AxiosResponse<NutritionistPivot<User>>) => {
+      if (res.status === 200) {
+        const nutritionistDetail: NutritionistPivot<User> = (res as AxiosResponse).data;
+        return nutritionistDetail;
+      }
+      else {
+        throw new Error("Unexpected response status: " + res.status);
+      }
+    });
+  };
+
 }

@@ -18,7 +18,7 @@ import { UserContext } from '../../_layout'
 const ProfilePage = () => {
 
   // $Context
-  const { user, setUser } =  useContext(UserContext)
+  const { user} =  useContext(UserContext)
   
   // * functions
   const logout = async () => {

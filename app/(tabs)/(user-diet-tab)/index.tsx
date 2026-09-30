@@ -16,7 +16,6 @@ const NutritionistListComponent = () => {
   // * States
   const [showCodeModal, setShowCodeModal] = useState<boolean>(false)
 
-
   const [nutritionistList, setNutritionistList] = useState<NutritionistPivot<User>[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 

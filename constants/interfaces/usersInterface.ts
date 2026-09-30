@@ -23,7 +23,7 @@ export interface User {
   favouriteProducts: Product[];
   hatedProducts: Product[];
   address: Address;
-  fitnessStats: FitnessStat[];
+  fitnessStats?: FitnessStat[];
   created_at: Date;
   updated_at: Date;
   profilePic?: string;
