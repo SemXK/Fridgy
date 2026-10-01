@@ -27,7 +27,7 @@ const NutritionistDetailPage = () => {
   // * States
   const [nutritionist, setNutritionist] = useState<NutritionistPivot<User> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [nutritionistWebSocket, setNutritionistWebSocket] = useState<any>(null);
+  const [customerWebSocket, setCustomerWebsocket] = useState<any>(null);
 
   const [weightList, setWeightList] = useState<DataPoint[]>([])
   const [fatList, setFatList] = useState<DataPoint[]>([])
@@ -72,7 +72,7 @@ const NutritionistDetailPage = () => {
     const echo = await getEcho() as any;
     const channel = echo.channel(`customer-diet-channel-${user?.id}`)
 
-    setNutritionistWebSocket(channel)
+    setCustomerWebsocket(channel)
     channel.listen(`.DietStatusActivation`, () => {
       getNutritionistDetail()
     })
@@ -85,6 +85,10 @@ const NutritionistDetailPage = () => {
     else {
       router.back()
     }
+    return () => {
+      customerWebSocket?.stopListening(`customer-diet-channel-${user?.id}`);
+      setCustomerWebsocket(null)
+    };
   }, [nutritionistId])
 
   return (
@@ -103,7 +107,7 @@ const NutritionistDetailPage = () => {
                   <MiniProfileComponent user={nutritionist as User} />
 
                   {/* Lista Piani Alimentari */}
-                  <DietListComponent  user={nutritionist}/>
+                  <DietListComponent  currentUserDetail={nutritionist}/>
 
                   {/* Grafici Statistiche */}
                   <View className="mb-4">

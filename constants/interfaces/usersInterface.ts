@@ -27,7 +27,7 @@ export interface User {
   created_at: Date;
   updated_at: Date;
   profilePic?: string;
-
+  isMale: boolean;
   token: string;
   refreshToken: string;
   tokenType?: string;
@@ -55,7 +55,6 @@ export interface FitnessStat {
   weightGoal: number;
   height: number;
   age: number;
-  isMale: boolean;
   bodyFatPercentage: number;
   muscularMassPercentage: number;
   dailyCalories: number;

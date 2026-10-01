@@ -17,3 +17,4 @@ export interface CreateMealPayload {
   dietId: number;
   dayOfWeek: number;
 }
+

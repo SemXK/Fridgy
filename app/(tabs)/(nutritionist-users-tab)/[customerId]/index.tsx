@@ -1,6 +1,7 @@
 import DietListComponent from '@/components/details/Lists/DietListComponent'
 import MiniProfileComponent from '@/components/details/MiniSections/MiniProfileComponent'
 import DietForm from '@/components/forms/DietForm'
+import FitnessStatForm from '@/components/forms/FitnessStatForm'
 import CustomerBodyFatComponent from '@/components/graphs/CustomerBodyFatComponent'
 import CustomerCaloryConsumptionComponent from '@/components/graphs/CustomerCaloryConsumptionComponent'
 import CustomerMuscularMassComponent from '@/components/graphs/CustomerMuscolarMassComponent'
@@ -8,11 +9,13 @@ import CustomerWeightComponent from '@/components/graphs/CustomerWeightComponent
 import BackButtonHeader from '@/components/headers/BackButtonHeader'
 import { DataPoint } from '@/components/thirdParty/LineGraph'
 import BottomSheetComponent from '@/components/ui/BottomSheet'
+import ThemedText from '@/components/ui/ThemedText'
 import { CustomertPivot } from '@/constants/interfaces/pivots'
 import { CreateDietPlanInterface } from '@/constants/interfaces/requestPayloads/nutritionistPayloads'
 import { User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { NutritionistController } from '@/controllers/NutritionistController'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { router, useLocalSearchParams } from 'expo-router'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
@@ -27,6 +30,7 @@ const CustomerDetailPage = () => {
   const [customer, setCustomer] = useState<CustomertPivot<User> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showNewDietSheet, setShowNewDietSheet] = useState<boolean>(false)
+  const [showNewStatsSheet, SetNewStatsSheet] = useState<boolean>(false)
   
   const [weightList, setWeightList] = useState<DataPoint[]>([])
   const [fatList, setFatList] = useState<DataPoint[]>([])
@@ -84,6 +88,9 @@ const CustomerDetailPage = () => {
         setLoading(false)
       })
   }
+  const saveNewFitnessStats = async () => {
+
+  }
 
   // * Effects
   useEffect(() => {
@@ -110,11 +117,26 @@ const CustomerDetailPage = () => {
                   {/* Users Main Info */}
                   <MiniProfileComponent user={customer as User} />
 
-                  {/* Lista Piani Alimentari */}
-                  <DietListComponent newDietPress={() => setShowNewDietSheet(true)} user={customer}/>
-
                   {/* Grafici Statistiche */}
                   <View className="mb-4">
+
+                    <View className="flex flex-row justify-between items-center mb-4 ">
+                      <ThemedText
+                        label="Statistiche "
+                        darkModeDisabled
+                        textStyle='text-primary-500 text-2xl'
+                        font="Nunito-Bold"
+                      />
+
+                      <MaterialCommunityIcons
+                        onPress={() => SetNewStatsSheet(true)} 
+                        name='chart-box-plus-outline'
+                        color={primaryColor[500]}
+                        size={24}
+                      />
+
+                    </View>
+
                     <View className="flex flex-col  gap-4 w-full ">
                       <CustomerWeightComponent dataList={weightList} periodList={fitnessDateList} />
                       <CustomerBodyFatComponent dataList={fatList} periodList={fitnessDateList} />
@@ -122,6 +144,10 @@ const CustomerDetailPage = () => {
                       <CustomerCaloryConsumptionComponent dataList={caloriesList} periodList={fitnessDateList}/>
                     </View>
                   </View>
+
+                  {/* Lista Piani Alimentari */}
+                  <DietListComponent newDietPress={() => setShowNewDietSheet(true)} currentUserDetail={customer}/>
+
 
                 </View>
               )
@@ -145,6 +171,15 @@ const CustomerDetailPage = () => {
         ShownComponent={() => <DietForm onSubmit={handleSubmit} />}
       />
     }
+    {
+      showNewStatsSheet && 
+      <BottomSheetComponent
+        height={.8}
+        onClose={() => SetNewStatsSheet(false)}
+        ShownComponent={() => <FitnessStatForm customer={customer!} onSubmit={saveNewFitnessStats} />}
+      />
+    }
+
 
     </SafeAreaView>
   )
