@@ -12,7 +12,7 @@ import BottomSheetComponent from '@/components/ui/BottomSheet'
 import ThemedText from '@/components/ui/ThemedText'
 import { CustomertPivot } from '@/constants/interfaces/pivots'
 import { CreateDietPlanInterface } from '@/constants/interfaces/requestPayloads/nutritionistPayloads'
-import { User } from '@/constants/interfaces/usersInterface'
+import { FitnessStat, User } from '@/constants/interfaces/usersInterface'
 import { primaryColor } from '@/constants/theme'
 import { NutritionistController } from '@/controllers/NutritionistController'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -88,8 +88,12 @@ const CustomerDetailPage = () => {
         setLoading(false)
       })
   }
-  const saveNewFitnessStats = async () => {
-
+  const saveNewFitnessStats = async (fitnessStat: Partial<FitnessStat>) => {
+    fitnessStat["userId"] = Number(customerId);
+    await NutritionistController.saveNewFitnessStat(fitnessStat)
+      .then(() =>{
+        SetNewStatsSheet(false)
+      })
   }
 
   // * Effects
@@ -103,7 +107,7 @@ const CustomerDetailPage = () => {
   }, [customerId])
 
   return (
-    <SafeAreaView className="flex-1 h-screen">
+    <SafeAreaView className="flex-1">
       <BackButtonHeader />
       {
         !loading && customer ?

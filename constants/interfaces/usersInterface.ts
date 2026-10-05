@@ -57,7 +57,7 @@ export interface FitnessStat {
   age: number;
   bodyFatPercentage: number;
   muscularMassPercentage: number;
-  dailyCalories: number;
+  dailyCalories?: number;
   userId: number;
   created_at: Date;
   updated_at: Date;

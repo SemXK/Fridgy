@@ -1,10 +1,6 @@
 import { UserContext } from '@/app/_layout'
 import DietListComponent from '@/components/details/Lists/DietListComponent'
 import MiniProfileComponent from '@/components/details/MiniSections/MiniProfileComponent'
-import CustomerBodyFatComponent from '@/components/graphs/CustomerBodyFatComponent'
-import CustomerCaloryConsumptionComponent from '@/components/graphs/CustomerCaloryConsumptionComponent'
-import CustomerMuscularMassComponent from '@/components/graphs/CustomerMuscolarMassComponent'
-import CustomerWeightComponent from '@/components/graphs/CustomerWeightComponent'
 import BackButtonHeader from '@/components/headers/BackButtonHeader'
 import { DataPoint } from '@/components/thirdParty/LineGraph'
 import { NutritionistPivot } from '@/constants/interfaces/pivots'
@@ -92,7 +88,7 @@ const NutritionistDetailPage = () => {
   }, [nutritionistId])
 
   return (
-    <SafeAreaView className="flex-1 h-screen">
+    <SafeAreaView className="flex-1 ">
       <BackButtonHeader />
       {
         !loading && nutritionist ?
@@ -110,14 +106,14 @@ const NutritionistDetailPage = () => {
                   <DietListComponent  currentUserDetail={nutritionist}/>
 
                   {/* Grafici Statistiche */}
-                  <View className="mb-4">
+                  {/* <View className="mb-4">
                     <View className="flex flex-col  gap-4 w-full ">
                       <CustomerWeightComponent dataList={weightList} periodList={fitnessDateList} />
                       <CustomerBodyFatComponent dataList={fatList} periodList={fitnessDateList} />
                       <CustomerMuscularMassComponent dataList={muscleList} periodList={fitnessDateList}/>
                       <CustomerCaloryConsumptionComponent dataList={caloriesList} periodList={fitnessDateList}/>
                     </View>
-                  </View>
+                  </View> */}
 
                 </View>
               )

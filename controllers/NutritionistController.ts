@@ -1,7 +1,7 @@
 import { DietDetail, Meal, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
 import { CustomertPivot } from "@/constants/interfaces/pivots";
 import { CreateDietPlanInterface, CreateMealPayload, DailyMealsPayload } from "@/constants/interfaces/requestPayloads/nutritionistPayloads";
-import { User } from "@/constants/interfaces/usersInterface";
+import { FitnessStat, User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -105,6 +105,32 @@ export abstract class NutritionistController extends Controller {
   static publishDiet = async (dietFields: DietDetail): Promise<boolean> => {
     return await this.authenticatedPostCall(`nutritionist/edit-diet`, {...dietFields})
       .then((res: AxiosResponse<boolean>) => {
+        if (res.status === 200) {
+          return true
+        }
+        throw new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  /**
+   * 
+   * @param customerId the id of the customer to check the stats
+   * @returns the last fitness stats the user registered
+   */
+  static getLastFitnessStat = async (customerId: number): Promise<FitnessStat> => {
+    return await this.authenticatedGetCall(`nutritionist/customer-last-stats/${customerId}`)
+      .then((res: AxiosResponse<FitnessStat>) => {
+        if (res.status === 200) {
+          return res.data
+        }
+        throw new AxiosError("Unexpected response status: " + res.status);
+    });
+  };
+  /**
+   * Save stat and trigger the websocekt for current customer
+   */
+  static saveNewFitnessStat = async (newStat: Partial<FitnessStat>): Promise<boolean> => {
+    return await this.authenticatedPostCall(`nutritionist/create-fitness-stat`, newStat)
+      .then((res: AxiosResponse<FitnessStat>) => {
         if (res.status === 200) {
           return true
         }
