@@ -1,3 +1,4 @@
+import ThemedText from '@/components/ui/ThemedText';
 import { PaymentContextInterface } from '@/constants/interfaces/paymentInterface';
 import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/productInterface';
 import { GoogleApiKeys } from '@/constants/interfaces/thirdParty/common';
@@ -16,7 +17,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useState } from 'react';
-import { Appearance, StatusBar } from 'react-native';
+import { Appearance, StatusBar, View } from 'react-native';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider as PaperProvider } from 'react-native-paper';
 import '../global.css';
@@ -179,17 +180,29 @@ export default function RootLayout() {
 
   // % Font loader
   if (!loaded && !error) {
-    return null;
+    return (
+    <View className="w-screen h-screen flex flex-row justify-center items-center">
+      <ThemedText label="Caricamento" />
+    </View>
+    )
   }
 
   // % User Loader
   if(!user && !guest) {
-    return null
+    return (
+    <View className="w-screen h-screen flex flex-row justify-center items-center">
+      <ThemedText label="Manca utente" />
+    </View>
+    )
   }
 
   // % No Stripe Payment Keys
   if(!stripePublicKey) {
-    return null
+    return (
+      <View className="w-screen h-screen flex flex-row justify-center items-center">
+        <ThemedText label="Manca key stripe" />
+      </View>
+    )
   }
 
   return (
