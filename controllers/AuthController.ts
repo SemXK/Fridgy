@@ -118,16 +118,25 @@ export abstract class AuthController extends Controller {
    * @param guestId the token used to create a guest session
    */
   static createGuestSession = async (guestId: string) => {
+    // console.log("BaseUrl:", `${this.baseUrl}/init-guest-session`)
     return await this.basicPostCall("init-guest-session", {guestId})
     .then((res: AxiosResponse<Guest>) => {
-
+      console.log("status", res.status)
       if (res.status === 200) {
         this.currentGuest = res.data
       }
 
     })
     .catch((e) => {
-      console.log({initGuestSessionError: e})
+      console.log("===== API ERROR =====");
+      console.log("message:", e?.message);
+      console.log("name:", e?.name);
+      console.log("code:", e?.code);
+      console.log("stack:", e?.stack);
+      console.log("config url:", e?.config?.url);
+      console.log("config baseURL:", e?.config?.baseURL);
+      console.log("response:", e?.response);
+      console.log("=====================");
     })
   }
   /**
@@ -177,7 +186,7 @@ export abstract class AuthController extends Controller {
         return res.data;
       })
       .catch((e) => {
-        console.log({initGuestSessionError: e})
+        console.log({googleSignInError: e})
         return
       })
   }

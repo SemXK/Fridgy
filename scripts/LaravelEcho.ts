@@ -11,17 +11,16 @@ export async function getEcho(): Promise<typeof Echo<any>> {
   if (echoInstance) return echoInstance;
 
   const AppName = process.env.EXPO_PUBLIC_PUSHER_APP_NAME;
+  const ApiEndpoint = process.env.EXPO_PUBLIC_REVERB_ENDPOINT;
 
   const pusherClient = new Pusher(AppName as string, {
     cluster: "mt1",
-    // wsHost: '10.0.2.2', // android emulator
-    wsHost: "192.168.1.7",
-    wsPort: 8080,
-    forceTLS: false,
-    disableStats: true,
-    enabledTransports: ["ws"],
+    wsHost: ApiEndpoint,
+    wsPort: 443,
+    wssPort: 443,
+    forceTLS: true,
+    enabledTransports: ["ws","wss"],
   });
-
   echoInstance = new Echo({
     broadcaster: "pusher",
     client: pusherClient,

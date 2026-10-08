@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosHeaders, AxiosRequestConfig } from "axios";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 
@@ -7,6 +7,10 @@ export abstract class Controller {
   static baseUrl: string = `${
     Constants.deviceName !== "sdk_gphone64_x86_64" ? process.env.EXPO_PUBLIC_BACKEND_URL : process.env.EXPO_PUBLIC_EMULATOR_BACKEND_URL
   }`;
+  static commonHeaders: Partial<AxiosHeaders> = {
+    
+  }
+
 
   // * Secure store auth tokens
   protected static getAuthToken = async () => {
@@ -46,7 +50,12 @@ export abstract class Controller {
   static basicGetCall = async (apiPath: string) => {
 
     try {
-      return await axios.get(`${this.baseUrl}/${apiPath}`);
+      return await axios.get(`${this.baseUrl}/${apiPath}`, {
+        headers: {
+          "Content-Type": 'application/json',
+          "Accept": "application/json",
+        }
+      });
     } 
     catch (error: any) {
       throw error;
@@ -55,6 +64,10 @@ export abstract class Controller {
   static basicPostCall = async (apiPath: string, data: unknown, config?: AxiosRequestConfig) => {
     try {
       return await axios.post(`${this.baseUrl}/${apiPath}`, data, {
+        headers: {
+          "Content-Type": 'application/json',
+          "Accept": "application/json",
+        },
         ...config,
       });
     } catch (error: any) {
@@ -69,10 +82,14 @@ export abstract class Controller {
     if (token || guestId) {
       try {
         return await axios.get(`${this.baseUrl}/${apiPath}`, {
+          ...this.commonHeaders,
           headers: {
+            "Content-Type": 'application/json',
+            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
-            'Refresh-Token' : await this.getRefreshToken()
+            'Refresh-Token' : await this.getRefreshToken(),
+
           },
         });
       } catch (error: any) {
@@ -91,6 +108,8 @@ export abstract class Controller {
         // FIXED: axios.post expects (url, data, config)
         return await axios.post(`${this.baseUrl}/${apiPath}`, payload, {
           headers: {
+            "Content-Type": 'application/json',
+            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken()
@@ -111,6 +130,8 @@ export abstract class Controller {
       try {
         return await axios.put(`${this.baseUrl}/${apiPath}`, payload, {
           headers: {
+            "Content-Type": 'application/json',
+            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken()
@@ -132,6 +153,8 @@ export abstract class Controller {
       try {
         return await axios.delete(`${this.baseUrl}/${apiPath}`, {
           headers: {
+            "Content-Type": 'application/json',
+            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken()
