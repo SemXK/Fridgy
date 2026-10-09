@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "Fridgy Developer",
+    "name": "Fridgy",
     "slug": "FridgyAnimated",
     "version": "1.3.0",
     "orientation": "portrait",
     "owner": "xsemxkx",
     "jsEngine": "hermes",
     "icon": "./assets/images/icon.png",
-    "scheme": "com.xsemxkx.fridgy.dev",
+    "scheme": "com.xsemxkx.fridgy",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xsemxkx.fridgy.dev",
+      "bundleIdentifier": "com.xsemxkx.fridgy",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -32,7 +32,7 @@
         }
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.xsemxkx.fridgy.dev",
+      "package": "com.xsemxkx.fridgy",
     },
     "web": {
       "output": "static",

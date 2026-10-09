@@ -10,6 +10,15 @@ export interface NutritionistLinkCode {
   updated_at: Date;
 }
 
+export interface FridgeInvitationCode {
+  id: number;
+  linkCode: string;
+  userId: number;
+  expirationDate: Date;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export interface DietDetail {
   id: number;
   name: string;

@@ -16,7 +16,7 @@ const MiniProfileComponent = ({user}:MPCInterface) => {
       <UserProfileImage user={user as User}/>
       <View className="w-5/6 h-full rounded-2xl p-2">
         <ThemedText
-          label={user ? `${user.name} ${user.surname}` : 'Utente'} 
+          label={user ? `${user.name || user.username} ${user.surname}` : 'Utente'} 
           textStyle='text-2xl'
           font='Nunito-Bold'
         />

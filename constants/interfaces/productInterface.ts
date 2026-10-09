@@ -96,10 +96,11 @@ export interface Fridge {
   description: string;
   created_at: Date;
   updated_at: Date;
-
   productList: Product[];
-
   actionsStory: FridgeAction[];
+  propertyPivot: {
+    canEdit: boolean;
+  }
 }
 export interface Brand {
   id: number;

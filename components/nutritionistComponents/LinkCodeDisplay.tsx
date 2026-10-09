@@ -3,11 +3,13 @@ import { Image, View } from 'react-native';
 import ThemedText from '../ui/ThemedText';
 
 interface LCDInterface {
+  title: string;
+  message: string;
   linkCode: string;
   onPress: () => void;
 }
 
-const LinkCodeDisplay = ({linkCode, onPress}: LCDInterface) => {
+const LinkCodeDisplay = ({title, message, linkCode, onPress}: LCDInterface) => {
 
   // * Functions
   const onSharePress = (e: any) => {
@@ -26,9 +28,9 @@ const LinkCodeDisplay = ({linkCode, onPress}: LCDInterface) => {
 
       <View className="flex flex-col justify-between h-2/3 ">
 
-        <View className="items-center flex flex-col justify-center h-1/3">
-          <ThemedText label="Il tuo codice invito" font="Nunito-Bold" textStyle='text-2xl text-center' />
-          <ThemedText label="Condividi il codice con i tuoi clienti per invitarli" />
+        <View className="items-center flex flex-col justify-center h-1/3 ">
+          <ThemedText label={title} font="Nunito-Bold" textStyle='text-2xl text-center' />
+          <ThemedText label={message} textStyle='text-center'/>
         </View>
 
         <View className="items-center flex flex-col justify-center h-1/3">

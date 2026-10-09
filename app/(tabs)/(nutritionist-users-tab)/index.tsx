@@ -92,7 +92,16 @@ const NutritionstClientList = () => {
       <CustomModal
         visible={showCodeModal}
         onClose={() => setShowCodeModal(false)}
-        ChildComponent={() => <LinkCodeDisplay linkCode={linkCode} onPress={() => setShowCodeModal(false)} />}
+        ChildComponent={() => {
+          return (
+            <LinkCodeDisplay 
+              title="Il tuo codice invito"
+              message="Condividi il codice con i tuoi clienti per invitarli"
+              linkCode={linkCode} 
+              onPress={() => setShowCodeModal(false)} 
+            />
+          )
+        }}
       />
 
     </SafeAreaView>

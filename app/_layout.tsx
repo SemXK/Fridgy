@@ -104,7 +104,6 @@ export default function RootLayout() {
         // 1* /me api returns error if all tokens are invalid
         await AuthController.sessionInit().then(() => {
           setGuest(AuthController.currentGuest);
-
         })
       })
   }

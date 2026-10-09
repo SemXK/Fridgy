@@ -1,9 +1,6 @@
 import PrimaryButton from '@/components/pressable/PrimaryButton';
-import TopSnackbar from '@/components/ui/SnackbarComponent';
 import ThemedText from '@/components/ui/ThemedText';
-import { SnackbarStatus } from '@/constants/enums/common';
 import { primaryColor } from '@/constants/theme';
-import { ConsumerController } from '@/controllers/ConsumerController';
 import { useRef, useState } from 'react';
 import {
   Image,
@@ -12,17 +9,18 @@ import {
 } from 'react-native';
 
 interface IACInterface {
-  onLinkAccepted: () => void;
+  title: string;
+  message: string;
+  acceptInvitationCode: (inviteCode: string) => void;
 }
 
 const CODE_LENGTH = 6;
 
-const InvitationAcceptCode = ({onLinkAccepted}: IACInterface) => {
+const InvitationAcceptCode = ({title, message, acceptInvitationCode}: IACInterface) => {
   // * States
   const [invitationCode, setInvitationCode] = useState('');
 
-  const [showSnackbar, setShowSnackbar] = useState<string>("")
-  const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
+
   // % Refs
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
@@ -53,16 +51,9 @@ const InvitationAcceptCode = ({onLinkAccepted}: IACInterface) => {
     }
     acceptInvitationCode(invitationCode);
   };
-  const acceptInvitationCode = async(invitationCode: string) => {
-    await ConsumerController.acceptInviteCode(invitationCode)
-      .then(() => {
-        onLinkAccepted()
-      })
-      .catch((e: Error) => {
-        setShowSnackbar(e.message)
-        setBarStatus(SnackbarStatus.Error)
-      })
-  }
+
+
+  // * Display
   return (
     <View className="dark:bg-darkColor-800 bg-white rounded-xl w-3/4 aspect-square items-center flex justify-between relative">
 
@@ -78,13 +69,14 @@ const InvitationAcceptCode = ({onLinkAccepted}: IACInterface) => {
 
         <View className="items-center flex flex-col justify-center h-1/3">
           <ThemedText
-            label="Il tuo codice invito"
+            label={title}
             font="Nunito-Bold"
             textStyle="text-2xl text-center"
           />
 
           <ThemedText
-            label="Condividi il codice con i tuoi clienti per invitarli"
+            textStyle="text-center"
+            label={message}
           />
         </View>
 
@@ -123,12 +115,7 @@ const InvitationAcceptCode = ({onLinkAccepted}: IACInterface) => {
 
       </View>
 
-      {/* Snackbar */}
-      <TopSnackbar
-        status={barStatus}
-        message={showSnackbar} 
-        onHide={() => setShowSnackbar('')} 
-      />
+
 
     </View>
   );

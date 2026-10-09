@@ -2,7 +2,7 @@ import * as ImagePicker from "expo-image-picker";
 import { FridgeActionColor } from "./enums/fridgeActionColors";
 
 export function formatDate(date: Date) {
-  const formattedDate = new Date(date).toLocaleDateString();
+  return new Date(date).toLocaleDateString();
 }
 
 /**
@@ -30,6 +30,8 @@ export const getFridgeActionsColor = (actionId: number) => {
       return FridgeActionColor.CONSUME_PRODUCT;
     case 5:
       return FridgeActionColor.DISCARD_PRODUCT;
+    case 6:
+      return FridgeActionColor.NEW_USER;      
     default:
       return "";
   }

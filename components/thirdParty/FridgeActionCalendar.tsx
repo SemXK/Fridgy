@@ -40,6 +40,7 @@ const FridgeActionCalendar = () => {
   }
   const mapFridgeActionsToMarkedDates = (actions: FridgeAction[]) => {
     const markedDates: MarkedDates = {}
+
     actions.map((action) => {
       const date = moment(action.created_at).format('YYYY-MM-DD')
       markedDates[date] = {
@@ -49,7 +50,7 @@ const FridgeActionCalendar = () => {
               moment(act.created_at).format('YYYY-MM-DD') === date
             )
           })
-          .map((act, i) => {
+          .map((act) => {
             return {
               key: act.id.toString(), 
               color: getFridgeActionsColor(act.fridgeActionTypeId), 
@@ -63,13 +64,11 @@ const FridgeActionCalendar = () => {
   const openDayAgenda = (date: DateData) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     const dots = fridgeActions[date.dateString]?.dots ?? null
-    console.log({dots, date: date.dateString})
     setFridgeAgendaProps(dots as unknown as AgendaFridgeAction[])
   }
 
-
   return (
-    <View className="h-12">
+    <View className="h-16">
 
       <Calendar
         headerStyle={{

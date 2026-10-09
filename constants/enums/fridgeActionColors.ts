@@ -4,4 +4,5 @@ export enum FridgeActionColor {
   ADD_PRODUCT = "green",
   CONSUME_PRODUCT = "purple",
   DISCARD_PRODUCT = "lime",
+  NEW_USER = "yellow",
 }

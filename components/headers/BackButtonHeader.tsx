@@ -8,8 +8,8 @@ const BackButtonHeader = () => {
 
   return (
     <View className="flex flex-row justify-between ">
-      <View className="flex flex-row gap-0 items-center justify-start">
-        <View className="flex flex-row gap-0 items-center justify-start">
+      <View className="flex flex-row items-center justify-start">
+        <View className="flex flex-row items-center justify-start">
           <BackButton />
           {/* <MenuButton /> */}
         </View>

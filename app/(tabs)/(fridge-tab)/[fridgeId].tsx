@@ -3,12 +3,17 @@ import EditFridgeComponent from "@/components/details/EditFridgeComponent"
 import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
 import ProductConsumptionBottomSheet from "@/components/details/ProductConsumptionBottomSheet"
 import BackButtonHeader from "@/components/headers/BackButtonHeader"
+import LinkCodeDisplay from "@/components/nutritionistComponents/LinkCodeDisplay"
 import FridgeActionDailyAgenda from "@/components/thirdParty/FridgeActionDailyAgenda"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
+import CustomModal from "@/components/ui/CustomModal"
 import ThemedText from "@/components/ui/ThemedText"
+import { FridgeInvitationCode } from "@/constants/interfaces/nutritionist"
 import { Product } from "@/constants/interfaces/productInterface"
 import { styleShadows } from "@/constants/styles/style-shadows"
 import { primaryColor } from "@/constants/theme"
+import { ConsumerController } from "@/controllers/ConsumerController"
+import { getEcho } from '@/scripts/LaravelEcho'
 import { FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { useLocalSearchParams } from "expo-router"
 import React, { useEffect, useState } from "react"
@@ -37,19 +42,40 @@ const FridgeDetail = () => {
 
   // * Context
   const { fridgeId } = useLocalSearchParams<{ fridgeId: string }>()
-  // const { openDetail, closeDetail } = useFridge()
 
   // *States
+  const [fridgeWebSocket, setFridgeWebSocket] = useState<any>(null);
+
   const [columnsOfProducts, setColumnsOfProducts] = useState<number>(4);
   const [editingFridgeIsOpen, setEditingFridgeIsOpen] = useState<boolean>(false);
   const [consumingProduct, setConsumingProduct] = useState<Product | null>(null); // BottomSheet for product usage
+  const [showCodeModal, setShowCodeModal] = useState<boolean>(false);
+  const [linkCode, setLinkCode] = useState<string>("");
 
   // * Lifecycle
+  useEffect(() => {
+    setupWebSocket()
+    return () => {
+      fridgeWebSocket?.stopListening(`fridge-channel-${fridgeId}`);
+      setFridgeWebSocket(null)
+    };
+  }, [])
   useEffect(() => {
     getFridgeDetail(fridgeId)
   }, [fridgeId])
 
   // * Functions
+  const setupWebSocket = async () => {
+    const echo = await getEcho() as any;
+    const channel = echo.channel(`fridge-channel-${fridgeId}`)
+    
+    channel.listen(`.FridgeChannel`, () => {
+      setShowCodeModal(false)
+      getFridgeDetail(fridgeId)
+    })
+    setFridgeWebSocket(channel)
+
+  }
   const handleProductViewDisplay = (displayType: string) => {
     switch (displayType) {
       case 'doubleCol':
@@ -82,22 +108,43 @@ const FridgeDetail = () => {
   const consumeProduct = (selectedProd: Product) => {
     setConsumingProduct(selectedProd)
   }
+  const showInviteCode = async () => {
+    await ConsumerController.createFridgeInvitationCode(fridgeId)
+      .then((res) => {
+        const response = res as FridgeInvitationCode
+        setLinkCode(response.linkCode)
+        setShowCodeModal(true)
+      })
+  }
 
   // * Display
   return (
     <SafeAreaView className="flex-1">
+      <BackButtonHeader />
+
       {
         fridgeDetail ?
 
-          <View className="mb-8 flex-1 p-2 gap-2">
+          <View className="mb-8 flex-1 p-2 gap-2 ">
             {/* Descrizione principale Frigo */}
-            <View >
-              <BackButtonHeader />
+            <View>
+
               <View className="flex flex-row justify-between">
-                <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-4xl text-primary-500" label={fridgeDetail.name} />
-                <TouchableOpacity onPress={editFridge} >
-                  <FontAwesome6 name="edit" size={24} color={primaryColor[500]} />
-                </TouchableOpacity>
+                <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-2xl text-primary-500" label={fridgeDetail.name} />
+                
+                <View className="flex flex-row gap-4">
+                  {
+                    fridgeDetail.propertyPivot.canEdit ?
+                    <TouchableOpacity onPress={showInviteCode} >
+                      <FontAwesome6 name="users" size={20} color={primaryColor[500]} />
+                    </TouchableOpacity>
+                    :
+                    null
+                  }
+                  <TouchableOpacity onPress={editFridge} >
+                    <FontAwesome6 name="edit" size={20} color={primaryColor[500]} />
+                  </TouchableOpacity>
+                </View>
 
               </View>
 
@@ -222,7 +269,7 @@ const FridgeDetail = () => {
       }
 
       {/* Agenda BottomSheet */}
-      {
+      { 
         fridgeAgendaProps &&
         <BottomSheetComponent
           height={.7}
@@ -250,6 +297,23 @@ const FridgeDetail = () => {
           ShownComponent={() => <ProductConsumptionBottomSheet product={consumingProduct} />}
         />
       }
+
+      {/* Modal Invite Code */}
+      <CustomModal
+        visible={showCodeModal}
+        onClose={() => setShowCodeModal(false)}
+        ChildComponent={() => {
+          return (
+            <LinkCodeDisplay 
+              title="Il tuo codice invito"
+              message="Condividi questo codice con chi vuoi invitare al tuo inventario"
+              linkCode={linkCode} 
+              onPress={() => setShowCodeModal(false)} 
+            />
+          )
+        }}
+      />
+
 
     </SafeAreaView>
   )

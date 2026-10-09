@@ -1,12 +1,15 @@
 import CreateNewFridgeComponent from "@/components/details/CreateNewFridgeComponent"
+import InvitationAcceptCode from "@/components/details/customerComponents/InvitationAcceptCode"
 import FridgeMiniCard from "@/components/details/detailCards/FridgeMiniCard"
 import EmptyFridgeListComponent from "@/components/details/EmptyCards/EmptyFridgeListComponent"
 import AnimatedUnassignedProductDetail from "@/components/details/UnassignedProductDetail"
 import HomePageHeader from "@/components/headers/HomePageHeader"
 import BottomSheetComponent from "@/components/ui/BottomSheet"
+import CustomModal from "@/components/ui/CustomModal"
 import ThemedText from "@/components/ui/ThemedText"
 import { Fridge, UnassignedProduct } from "@/constants/interfaces/productInterface"
 import { primaryColor } from "@/constants/theme"
+import { ConsumerController } from "@/controllers/ConsumerController"
 import { ProductController } from "@/controllers/ProductController"
 import { MaterialIcons } from "@expo/vector-icons"
 import { useFocusEffect } from "@react-navigation/native"
@@ -74,12 +77,22 @@ const FridgeList = () => {
       .catch(e => console.log(e))
     }
   } 
+  const onLinkAccepted = async (invitationCode: string) => {
+    await ConsumerController.acceptFridgeInvitationCode(invitationCode)
+    .then(() => {
+      setShowCodeModal(false)
+      getFridgeList()
+    })
+  }
 
   // * States
   const [loading, setLoading] = useState<boolean>(false)
   const [fridgeList, setFridgeList] = useState<Fridge[]>([])
+
   const [unassignedProducts, setUnassignedProducts] = useState<UnassignedProduct[]>([])
   const [newFridgeModal, setNewFridgeModal] = useState<boolean>(false);
+
+  const [showCodeModal, setShowCodeModal] = useState<boolean>(false)
 
   // * Effects
   useFocusEffect(
@@ -91,6 +104,7 @@ const FridgeList = () => {
     getFridgeList()
   }, [])
 
+  // * Display
   return (
     <SafeAreaView >
       <HomePageHeader title="Il mio inventario"/> 
@@ -124,13 +138,25 @@ const FridgeList = () => {
           <View className="relative">
             <View className="flex flex-row justify-between items-center mb-4">
               <ThemedText label="I miei frigoriferi" darkModeDisabled font="Nunito-Bold" textStyle="text-primary-500 text-2xl"/>
-              <TouchableOpacity onPress={() => setNewFridgeModal(true)} >
-                  <MaterialIcons
-                    name="add"
-                    size={24}
-                    color={primaryColor[500]}
-                  />
-                </TouchableOpacity>
+
+                <View className="flex flex-row gap-4">
+                  <TouchableOpacity onPress={() => setShowCodeModal(true)} >
+                    <MaterialIcons
+                      name="mail"
+                      size={24}
+                      color={primaryColor[500]}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => setNewFridgeModal(true)} >
+                    <MaterialIcons
+                      name="add"
+                      size={24}
+                      color={primaryColor[500]}
+                    />
+                  </TouchableOpacity>
+                </View>
+
             </View>
           </View>
 
@@ -173,6 +199,23 @@ const FridgeList = () => {
         ShownComponent={CreateNewFridgeComponent}
       />
     }
+
+      {/* Modal */}
+      <CustomModal
+        visible={showCodeModal}
+        onClose={() => setShowCodeModal(false)}
+        ChildComponent={() => {
+          return (
+            <InvitationAcceptCode 
+              acceptInvitationCode={onLinkAccepted} 
+              title="Inserisci il codice invito"
+              message="Inserisci il codice per accedere al suo inventario"
+            />
+
+          )
+        }}
+        
+      />
 
     </SafeAreaView>
   )

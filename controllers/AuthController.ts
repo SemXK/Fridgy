@@ -1,6 +1,5 @@
 import { Guest, User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
-import * as Crypto from 'expo-crypto';
 import * as SecureStore from "expo-secure-store";
 
 import { GoogleApiKeys } from "@/constants/interfaces/thirdParty/common";
@@ -117,27 +116,16 @@ export abstract class AuthController extends Controller {
    * Creates a guest session using the passed token 
    * @param guestId the token used to create a guest session
    */
-  static createGuestSession = async (guestId: string) => {
-    // console.log("BaseUrl:", `${this.baseUrl}/init-guest-session`)
-    return await this.basicPostCall("init-guest-session", {guestId})
-    .then((res: AxiosResponse<Guest>) => {
-      console.log("status", res.status)
+  static createGuestSession = async () => {
+    await SecureStore.deleteItemAsync("guestId");
+    return await this.basicGetCall("init-guest-session")
+    .then(async (res: AxiosResponse<Guest>) => {
       if (res.status === 200) {
         this.currentGuest = res.data
+        await SecureStore.setItemAsync("guestId", res.data.guestId);
       }
-
     })
-    .catch((e) => {
-      console.log("===== API ERROR =====");
-      console.log("message:", e?.message);
-      console.log("name:", e?.name);
-      console.log("code:", e?.code);
-      console.log("stack:", e?.stack);
-      console.log("config url:", e?.config?.url);
-      console.log("config baseURL:", e?.config?.baseURL);
-      console.log("response:", e?.response);
-      console.log("=====================");
-    })
+    .catch(() => {});
   }
   /**
    * Get's user's guest session or creates a new one
@@ -150,26 +138,24 @@ export abstract class AuthController extends Controller {
 
     // 1* Create guest session token if missing
     if (!guestId) {
-      guestId = Crypto.randomUUID();
-      await SecureStore.setItemAsync("guestId", guestId);
-      return await this.createGuestSession(guestId)
+      return await this.createGuestSession()
     }
 
     // 1* Get Token's Session (or creates one if missing)
     else {
 
-      // 1* Create Guest Token
+      // 2* Get Guest by Token
       return await this.basicGetCall(`guest-session/${guestId}`)
       .then(async (res: AxiosResponse<Guest>) => {
 
-        // 2* Current Session Found
+        // 3* Current Session Found
         if (res.status === 200) {
           this.currentGuest = res.data
         }
 
       })
       .catch(async () => {
-          await this.createGuestSession(guestId as string)
+          await this.createGuestSession()
       })
     }
   }

@@ -6,7 +6,6 @@ import Constants from "expo-constants";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { View } from "moti";
-import { useEffect } from "react";
 import PrimaryButton from "../pressable/PrimaryButton";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -35,7 +34,6 @@ export default  function  GoogleLogin({ oauthTokenCollection }: GoogleLoginInter
       redirectUri
     });
 
-  useEffect(() =>{}, [])
   // % Functions
   const signIn = async () => {
     const result = await promptAsync();

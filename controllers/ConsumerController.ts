@@ -1,4 +1,4 @@
-import { NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
+import { FridgeInvitationCode, NutritionistLinkCode } from "@/constants/interfaces/nutritionist";
 import { NutritionistPivot } from "@/constants/interfaces/pivots";
 import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
@@ -57,5 +57,33 @@ export abstract class ConsumerController extends Controller {
       }
     });
   };
-
-}
+  /**
+   * Create an invitation code for a fridge
+   */
+  static createFridgeInvitationCode = async (fridgeId: string): Promise<FridgeInvitationCode> => {
+    return await this.authenticatedPostCall(`customer/create-fridge-invite`, { fridgeId })
+    .then((res: AxiosResponse<FridgeInvitationCode>) => {
+      if (res.status === 200) {
+        const linkCodeObject: FridgeInvitationCode = (res as AxiosResponse).data;
+        return linkCodeObject;
+      }
+      else {
+        throw new Error("Unexpected response status: " + res.status);
+      }
+    });
+  };
+  /**
+   * Create an invitation code for a fridge
+   */
+  static acceptFridgeInvitationCode = async (insertedCode: string): Promise<boolean> => {
+    return await this.authenticatedPostCall(`customer/accept-fridge-invite`, { insertedCode })
+    .then((res: AxiosResponse<boolean>) => {
+      if (res.status === 200) {
+        return true;
+      }
+      else {
+        throw new Error("Unexpected response status: " + res.status);
+      }
+    });
+  };
+} 

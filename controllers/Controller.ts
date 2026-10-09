@@ -84,8 +84,6 @@ export abstract class Controller {
         return await axios.get(`${this.baseUrl}/${apiPath}`, {
           ...this.commonHeaders,
           headers: {
-            "Content-Type": 'application/json',
-            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken(),
@@ -95,8 +93,9 @@ export abstract class Controller {
       } catch (error: any) {
         return error;
       }
-    } else {
-      throw new Error("Errore Generico Controller");
+    } 
+    else {
+      throw new Error("Errore Generico Controller: " + this.baseUrl + "/" + apiPath);
     }
   };
   static authenticatedPostCall = async (apiPath: string, payload: unknown) => {
@@ -105,11 +104,8 @@ export abstract class Controller {
 
     if (token || guestId) {
       try {
-        // FIXED: axios.post expects (url, data, config)
         return await axios.post(`${this.baseUrl}/${apiPath}`, payload, {
           headers: {
-            "Content-Type": 'application/json',
-            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken()
@@ -118,8 +114,9 @@ export abstract class Controller {
       } catch (error: any) {
         return error;
       }
-    } else {
-      throw new Error("Unauthorize sd");
+    } 
+    else {
+      throw new Error("Unauthorized");
     }
   };
   static authenticatedPutCall = async (apiPath: string, payload: unknown) => {
@@ -130,8 +127,6 @@ export abstract class Controller {
       try {
         return await axios.put(`${this.baseUrl}/${apiPath}`, payload, {
           headers: {
-            "Content-Type": 'application/json',
-            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken()
@@ -153,8 +148,6 @@ export abstract class Controller {
       try {
         return await axios.delete(`${this.baseUrl}/${apiPath}`, {
           headers: {
-            "Content-Type": 'application/json',
-            "Accept": "application/json",
             Authorization: `Bearer ${token}`,
             "Guest-Token": guestId,
             'Refresh-Token' : await this.getRefreshToken()
