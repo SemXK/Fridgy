@@ -32,7 +32,7 @@
         }
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.xsemxkx.fridgy",
+      "package": "com.xsemxkx.fridgy"
     },
     "web": {
       "output": "static",
