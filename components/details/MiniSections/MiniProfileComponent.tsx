@@ -16,13 +16,20 @@ const MiniProfileComponent = ({user}:MPCInterface) => {
       <UserProfileImage user={user as User}/>
       <View className="w-5/6 h-full rounded-2xl p-2">
         <ThemedText
-          label={user ? `${user.name || user.username} ${user.surname}` : 'Utente'} 
-          textStyle='text-2xl'
+          label={user ? `${user.name || user.username} ${user.surname || ''}` : 'Utente'} 
+          textStyle='text-2xl text-white'
+          darkModeDisabled
           font='Nunito-Bold'
         />
-        <ThemedText 
-          label={user?.accessType?.type || 'Ospite'} 
-        />            
+        {user?.accessType ?
+          <ThemedText 
+            label={user?.accessType?.type || 'Ospite'} 
+            textStyle='text-white'
+            darkModeDisabled
+          />        
+          :
+          null    
+        }
       </View>
 
     </View>

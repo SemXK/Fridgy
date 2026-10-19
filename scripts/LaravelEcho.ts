@@ -13,23 +13,25 @@ export async function getEcho(): Promise<typeof Echo<any>> {
   const AppName = process.env.EXPO_PUBLIC_PUSHER_APP_NAME;
   const ApiEndpoint = process.env.EXPO_PUBLIC_REVERB_ENDPOINT;
 
+  //| Production development
+  // const pusherClient = new Pusher(AppName as string, {
+  //   cluster: "mt1",
+  //   wsHost: ApiEndpoint,
+  //   wsPort: 80,
+  //   wssPort: 443,
+  //   forceTLS: true,
+  //   enabledTransports: ["ws","wss"],
+  // });
+
+  //| Local development
   const pusherClient = new Pusher(AppName as string, {
     cluster: "mt1",
     wsHost: ApiEndpoint,
-    wsPort: 80,
-    wssPort: 443,
-    forceTLS: true,
-    enabledTransports: ["ws","wss"],
+    wsPort: 8080,
+    forceTLS: false,
+    // disableStats: true,
+    enabledTransports: ["ws"],
   });
-
-  // const pusherClient = new Pusher(AppName as string, {
-  //   cluster: "mt1",
-  //   wsHost: "192.168.1.2",
-  //   wsPort: 8080,
-  //   forceTLS: false,
-  //   // disableStats: true,
-  //   enabledTransports: ["ws"],
-  // });
 
   echoInstance = new Echo({
     broadcaster: "pusher",

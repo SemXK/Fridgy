@@ -209,7 +209,7 @@ const FridgeList = () => {
             <InvitationAcceptCode 
               acceptInvitationCode={onLinkAccepted} 
               title="Inserisci il codice invito"
-              message="Inserisci il codice per accedere al suo inventario"
+              message="Inserisci il codice per accedere a un inventario"
             />
 
           )

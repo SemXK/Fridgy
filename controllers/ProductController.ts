@@ -9,6 +9,7 @@ import {
   UnassignedProduct,
 } from "@/constants/interfaces/productInterface";
 import { AddProductToQuantityPayload, AvailableProductPayload } from "@/constants/interfaces/requestPayloads/productPayloads";
+import { User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { Controller } from "./Controller";
 
@@ -249,6 +250,21 @@ export abstract class ProductController extends Controller {
         if (res.status === 200) {
           const fridge = (res as AxiosResponse).data;
           return fridge;
+        } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        throw new Error("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  static getFridgeUserList = async (fridgeId: string): Promise<User[] | AxiosError> => {
+    return await this.authenticatedGetCall(`products/list-fridge-users/${fridgeId}`)
+      .then((res: AxiosResponse<{userList: User[]}>) => {
+        if (res.status === 200) {
+          const userList = (res as AxiosResponse).data.userList;
+          return userList;
         } else if (res.status === 401) {
           throw new AxiosError("Invalid Credentials");
         }

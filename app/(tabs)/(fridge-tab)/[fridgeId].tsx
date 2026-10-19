@@ -1,6 +1,7 @@
 import AssignedProductToFridgeDetail from "@/components/details/AssignedProductDetail"
 import EditFridgeComponent from "@/components/details/EditFridgeComponent"
 import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
+import FridgeUserList from "@/components/details/Lists/FridgeUserList"
 import ProductConsumptionBottomSheet from "@/components/details/ProductConsumptionBottomSheet"
 import BackButtonHeader from "@/components/headers/BackButtonHeader"
 import LinkCodeDisplay from "@/components/nutritionistComponents/LinkCodeDisplay"
@@ -50,6 +51,7 @@ const FridgeDetail = () => {
   const [editingFridgeIsOpen, setEditingFridgeIsOpen] = useState<boolean>(false);
   const [consumingProduct, setConsumingProduct] = useState<Product | null>(null); // BottomSheet for product usage
   const [showCodeModal, setShowCodeModal] = useState<boolean>(false);
+  const [showUserList, setShowUserList] = useState<boolean>(false);
   const [linkCode, setLinkCode] = useState<string>("");
 
   // * Lifecycle
@@ -133,10 +135,14 @@ const FridgeDetail = () => {
                 <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-2xl text-primary-500" label={fridgeDetail.name} />
                 
                 <View className="flex flex-row gap-4">
+
+                  <TouchableOpacity onPress={() => setShowUserList(true)} >
+                    <FontAwesome6 name="users" size={20} color={primaryColor[500]} />
+                  </TouchableOpacity>
                   {
                     fridgeDetail.propertyPivot.canEdit ?
                     <TouchableOpacity onPress={showInviteCode} >
-                      <FontAwesome6 name="users" size={20} color={primaryColor[500]} />
+                      <FontAwesome6 name="user-plus" size={20} color={primaryColor[500]} />
                     </TouchableOpacity>
                     :
                     null
@@ -295,6 +301,16 @@ const FridgeDetail = () => {
           height={.7}
           onClose={() => setConsumingProduct(null)}
           ShownComponent={() => <ProductConsumptionBottomSheet product={consumingProduct} />}
+        />
+      }
+
+      {/* User List BottomSheet */}
+      {
+        !!showUserList &&
+        <BottomSheetComponent
+          height={.7}
+          onClose={() => setShowUserList(false)}
+          ShownComponent={() => <FridgeUserList fridgeId={fridgeId}/>}
         />
       }
 
