@@ -1,4 +1,4 @@
-import { TypeObject } from "./usersInterface";
+import { TypeObject, User } from "./usersInterface";
 
 export interface ProductToFridgePivot {
   id: number;
@@ -20,7 +20,14 @@ export interface UserToStorePivot {
   accessTypeId: number;
   accessType: TypeObject; 
 }
-
+export interface FridgeUserListPivot {
+  userable_type: string;
+  fridgeId: number;
+  userable_id: number;
+  canEdit: number;
+  created_at: Date;
+  updated_at: Date;
+}
 interface NutritionistToCustomerPivot {
   id: number;
   customerId: number;
@@ -35,3 +42,5 @@ export type NutritionistPivot<T > = T & {
 export type CustomertPivot<T> = T & {
   customerPivot: NutritionistToCustomerPivot
 }
+export type UserFridgeList = User & {pivot: FridgeUserListPivot}
+

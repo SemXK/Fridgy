@@ -73,6 +73,7 @@ const FridgeDetail = () => {
     
     channel.listen(`.FridgeChannel`, () => {
       setShowCodeModal(false)
+      setShowUserList(false)
       getFridgeDetail(fridgeId)
     })
     setFridgeWebSocket(channel)

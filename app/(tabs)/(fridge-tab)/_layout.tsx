@@ -34,7 +34,7 @@ const FridgeLayout = () => {
         setFridgeDetail(fridge)
       })
       .catch((e) => {
-        router.navigate('/(tabs)/Home')
+        router.navigate('/(tabs)/(fridge-id)')
       })
       .finally(() => {
         setFridgeLoading(false)

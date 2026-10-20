@@ -1,8 +1,13 @@
-import { User } from '@/constants/interfaces/usersInterface';
+import { useFridge } from '@/app/(tabs)/(fridge-tab)/_layout';
+import { UserContext } from '@/app/_layout';
+import ThemedText from '@/components/ui/ThemedText';
+import { UserFridgeList } from '@/constants/interfaces/pivots';
+import { RemoveUserFromFridgePayload } from '@/constants/interfaces/requestPayloads/productPayloads';
 import { primaryColor } from '@/constants/theme';
 import { ProductController } from '@/controllers/ProductController';
-import React, { useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { FlatList, TouchableOpacity, View } from 'react-native';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { ActivityIndicator } from 'react-native-paper';
 import MiniProfileComponent from '../MiniSections/MiniProfileComponent';
 
@@ -11,17 +16,32 @@ interface FULInterface {
 }
 
 const FridgeUserList = ({fridgeId}: FULInterface) => {
+  // * Context
+  const { user } =  useContext(UserContext)
+  const { fridgeDetail } = useFridge()
+
   // * States
-  const [userList, setUserList] = useState<User[]>([]); // BottomSheet for product usage
+  const [userList, setUserList] = useState<UserFridgeList[]>([]); // BottomSheet for product usage
   const [loading, setLoading] = useState<boolean>(false);
 
   // £ Functions
   const getUserList = async() => {
     setLoading(true)
     await ProductController.getFridgeUserList(fridgeId).then((res) => {
-      const userList = res as User[]
+      const userList = res as UserFridgeList[]
       setUserList(userList);
     })
+    .finally(() => {
+      setLoading(false)
+    })
+  }
+  const removeUser = async (user: UserFridgeList) => {
+    const payload: RemoveUserFromFridgePayload = {
+      userId: user.pivot.userable_id,
+      userType: user.pivot.userable_type,
+      fridgeId: fridgeDetail!.id
+    }
+    await ProductController.removeUserFromFridge(payload)
     .finally(() => {
       setLoading(false)
     })
@@ -48,11 +68,37 @@ const FridgeUserList = ({fridgeId}: FULInterface) => {
             padding: 24,
             height: "100%"
           }}
+          keyExtractor={item => String(item.id)}
           renderItem={({ item }) => {
             return (
-              <View className="bg-stone-200 dark:bg-darkColor-800 p-2 rounded-lg">
-                <MiniProfileComponent user={item} />
-              </View>
+              <ReanimatedSwipeable 
+                onSwipeableOpen={(direction) => {
+                  if (direction === 'left') return null
+                }}
+                renderLeftActions={() => (
+                  <>
+                    {
+                      user?.id !== item.id && fridgeDetail?.propertyPivot.canEdit ?
+                      <TouchableOpacity onPress={() => removeUser(item)}  className="mr-4 rounded-xl h-full w-20 bg-rose-500  items-center justify-center">
+                        <ThemedText
+                          label="Rimuovi"
+                          darkModeDisabled
+                          textStyle="text-white font-semibold"
+                        />
+                      </TouchableOpacity>
+                      :
+                      null
+
+                    }
+                  </>
+                )}
+                overshootLeft={false}
+
+              >
+                <View className="p-2 bg-stone-200 dark:bg-darkColor-800 rounded-xl">
+                  <MiniProfileComponent user={item} />
+                </View>
+              </ReanimatedSwipeable>
             )
           }}
         />
@@ -62,3 +108,5 @@ const FridgeUserList = ({fridgeId}: FULInterface) => {
 }
 
 export default FridgeUserList
+
+
