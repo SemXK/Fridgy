@@ -57,8 +57,6 @@ const HomePage = () => {
     return () => clearTimeout(handler);
   }, [filter]);
 
-
-
   // * API calls
   const getShopItems = async () => {
     setFilterLoading(true)

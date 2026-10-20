@@ -73,7 +73,7 @@ const ProductDetail = () => {
         const formattedMonth = month > 9 ? day : `0${month}`
 
         return {
-          labelX: `${formattedDay}/${formattedMonth}`,
+          label: `${formattedDay}/${formattedMonth}`,
           value: p.price
         }
       })

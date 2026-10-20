@@ -1,13 +1,17 @@
-import { CartContext } from '@/app/_layout';
+import { CartContext, UserContext } from '@/app/_layout';
+import TopSnackbar from '@/components/ui/SnackbarComponent';
 import ThemedText from '@/components/ui/ThemedText';
 import UrlImage from '@/components/ui/UrlImage';
+import { SnackbarStatus } from '@/constants/enums/common';
 import { CartContextInterface, CartItemInterface, Product } from '@/constants/interfaces/productInterface';
+import { primaryColor } from '@/constants/theme';
+import { ConsumerController } from '@/controllers/ConsumerController';
 import { ProductController } from '@/controllers/ProductController';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GestureResponderEvent, TouchableOpacity, View } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { ActivityIndicator, IconButton } from 'react-native-paper';
 import colors from "tailwindcss/colors";
 
 
@@ -21,11 +25,35 @@ interface Props {
 const ProductMiniCard = (props: Props) => {
   // * Context
   const { setCart } = useContext(CartContext) as CartContextInterface;
+  const { user } =  useContext(UserContext)
+
+  // * States
+  const [likedLoading, setLikedLoading] = useState<boolean>(false)
+  const [showSnackbar, setShowSnackbar] = useState<string>("")
+  const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
 
   // % Functions
-  const handleFavouriteClick = (e: GestureResponderEvent, product: Product) => {
+  const handleFavouriteClick = async (e: GestureResponderEvent, product: Product) => {
     e.stopPropagation();
-  }
+    setLikedLoading(true)
+    await ConsumerController.setProductPreference(product.id).then(() => {
+      if (product.isLiked.length) {
+        product.isLiked = []
+      }
+      else {
+        product.isLiked = [{
+          id: 0,
+          userId: user!.id,
+          productId: product.id
+        } ]
+      }
+    })
+    .catch(() => {
+      setBarStatus(SnackbarStatus.Error)
+      setShowSnackbar("Esegui il Log-in per quest'azione")
+    })
+    .finally(() => setLikedLoading(false))
+  } 
   const addProductToCart = async (e: GestureResponderEvent) => {
     e.stopPropagation()
 
@@ -42,6 +70,11 @@ const ProductMiniCard = (props: Props) => {
     })
     .catch(e => console.log(e.message))
   } 
+
+  useEffect(() => {
+    console.log({brand: props.product.brand, isLiked: props.product.isLiked})
+  }, [])
+
 
   // * Display
   return (
@@ -62,12 +95,18 @@ const ProductMiniCard = (props: Props) => {
             className="rounded-full"
           >
             {/* props.product.favourite */}
-            <IconButton
-              icon={false ? "heart" : "heart-outline"}
-              size={26}
-              iconColor={colors.rose[500]}
-              className='text-rose-500'
-            />
+            {!likedLoading ? 
+              <IconButton
+                icon={props.product.isLiked ? "heart" : "heart-outline"}
+                size={26}
+                iconColor={colors.rose[500]}
+                className='text-rose-500'
+              />
+              :
+              <View className=" p-4 flex flex-row justify-center">
+                <ActivityIndicator animating size={24} color={primaryColor[500]} />
+              </View>
+            }
           </TouchableOpacity>
         </View>
         :
@@ -119,7 +158,12 @@ const ProductMiniCard = (props: Props) => {
         : 
         null
       }
-
+      {/* Snackbar */}
+      <TopSnackbar
+        status={barStatus}
+        message={showSnackbar} 
+        onHide={() => setShowSnackbar('')} 
+      />
     </TouchableOpacity>
   ) 
 }

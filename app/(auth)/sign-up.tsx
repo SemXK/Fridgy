@@ -19,9 +19,9 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState<string>("")
 
   // * State settings
-  const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [visible, setVisible] = useState<boolean>(false)
   const [authLoading, setAuthLoading] = useState<boolean>(false)
+  const [showSnackbar, setShowSnackbar] = useState<string>("")
   const [barStatus, setBarStatus] = useState<SnackbarStatus>(SnackbarStatus.Info)
 
   // & Functions

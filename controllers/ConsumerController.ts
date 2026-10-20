@@ -86,4 +86,18 @@ export abstract class ConsumerController extends Controller {
       }
     });
   };
+  /**
+   * Set a product as liked / unliked, based on the current value
+   */
+  static setProductPreference = async (productId: number): Promise<boolean> => {
+    return await this.authenticatedPostCall(`customer/set-product-preference`, { productId })
+    .then((res: AxiosResponse<boolean>) => {
+      if (res.status === 200) {
+        return true;
+      }
+      else {
+        throw new Error("Unexpected response status: " + res.status);
+      }
+    });
+  };
 } 

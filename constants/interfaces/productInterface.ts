@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from "react-native";
-import { ConsumedProductToFridgePivot, ProductToFridgePivot } from "./pivots";
+import { ConsumedProductToFridgePivot, ProductToFridgePivot, UserToLikedProductPivot } from "./pivots";
 
 // * Generic interfaces
 export interface PaginatedResponse<T> {
@@ -79,6 +79,9 @@ export interface Product {
   fibers: number;
   proteins: number;
   salt: number;
+
+  // * Display variables
+  isLiked: UserToLikedProductPivot[];
 
   // 1* Pivot Tables
   pivot: ProductToFridgePivot;

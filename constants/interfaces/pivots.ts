@@ -6,6 +6,11 @@ export interface ProductToFridgePivot {
   productId: number;
   quantity: number;   // Numero di prodotti interi (4 cartoni di latte)
 }
+export interface UserToLikedProductPivot {
+  id: number;
+  productId: number;
+  userId: number;
+}
 export interface ConsumedProductToFridgePivot {
   id: number;
   fridgeId: number;
