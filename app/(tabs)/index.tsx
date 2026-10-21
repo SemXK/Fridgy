@@ -86,12 +86,12 @@ const HomePage = () => {
   }
 
   // * Press Functions
-  const productTypePress = (productType: ProductType) => {}
   const popularProductPress = (product: Product) => {
-    router.navigate(`/(tabs)/${product.id}`)
+    router.navigate(`/(tabs)/(product-tab)/${product.id}`)
     // console.log("Show Snackbar") 
   }
   const discountPress = (discount: Discount) => {}
+  const productTypePress = (productType: ProductType) => {}
 
   // * Sections
   const sections: HomePageSection[] = [

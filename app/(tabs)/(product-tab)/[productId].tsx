@@ -1,3 +1,4 @@
+import { CartContext } from '@/app/_layout'
 import EditProductComponent from '@/components/details/EditProductComponent'
 import ProductDetailHeader from '@/components/headers/ProductDetailHeader'
 import PrimaryButton from '@/components/pressable/PrimaryButton'
@@ -14,7 +15,6 @@ import { useFocusEffect, useLocalSearchParams } from 'expo-router'
 import React, { useCallback, useContext, useState } from 'react'
 import { ActivityIndicator, ScrollView, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { CartContext } from '../_layout'
 
 const ProductDetail = () => {
   // * Context
@@ -215,7 +215,10 @@ const ProductDetail = () => {
                       textStyle='text-2xl text-primary-500'
                       font='Nunito-Bold'
                     />
-                    <LineGraph data={formatPrices(product)} />
+                    {React.createElement(
+                      LineGraph as unknown as React.ComponentType<{ data: DataPoint[] }>,
+                      { data: formatPrices(product) }
+                    )}
                   </View>
 
               </View>

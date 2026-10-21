@@ -72,9 +72,7 @@ const ProductMiniCard = (props: Props) => {
   } 
 
   useEffect(() => {
-    console.log({brand: props.product.brand, isLiked: props.product.isLiked})
   }, [])
-
 
   // * Display
   return (
@@ -97,7 +95,7 @@ const ProductMiniCard = (props: Props) => {
             {/* props.product.favourite */}
             {!likedLoading ? 
               <IconButton
-                icon={props.product.isLiked ? "heart" : "heart-outline"}
+                icon={props.product.isLiked?.length ? "heart" : "heart-outline"}
                 size={26}
                 iconColor={colors.rose[500]}
                 className='text-rose-500'

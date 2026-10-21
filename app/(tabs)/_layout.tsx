@@ -22,6 +22,15 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="(product-tab)"
+        options={{
+          title: 'Il tuo frigo',
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+        }}
+      />
+
 
       <Tabs.Screen
         name="(fridge-tab)"

@@ -34,8 +34,8 @@ export abstract class ProductController extends Controller {
    * @returns various lists of filtered products
    */
   static getShopProducts = async (textQuery?: string): Promise<ProductListHomePageResponse | AxiosError> => {
-    return await this.basicPostCall("products/shop-products", { textQuery })
-      .then((res: AxiosResponse<Product[]>) => {
+    return await this.authenticatedPostCall("products/shop-products", { textQuery })
+      .then((res: AxiosResponse<ProductListHomePageResponse[]>) => {
         if (res.status === 200) {
           const paginatedResponse: ProductListHomePageResponse = (res as AxiosResponse).data;
           return paginatedResponse;
