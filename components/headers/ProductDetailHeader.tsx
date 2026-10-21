@@ -1,5 +1,5 @@
 import { Product } from '@/constants/interfaces/productInterface';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import BackButton from '../pressable/BackButton';
 import CartButton from '../pressable/CartButton';
@@ -8,12 +8,15 @@ import ThemedText from '../ui/ThemedText';
 
 interface ProductHeaderInterface {
   title?: string;
-  product?: Product
+  product?: Product;
+  onPress: () => void;
 }
 
 const ProductDetailHeader = (props: ProductHeaderInterface) => {
   // * Context
-
+  useEffect(() => {
+    console.log(props.product?.isLiked)
+  }, [])
   return (
     <View className="flex flex-row justify-between items-center h-8">
       <View className="flex flex-row  items-center">
@@ -28,7 +31,7 @@ const ProductDetailHeader = (props: ProductHeaderInterface) => {
         }
       </View>
       <View className="flex flex-row">
-        <HeartButton />
+        <HeartButton liked={!!props.product?.isLiked?.length } onPress={props.onPress} />
         <CartButton />
       </View>
     </View>

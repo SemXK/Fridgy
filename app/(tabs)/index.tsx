@@ -87,9 +87,13 @@ const HomePage = () => {
 
   // * Press Functions
   const popularProductPress = (product: Product) => {
-    router.navigate(`/(tabs)/(product-tab)/${product.id}`)
-    // console.log("Show Snackbar") 
-  }
+    router.push({
+      pathname: '/(tabs)/(product-tab)',
+      params: {
+        productId: String(product.id),
+      },
+    });
+  };  
   const discountPress = (discount: Discount) => {}
   const productTypePress = (productType: ProductType) => {}
 

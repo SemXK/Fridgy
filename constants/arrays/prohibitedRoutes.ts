@@ -7,4 +7,6 @@ export const ProhibitedRoutes = [
   '(tabs)/(nutritionist-users-tab)/[customerId]/[dietPlanId]',
   '(tabs)/(user-diet-tab)/[nutritionistId]',
   '(tabs)/Cart',
+  '(tabs)/(product-tab)',
+
 ];

@@ -17,7 +17,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
           tabBarHideOnKeyboard: true,
           headerShown: false,
         }}
@@ -25,17 +24,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(product-tab)"
         options={{
-          title: 'Il tuo frigo',
-          tabBarHideOnKeyboard: true,
           headerShown: false,
         }}
       />
 
-
       <Tabs.Screen
         name="(fridge-tab)"
         options={{
-          title: 'Il tuo frigo',
           tabBarHideOnKeyboard: true,
           headerShown: false,
         }}
@@ -70,6 +65,13 @@ export default function TabLayout() {
       />     
 
       <Tabs.Screen
+        name="(profile-tab)"
+        options={{
+          headerShown: false,
+        }}
+      />      
+
+      <Tabs.Screen
         name="Cart"
         options={{
           title: 'Il tuo carrello',
@@ -87,21 +89,7 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen
-        name="[productId]"
-        options={{
-          title: 'Dettaglio Prodotto',
-          headerShown: false,
-          href:null
-        }}
-      />
 
-      <Tabs.Screen
-        name="(profile-tab)"
-        options={{
-          headerShown: false,
-        }}
-      />      
     </Tabs>
   );
 }

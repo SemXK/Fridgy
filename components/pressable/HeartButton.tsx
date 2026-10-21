@@ -1,22 +1,21 @@
-import { primaryColor } from '@/constants/theme'
-import React from 'react'
-import { TouchableOpacity } from 'react-native'
-import { IconButton } from 'react-native-paper'
+import { primaryColor } from '@/constants/theme';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { IconButton } from 'react-native-paper';
 
 interface HeartInterface {
-  liked?: boolean
+  liked?: boolean;
+  onPress: () => void;
+
 }
 
 const HeartButton = (props: HeartInterface) => {
   // * Context
 
-  // * Functions
-  const handlePress = () => {
-  }
 
   return (
     <TouchableOpacity
-      onPress={handlePress}
+      onPress={props.onPress}
       activeOpacity={.1}
       className="relative"
       >
