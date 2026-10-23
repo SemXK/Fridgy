@@ -21,3 +21,10 @@ export interface StateRoute {
   name: string, 
   params: undefined
 }
+
+export interface BottomSheetContextInterface {
+  open: boolean;
+  component?: React.Component | null;
+  height: number;
+  onClose: () => void
+}

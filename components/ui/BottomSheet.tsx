@@ -1,6 +1,8 @@
+import { BottomSheetContext } from '@/app/_layout';
+import { BottomSheetContextInterface } from '@/constants/interfaces/common';
 import { styleShadows } from '@/constants/styles/style-shadows';
 import { BlurView } from 'expo-blur';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Appearance, Dimensions, PanResponder, Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   runOnJS,
@@ -24,6 +26,9 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
   ShownComponent,
   snapPoints = [0.3, 0.6, 1],
 }) => {
+  // £ Global Context
+  const { setSheet } = useContext(BottomSheetContext)
+
 
   // * Variables
   const animationTime: number = 400;
@@ -36,6 +41,7 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
 
   useEffect(() => {
     setMounted(true);
+    setSheet((prev: BottomSheetContextInterface) => { return {...prev, open: true}});
     opacity.value = withTiming(1, { duration: animationTime });
     translateY.value = withTiming(0, { duration: animationTime });
   }, []);
@@ -43,38 +49,11 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
   // * Event functions
   const closeSheet = () => {
     opacity.value = withTiming(0, { duration: animationTime });
+    setSheet((prev: BottomSheetContextInterface) => { return {...prev, open: false}});
     translateY.value = withTiming(sheetHeight, { duration: animationTime }, () => {
       runOnJS(onClose)();
     });
   };
-  // const findClosestSnapPoint = (currentY: number, velocityY: number) => {
-  //   'worklet';
-  //   const snapPositions = snapPoints.map(point => SCREEN_HEIGHT * (1 - point));
-    
-  //   // Add closing point (below screen)
-  //   snapPositions.push(SCREEN_HEIGHT * 1.1);
-    
-  //   let closestPoint = snapPositions[0];
-  //   let minDistance = Math.abs(currentY - closestPoint);
-    
-  //   // Bias towards closing if swiping down fast
-  //   const velocityThreshold = 1.0;
-  //   const isFastDownSwipe = velocityY > velocityThreshold;
-    
-  //   if (isFastDownSwipe && currentY > SCREEN_HEIGHT * 0.2) {
-  //     return SCREEN_HEIGHT * 1.1; // Close the sheet
-  //   }
-    
-  //   for (const point of snapPositions) {
-  //     const distance = Math.abs(currentY - point);
-  //     if (distance < minDistance) {
-  //       minDistance = distance;
-  //       closestPoint = point;
-  //     }
-  //   }
-    
-  //   return closestPoint;
-  // };
   const handleRelease = (vy: number) => {
     'worklet';
     const currentY = translateY.value;
@@ -123,8 +102,6 @@ const BottomSheetComponent: React.FC<BottomSheetProps> = ({
     opacity: opacity.value,
 
   }));
-
-
 
   if (!mounted) return null;
 

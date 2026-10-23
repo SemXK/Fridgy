@@ -86,7 +86,7 @@ const FridgeList = () => {
   }
 
   // * States
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [fridgeList, setFridgeList] = useState<Fridge[]>([])
 
   const [unassignedProducts, setUnassignedProducts] = useState<UnassignedProduct[]>([])

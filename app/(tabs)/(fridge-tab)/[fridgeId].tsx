@@ -2,6 +2,7 @@ import AssignedProductToFridgeDetail from "@/components/details/AssignedProductD
 import EditFridgeComponent from "@/components/details/EditFridgeComponent"
 import FridgeGraphDetail from "@/components/details/FridgeGraphDetail"
 import FridgeUserList from "@/components/details/Lists/FridgeUserList"
+import ProductListComponent from "@/components/details/Lists/ProductListComponent"
 import ProductConsumptionBottomSheet from "@/components/details/ProductConsumptionBottomSheet"
 import BackButtonHeader from "@/components/headers/BackButtonHeader"
 import LinkCodeDisplay from "@/components/nutritionistComponents/LinkCodeDisplay"
@@ -52,6 +53,7 @@ const FridgeDetail = () => {
   const [consumingProduct, setConsumingProduct] = useState<Product | null>(null); // BottomSheet for product usage
   const [showCodeModal, setShowCodeModal] = useState<boolean>(false);
   const [showUserList, setShowUserList] = useState<boolean>(false);
+  const [showProductRequests, setShowProductRequest] = useState<boolean>(false);
   const [linkCode, setLinkCode] = useState<string>("");
 
   // * Lifecycle
@@ -61,10 +63,10 @@ const FridgeDetail = () => {
       fridgeWebSocket?.stopListening(`fridge-channel-${fridgeId}`);
       setFridgeWebSocket(null)
     };
-  }, [])
+  }, []);
   useEffect(() => {
     getFridgeDetail(fridgeId)
-  }, [fridgeId])
+  }, [fridgeId]);
 
   // * Functions
   const setupWebSocket = async () => {
@@ -119,12 +121,15 @@ const FridgeDetail = () => {
         setShowCodeModal(true)
       })
   }
-
+  const requestProducts = async(prodIds: number[]) => {
+    console.log(prodIds)
+  }
   // * Display
   return (
     <SafeAreaView className="flex-1">
       <BackButtonHeader />
 
+      {/* Main Page */}
       {
         fridgeDetail ?
 
@@ -173,20 +178,20 @@ const FridgeDetail = () => {
 
                 {/* Row Azioni */}
                 <View className="flex flex-row gap-4 ">
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() =>setShowProductRequest(true)}>
                     <MaterialIcons
-                      name="menu-book"
+                      name="add-shopping-cart"
                       size={32}
                       color={primaryColor[500]}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  {/* <TouchableOpacity>
                     <MaterialIcons
                       name="restaurant"
                       size={32}
                       color={primaryColor[500]}
                     />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
 
                 {/* Row Display */}
@@ -312,6 +317,25 @@ const FridgeDetail = () => {
           height={.7}
           onClose={() => setShowUserList(false)}
           ShownComponent={() => <FridgeUserList fridgeId={fridgeId}/>}
+        />
+      }
+
+      {/* Requested Product BottomSheet */}
+      {
+        !!showProductRequests &&
+        <BottomSheetComponent
+          height={.7}
+          onClose={() => setShowProductRequest(false)}
+          ShownComponent={() => {
+            return (
+              <ProductListComponent 
+                buttonText="Richiedi Prodotti"
+                multiChoice 
+                wrappedList  
+                outputFunction={requestProducts}
+              />
+            )
+          }}
         />
       }
 

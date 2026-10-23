@@ -1,4 +1,4 @@
-import { UserContext } from '@/app/_layout';
+import { BottomSheetContext, UserContext } from '@/app/_layout';
 import { ProhibitedRoutes } from '@/constants/arrays/prohibitedRoutes';
 import { GetAllowedRoutes } from '@/constants/functions/AllowedRoutes';
 import { TabBarIcons } from '@/constants/iconConstants';
@@ -24,11 +24,10 @@ function getFocusedRouteName(route: any): string {
 }
 
 export default function AnimatedTabBar({ state, descriptors, navigation }: any) {
-  // £ Current User
+  // £ Context
+  const { sheet } = useContext(BottomSheetContext)
   const { user } =  useContext(UserContext)
   const segments = useSegments()
-  // * list the routes with tab bar displayed
-  const route = state.routes[state.index];
 
   // * States
   const [allowsRoutes, setAllowedRoutes] = useState<StateRoute[]>([])
@@ -39,13 +38,18 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
     bottom: tabBarBottom.value
   }))
 
-  useEffect(() => {
-    if(ProhibitedRoutes.includes(segments.join('/'))) {
+  // $ function
+  const toggleTabBar = (condition: boolean) => {
+    if(condition) {
       tabBarBottom.value = withTiming(InactiveTabbarVertical, {duration: 400})
     }
     else {
       tabBarBottom.value = withTiming(ActiveTabbarVertical, {duration: 400})
     }
+  }
+
+  useEffect(() => {
+    toggleTabBar(ProhibitedRoutes.includes(segments.join('/')))
   }, [segments])
 
   useEffect(() => {
@@ -53,6 +57,10 @@ export default function AnimatedTabBar({ state, descriptors, navigation }: any) 
     const filteredRoutes = GetAllowedRoutes(allRoutes, user?.accessType)
     setAllowedRoutes(filteredRoutes)
   }, [user])
+
+  useEffect(() => {
+    toggleTabBar(sheet.open)
+  }, [sheet.open])
 
   return (
     <Animated.View

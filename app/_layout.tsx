@@ -1,4 +1,5 @@
 import ThemedText from '@/components/ui/ThemedText';
+import { BottomSheetContextInterface } from '@/constants/interfaces/common';
 import { PaymentContextInterface } from '@/constants/interfaces/paymentInterface';
 import { CartContextInterface, CartItemInterface } from '@/constants/interfaces/productInterface';
 import { GoogleApiKeys } from '@/constants/interfaces/thirdParty/common';
@@ -87,7 +88,7 @@ export default function RootLayout() {
   const [paymentChannel, setPaymentChannel] = useState<any>(false)
 
   // * BottomSheet state
-  const [sheet, setSheet] = useState({
+  const [sheet, setSheet] = useState<BottomSheetContextInterface>({
     open: false,
     component: null as any,
     height: 0.6,
@@ -211,7 +212,7 @@ export default function RootLayout() {
         backgroundColor={Appearance.getColorScheme() === 'light' ? 'white' : 'black'}
       />
 
-      <BottomSheetContext.Provider value={setSheet}>
+      <BottomSheetContext.Provider value={{sheet, setSheet}}>
         <OauthContext.Provider
           value={
             oauthTokenCollection && mapsTokenCollection
@@ -238,12 +239,19 @@ export default function RootLayout() {
                     </StripeProvider>
 
                     {/* Global Bottomsheet */}
-                    {sheet.open && (
-                      <sheet.component
-                        height={sheet.height}
-                        onClose={() => sheet.onClose()}
-                      />
-                    )}
+                    {sheet.open && sheet.component &&
+                      React.createElement(
+                        sheet.component as unknown as React.ComponentType<{
+                          open: boolean;
+                          height: number;
+                          onClose: () => void;
+                        }>,
+                        {
+                          open: sheet.open,
+                          height: sheet.height,
+                          onClose: sheet.onClose,
+                        }
+                      )}
 
                   </PaperProvider>
                 </ThemeProvider>

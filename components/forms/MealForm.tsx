@@ -175,6 +175,7 @@ const MealForm = ({onSubmit, dayOfWeek, dietPlanId}: MFInterface) => {
               disabled={creationLoading}
             />
           </View>
+
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
