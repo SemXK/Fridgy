@@ -15,7 +15,7 @@ import { MaterialIcons } from "@expo/vector-icons"
 import { useFocusEffect } from "@react-navigation/native"
 import { AxiosError } from "axios"
 import * as Haptics from 'expo-haptics'
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { ActivityIndicator, FlatList, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
@@ -97,12 +97,10 @@ const FridgeList = () => {
   // * Effects
   useFocusEffect(
     useCallback(() => {
+      getFridgeList()
       getUnassignedProducts()
     }, [])
   )
-  useEffect(() => {
-    getFridgeList()
-  }, [])
 
   // * Display
   return (

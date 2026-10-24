@@ -33,8 +33,8 @@ export abstract class ProductController extends Controller {
    * @param textQuery text to filter products
    * @returns various lists of filtered products
    */
-  static getShopProducts = async (textQuery?: string, pageSize?: number): Promise<ProductListHomePageResponse | AxiosError> => {
-    return await this.authenticatedPostCall("products/shop-products", { textQuery, pageSize })
+  static getShopProducts = async (textQuery?: string, itemsPerPage?: number): Promise<ProductListHomePageResponse | AxiosError> => {
+    return await this.authenticatedPostCall("products/shop-products", { textQuery, itemsPerPage })
       .then((res: AxiosResponse<ProductListHomePageResponse[]>) => {
         if (res.status === 200) {
           const paginatedResponse: ProductListHomePageResponse = (res as AxiosResponse).data;
@@ -300,6 +300,42 @@ export abstract class ProductController extends Controller {
         if (res.status === 200) {
           return true;
         } else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        throw new Error("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  static getRequestedProduct = async (fridgeId: string): Promise<Product[] | AxiosError> => {
+    return await this.authenticatedGetCall(`products/requested-products/${fridgeId}`)
+      .then((res: AxiosResponse<Product[]>) => {
+        if (res.status === 200) {
+          return res.data;
+        } 
+        else if (res.status === 401) {
+          throw new AxiosError("Invalid Credentials");
+        }
+        throw new Error("Unexpected response status: " + res.status);
+      })
+      .catch((e) => {
+        throw e as AxiosError;
+      });
+  };
+  /**
+   * Request a list that is needed in a given fridge
+   * @param productIds an array  of product's ids 
+   * @param fridgeId the fridge these products will be added
+   * @returns an array of products requested (trimmed anything that's already requested)
+   */
+  static requestProducts = async (productIds: number[], fridgeId: string): Promise<Product[] | AxiosError> => {
+    return await this.authenticatedPostCall(`products/request-product-for-fridge`, {productIds, fridgeId})
+      .then((res: AxiosResponse<Product[]>) => {
+        if (res.status === 200) {
+          return res.data;
+        } 
+        else if (res.status === 401) {
           throw new AxiosError("Invalid Credentials");
         }
         throw new Error("Unexpected response status: " + res.status);

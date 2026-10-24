@@ -15,11 +15,13 @@ import { Product } from "@/constants/interfaces/productInterface"
 import { styleShadows } from "@/constants/styles/style-shadows"
 import { primaryColor } from "@/constants/theme"
 import { ConsumerController } from "@/controllers/ConsumerController"
+import { ProductController } from "@/controllers/ProductController"
 import { getEcho } from '@/scripts/LaravelEcho'
 import { FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { useLocalSearchParams } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator } from "react-native-paper"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useFridge } from "./_layout"
@@ -32,7 +34,13 @@ const SINGLE_ROW_FLATLIST_WIDTH = 98
 
 const FridgeDetail = () => {
   // £ Context
-  const { fridgeAgendaProps, setFridgeAgendaProps, fridgeDetail, getFridgeDetail } = useFridge()
+  const { 
+    fridgeAgendaProps, 
+    setFridgeAgendaProps,
+    fridgeLoading,  
+    fridgeDetail, 
+    getFridgeDetail 
+  } = useFridge()
 
   // % Animation states
   const productWidth = useSharedValue(FOUR_ROW_FLATLIST_WIDTH) // in %
@@ -122,7 +130,12 @@ const FridgeDetail = () => {
       })
   }
   const requestProducts = async(prodIds: number[]) => {
+    // WS will update automatically
     console.log(prodIds)
+    await ProductController.requestProducts(prodIds, fridgeId)
+      .then(() => {
+        setShowProductRequest(false)
+      })
   }
   // * Display
   return (
@@ -131,154 +144,164 @@ const FridgeDetail = () => {
 
       {/* Main Page */}
       {
-        fridgeDetail ?
+        fridgeLoading ? 
+        <View className="w-full flex flex-row justify-center">
+          <ActivityIndicator animating size={24} color={primaryColor[500]}  />
+        </View>
+        : 
+        <>
+          {
+            fridgeDetail ?
 
-          <View className="mb-8 flex-1 p-2 gap-2 ">
-            {/* Descrizione principale Frigo */}
-            <View>
+              <View className="mb-8 flex-1 p-2 gap-2 ">
+                {/* Descrizione principale Frigo */}
+                <View>
 
-              <View className="flex flex-row justify-between">
-                <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-2xl text-primary-500" label={fridgeDetail.name} />
-                
-                <View className="flex flex-row gap-4">
+                  <View className="flex flex-row justify-between">
+                    <ThemedText font='Nunito-Bold' darkModeDisabled textStyle="text-2xl text-primary-500" label={fridgeDetail.name} />
+                    
+                    <View className="flex flex-row gap-4">
 
-                  <TouchableOpacity onPress={() => setShowUserList(true)} >
-                    <FontAwesome6 name="users" size={20} color={primaryColor[500]} />
-                  </TouchableOpacity>
-                  {
-                    fridgeDetail.propertyPivot.canEdit ?
-                    <TouchableOpacity onPress={showInviteCode} >
-                      <FontAwesome6 name="user-plus" size={20} color={primaryColor[500]} />
-                    </TouchableOpacity>
-                    :
-                    null
-                  }
-                  <TouchableOpacity onPress={editFridge} >
-                    <FontAwesome6 name="edit" size={20} color={primaryColor[500]} />
-                  </TouchableOpacity>
-                </View>
-
-              </View>
-
-              <View className="flex flex-row gap-2">
-                <ThemedText font='Nunito-Bold' label="Ultima Modifica: " />
-                <ThemedText font='Nunito-Italic' label={new Date(fridgeDetail.updated_at).toLocaleDateString('it-IT')} />
-              </View>
-            </View>
-
-            {/* Grafico + Elenco tipi prodotto */}
-            <View className="h-[40%] w-screen mb-4 ">
-              <FridgeGraphDetail productList={fridgeDetail.productList} />
-            </View>
-
-            {/* Elenco Prodotti product_list*/}
-            <View className="flex-1  gap-4">
-              {/* Row per azioni / display */}
-              <View className="flex flex-row justify-between">
-
-                {/* Row Azioni */}
-                <View className="flex flex-row gap-4 ">
-                  <TouchableOpacity onPress={() =>setShowProductRequest(true)}>
-                    <MaterialIcons
-                      name="add-shopping-cart"
-                      size={32}
-                      color={primaryColor[500]}
-                    />
-                  </TouchableOpacity>
-                  {/* <TouchableOpacity>
-                    <MaterialIcons
-                      name="restaurant"
-                      size={32}
-                      color={primaryColor[500]}
-                    />
-                  </TouchableOpacity> */}
-                </View>
-
-                {/* Row Display */}
-                <View className="flex flex-row gap-4 items-center">
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="view-headline"
-                      size={32}
-                      color={columnsOfProducts === 1 ? primaryColor[500] : primaryColor[900]}
-
-                      onPress={() => handleProductViewDisplay('row')}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="view-grid"
-                      size={26}
-                      color={columnsOfProducts === 2 ? primaryColor[500] : primaryColor[900]}
-
-                      onPress={() => handleProductViewDisplay('doubleCol')}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons
-                      name="view-comfy"
-                      size={32}
-                      color={columnsOfProducts === 4 ? primaryColor[500] : primaryColor[900]}
-                      onPress={() => handleProductViewDisplay('fourCol')}
-                    />
-                  </TouchableOpacity>
-
-                </View>
-              </View>
-
-              {/* Dipslay prodotti  */}
-              <FlatList
-                key={columnsOfProducts}
-                numColumns={columnsOfProducts}
-                data={fridgeDetail.productList}
-                initialNumToRender={8}
-                maxToRenderPerBatch={8}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={item => String(item.id)}
-                className="flex-1"
-                columnWrapperStyle={
-                  columnsOfProducts > 1
-                    ? {
-                      justifyContent: 'flex-start',
-                      marginBottom: 16,
-                      gap: 16
-                    }
-                    :
-                    undefined
-                }
-                contentContainerStyle={{
-                  paddingBottom: 20
-                }}
-                ListEmptyComponent={() => {
-                  return (
-                    <View className="flex flex-row flex-1 items-center justify-center">
-                      <ThemedText font="Nunito-Italic" textStyle="text-center" label="L'inventario è vuoto" />
+                      <TouchableOpacity onPress={() => setShowUserList(true)} >
+                        <FontAwesome6 name="users" size={20} color={primaryColor[500]} />
+                      </TouchableOpacity>
+                      {
+                        fridgeDetail.propertyPivot.canEdit ?
+                        <TouchableOpacity onPress={showInviteCode} >
+                          <FontAwesome6 name="user-plus" size={20} color={primaryColor[500]} />
+                        </TouchableOpacity>
+                        :
+                        null
+                      }
+                      <TouchableOpacity onPress={editFridge} >
+                        <FontAwesome6 name="edit" size={20} color={primaryColor[500]} />
+                      </TouchableOpacity>
                     </View>
-                  )
-                }}
-                renderItem={({ item }) => (
-                  <Animated.View style={[
-                    productViewWidth,
-                    columnsOfProducts === 1 && {
-                      marginBottom: 16,
-                    },
-                    styleShadows.shadow
-                  ]}>
-                    <AssignedProductToFridgeDetail 
-                      product={item} 
-                      itemsPerColumns={columnsOfProducts} 
-                      onPressFunc={consumeProduct} 
-                    />
-                  </Animated.View>
-                )}
-              />
-            </View>
-          </View>
-          :
-          null
+
+                  </View>
+
+                  <View className="flex flex-row gap-2">
+                    <ThemedText font='Nunito-Bold' label="Ultima Modifica: " />
+                    <ThemedText font='Nunito-Italic' label={new Date(fridgeDetail.updated_at).toLocaleDateString('it-IT')} />
+                  </View>
+                </View>
+
+                {/* Grafico + Elenco tipi prodotto */}
+                <View className="h-[40%] w-screen mb-4 ">
+                  <FridgeGraphDetail productList={fridgeDetail.productList} />
+                </View>
+
+                {/* Elenco Prodotti product_list*/}
+                <View className="flex-1  gap-4">
+                  {/* Row per azioni / display */}
+                  <View className="flex flex-row justify-between">
+
+                    {/* Row Azioni */}
+                    <View className="flex flex-row gap-4 ">
+                      <TouchableOpacity onPress={() =>setShowProductRequest(true)}>
+                        <MaterialIcons
+                          name="add-shopping-cart"
+                          size={32}
+                          color={primaryColor[500]}
+                        />
+                      </TouchableOpacity>
+                      {/* <TouchableOpacity>
+                        <MaterialIcons
+                          name="restaurant"
+                          size={32}
+                          color={primaryColor[500]}
+                        />
+                      </TouchableOpacity> */}
+                    </View>
+
+                    {/* Row Display */}
+                    <View className="flex flex-row gap-4 items-center">
+                      <TouchableOpacity>
+                        <MaterialCommunityIcons
+                          name="view-headline"
+                          size={32}
+                          color={columnsOfProducts === 1 ? primaryColor[500] : primaryColor[900]}
+
+                          onPress={() => handleProductViewDisplay('row')}
+                        />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity>
+                        <MaterialCommunityIcons
+                          name="view-grid"
+                          size={26}
+                          color={columnsOfProducts === 2 ? primaryColor[500] : primaryColor[900]}
+
+                          onPress={() => handleProductViewDisplay('doubleCol')}
+                        />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity>
+                        <MaterialCommunityIcons
+                          name="view-comfy"
+                          size={32}
+                          color={columnsOfProducts === 4 ? primaryColor[500] : primaryColor[900]}
+                          onPress={() => handleProductViewDisplay('fourCol')}
+                        />
+                      </TouchableOpacity>
+
+                    </View>
+                  </View>
+
+                  {/* Dipslay prodotti  */}
+                  <FlatList
+                    key={columnsOfProducts}
+                    numColumns={columnsOfProducts}
+                    data={fridgeDetail.productList}
+                    initialNumToRender={8}
+                    maxToRenderPerBatch={8}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={item => String(item.id)}
+                    className="flex-1"
+                    columnWrapperStyle={
+                      columnsOfProducts > 1
+                        ? {
+                          justifyContent: 'flex-start',
+                          marginBottom: 16,
+                          gap: 16
+                        }
+                        :
+                        undefined
+                    }
+                    contentContainerStyle={{
+                      paddingBottom: 20
+                    }}
+                    ListEmptyComponent={() => {
+                      return (
+                        <View className="flex flex-row flex-1 items-center justify-center">
+                          <ThemedText font="Nunito-Italic" textStyle="text-center" label="L'inventario è vuoto" />
+                        </View>
+                      )
+                    }}
+                    renderItem={({ item }) => (
+                      <Animated.View style={[
+                        productViewWidth,
+                        columnsOfProducts === 1 && {
+                          marginBottom: 16,
+                        },
+                        styleShadows.shadow
+                      ]}>
+                        <AssignedProductToFridgeDetail 
+                          product={item} 
+                          itemsPerColumns={columnsOfProducts} 
+                          onPressFunc={consumeProduct} 
+                        />
+                      </Animated.View>
+                    )}
+                  />
+                </View>
+              </View>
+              :
+              null
+          }        
+        </>
       }
+
 
       {/* Agenda BottomSheet */}
       { 

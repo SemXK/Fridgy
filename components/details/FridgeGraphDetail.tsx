@@ -1,19 +1,29 @@
 import { Product, ProductType } from "@/constants/interfaces/productInterface";
 import { styleShadows } from "@/constants/styles/style-shadows";
-import { darkColor } from "@/constants/theme";
-import React, { useMemo, useState } from "react";
-import { Appearance, StyleSheet, Text, View } from "react-native";
+import { darkColor, primaryColor } from "@/constants/theme";
+import { ProductController } from "@/controllers/ProductController";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useMemo, useState } from "react";
+import { Appearance, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { PieChart, pieDataItem } from "react-native-gifted-charts";
 import PagerView from 'react-native-pager-view';
+import { ActivityIndicator } from "react-native-paper";
 import FridgeActionCalendar from "../thirdParty/FridgeActionCalendar";
 import ThemedText from "../ui/ThemedText";
+import UrlImage from "../ui/UrlImage";
 interface FGD {
   productList: Product[]
 }
 
 const FridgeGraphDetail = ({productList}: FGD) => {
+  // £ Params
+  const { fridgeId } = useLocalSearchParams<{fridgeId: string }>()
 
   // * Graph States
+  const [requestedProducts, setRequestedProducts] = useState<Product[]>([]);
+  const [requestedProdLoad, setRequestedProdLoad] = useState<boolean>(false);
+
   const [productTypeGraphData, setProductTypeGraph] = useState<pieDataItem[]>([])
   const [brandGraphData, setBrandGraphData] = useState<pieDataItem[]>([])
 
@@ -95,15 +105,80 @@ const FridgeGraphDetail = ({productList}: FGD) => {
   const handlePageChange = (event:any) => {
     // console.log("click")
   }
+  const getRequestedProducts = async () => {
+    setRequestedProdLoad(true)
+    await ProductController.getRequestedProduct(fridgeId).then((res) => {
+      setRequestedProducts(res as Product[])
+    })
+    .finally(() => {
+      setRequestedProdLoad(false)
+    })
+  }
+
+  // * Effects
+  useEffect(() => {
+    getRequestedProducts();
+  }, []);
 
   // * Display
   return (
     <View style={styles.container}>
       <PagerView style={styles.container} initialPage={0} onPageScroll={handlePageChange}>
 
+        {/* Requested Products */}
+        <View  key="1">
+          
+            <View
+              className="rounded-xl bg-white dark:bg-darkColor-800 "
+              style={{
+                height:'100%',
+                padding: 16,
+                marginRight: 10,
+                borderRadius: 20,
+              }}
+              >
+              <ThemedText font="Nunito-Bold" label="Prodotti Richeisti"  />
+              {
+                requestedProdLoad ?
+                <View className="w-full flex flex-row justify-center">
+                  <ActivityIndicator animating size={24} color={primaryColor[500]}  />
+                </View>
+                :
+                <View className="flex-1">
+                  <FlatList 
+                    numColumns={4}
+                    data={requestedProducts}
+                    contentContainerStyle={{ 
+                      flex: 1,
+                      paddingVertical: 10 ,
+                      justifyContent: "space-between",
+                      gap:10,
+                      marginBottom: 16,
+                    }}
+                    
+                    keyExtractor={(item) => String(item.id)}
+                    renderItem={({item}) => {
+                      return (
+                        <View  className="aspect-square w-1/4  rounded-xl flex flex-row items-center justify-center">
+                          <UrlImage source={item.image} resizeMode='contain' />
+                        </View>
+                      )
+                    }}
+                    ListEmptyComponent={() => {
+                      return (
+                        <View className="flex flex-row flex-1 items-center justify-center">
+                          <ThemedText font="Nunito-Italic" textStyle="text-center" label="Non ci sono richieste per prodotti" />
+                        </View>
+                      )
+                    }}
+                  />
+                </View>
+              }
+            </View>
+        </View>
+
         {/* Pie Chart Product Type*/}
-        <View key="1">
-          {/* <Text>Product Type Chart (Meat, Milk...)</Text> */}
+        <View key="2">
             <View
               className="rounded-xl bg-white dark:bg-darkColor-800"
               style={{
@@ -152,7 +227,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
         </View>
 
         {/* Pie Chart Product Brand*/}
-        <View  key="2">
+        <View  key="3">
           <View
             className="rounded-xl bg-white dark:bg-darkColor-800"
             style={{
@@ -204,7 +279,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
         </View>
 
         {/* Fridge Events Calendar */}
-        <View  key="3">
+        <View  key="4">
           <View
             className="rounded-xl"
             style={{
@@ -218,9 +293,7 @@ const FridgeGraphDetail = ({productList}: FGD) => {
           </View>
         </View>
 
-        <View  key="4">
-          <Text>Last Bought Items</Text>
-        </View>
+
       </PagerView>
     </View>
   )

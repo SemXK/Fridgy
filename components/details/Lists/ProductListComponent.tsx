@@ -29,7 +29,7 @@ const ProductListComponent = ({multiChoice, wrappedList, outputFunction, buttonT
   const [productList, setProductList] = useState<Product[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
-
+  const [itemsPerPage, setItemPerPage] = useState<number>(25);
 
   // $ Functions
   const productPress = (product: Product) => {
@@ -48,7 +48,7 @@ const ProductListComponent = ({multiChoice, wrappedList, outputFunction, buttonT
   const getProducts = async () => {
     setLoading(true)
     await ProductController
-      .getShopProducts(prodName)
+      .getShopProducts(prodName, itemsPerPage)
       .then((res) => {
         const response = res as ProductListHomePageResponse
         setProductList(response.popularProducts.data,)
