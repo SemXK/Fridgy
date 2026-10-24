@@ -3,5 +3,4 @@
 - [x] Lista utenti dal frigo
 - [x] Rimozione utenti dal frigo
 - [x] Preferenze: Oggetti piaciuti e dispiaciuti
-- [] Richieste acquisti
-- [] UI calendario eventi frigo
+- [x] Richieste acquisti
