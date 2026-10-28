@@ -87,8 +87,8 @@ const ProfilePage = () => {
             />
             <TouchableOpacity 
               activeOpacity={.7}
-              disabled={!user}
-
+              // disabled={!user}
+              disabled
               className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-t-2xl">
                 <View className="flex flex-row gap-4">
                   <MaterialCommunityIcons
@@ -99,7 +99,8 @@ const ProfilePage = () => {
                   <ThemedText label='Modifica Informazioni' />
                 </View>
                 {
-                  !user &&
+                  true && 
+                  // !user &&
                   <MaterialCommunityIcons
                     name='lock'
                     color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
@@ -110,8 +111,8 @@ const ProfilePage = () => {
 
             <TouchableOpacity 
               activeOpacity={.7}
-              disabled={!user}
-
+              // disabled={!user}
+              disabled={true}
               onPress={openEditRolesBottomSheet}
               className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
                 <View className="flex flex-row gap-4">
@@ -123,7 +124,8 @@ const ProfilePage = () => {
                   <ThemedText label='Cambia Ruolo' />
                 </View>
                 {
-                  !user &&
+                  true && 
+                  // !user &&
                   <MaterialCommunityIcons
                     name='lock'
                     color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
