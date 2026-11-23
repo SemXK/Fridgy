@@ -18,7 +18,7 @@ import { UserContext } from '../../_layout'
 const ProfilePage = () => {
 
   // $Context
-  const { user} =  useContext(UserContext)
+  const { user } =  useContext(UserContext)
   
   // * functions
   const logout = async () => {
@@ -33,146 +33,165 @@ const ProfilePage = () => {
   const openEditRolesBottomSheet = () => {
     router.navigate('/(tabs)/(profile-tab)/RoleOptionStepper')
   }
+  const routeToAccountSettings = () => {
+    router.navigate('/(tabs)/(profile-tab)/updateUserInfo')
+  }
+
   return (
     <View className="bg-primary-500">
       {/* Top Bar */}
       <SafeAreaView>
-      <ProfilePageHeader headerClass='bg-primary-500'/>
+        <ProfilePageHeader headerClass='bg-primary-500'/>
 
-      {/* Users Area */}
-      <View className="h-1/5 w-full bg-primary-500 flex flex-column p-8">
+        {/* Users Area */}
+        <View className="h-1/5 w-full bg-primary-500 flex flex-column p-8">
 
-        {/* Users Main Info */}
-        <MiniProfileComponent user={user as User} />
+          {/* Users Main Info */}
+          <MiniProfileComponent user={user as User} />
 
-        {/* Users Address */}
-        <View className="flex flex-row gap-4 justify-between">
-          <View className="w-5/6 h-full rounded-2xl p-2 flex flex-row items-center">
-            <IconButton
-              icon="map-marker"
-              size={20}
-              iconColor="white"
-            />
-            <ThemedText 
-              label={ user?.address?.via || 'Via Non Specificata'} 
-              textStyle='text-white '
-            />            
-          </View>
-        </View>
-
-        {/* Users Preferences */}
-        <View className="flex flex-row gap-4 justify-between  ">
-          <DefaultBadge />
-          <DefaultBadge />
-          <DefaultBadge />
-          <DefaultBadge />
-        </View>
-
-      </View>
-
-      <View className="h-full w-full dark:bg-black bg-white rounded-t-2xl">
-
-        {/*  Options */}
-        <ScrollView 
-          className="p-4"
-          >
-
-        {/* User Options */}
-          <View className="w-full">
-            <ThemedText 
-              darkModeDisabled
-              textStyle='text-primary-500 text-2xl mb-4'
-              font='Nunito-Bold'
-              label="Impostazioni Account"
-            />
-            <TouchableOpacity 
-              activeOpacity={.7}
-              // disabled={!user}
-              disabled
-              className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-t-2xl">
-                <View className="flex flex-row gap-4">
-                  <MaterialCommunityIcons
-                    name='account-box-edit-outline'
-                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                    size={16}
-                  />
-                  <ThemedText label='Modifica Informazioni' />
-                </View>
-                {
-                  true && 
-                  // !user &&
-                  <MaterialCommunityIcons
-                    name='lock'
-                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                    size={16}
-                  />
-                }
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              activeOpacity={.7}
-              // disabled={!user}
-              disabled={true}
-              onPress={openEditRolesBottomSheet}
-              className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
-                <View className="flex flex-row gap-4">
-                    <MaterialCommunityIcons
-                    name='account-switch'
-                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                    size={16}
-                    />
-                  <ThemedText label='Cambia Ruolo' />
-                </View>
-                {
-                  true && 
-                  // !user &&
-                  <MaterialCommunityIcons
-                    name='lock'
-                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                    size={16}
-                  />
-                }
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              activeOpacity={.7}
-              onPress={logout}
-              className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
-                <View className="flex flex-row gap-4">
-                  <MaterialCommunityIcons
-                    name='logout'
-                    color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
-                    size={16}
-                  />
-                  <ThemedText label={user ? 'Log out' : 'Vai al Sign-in'} />
-                </View>
-            </TouchableOpacity>
-
-            <View className="border-t-[1px] border-white dark:border-darkColor-900 w-[50%] self-center h-[1px]" />
-            <TouchableOpacity 
-              activeOpacity={.7}
-              className="flex flex-row items-center gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-b-2xl ">
-              <MaterialCommunityIcons
-                name='delete'
-                color={colors.rose[500]}
-                size={16}
+          {/* Users Address */}
+          <View className="flex flex-row gap-4 justify-between">
+            <View className="w-5/6 h-full rounded-2xl p-2 flex flex-row items-center">
+              <IconButton
+                icon="map-marker"
+                size={20}
+                iconColor="white"
               />
-              <ThemedText label='Elimina Account' textStyle='text-rose-500' darkModeDisabled />
-            </TouchableOpacity>
-
+              <ThemedText 
+                label={ user?.address?.via || 'Via Non Specificata'} 
+                textStyle='text-white '
+              />            
+            </View>
           </View>
-        </ScrollView>
-      </View>
 
-      {/* * Bottom Sheet */}
-      {/* {
-        editingRoles && 
-        <BottomSheetComponent 
-          height={1.5}
-          onClose={() => setEditingRoles(false)}
-          ShownComponent={EditUserRoleSteper}
-        />
-      } */}
+          {/* Users Preferences */}
+          <View className="flex flex-row gap-4 justify-between  ">
+            <DefaultBadge />
+            <DefaultBadge />
+            <DefaultBadge />
+            <DefaultBadge />
+          </View>
+
+        </View>
+
+        <View className="h-full w-full dark:bg-black bg-white rounded-t-2xl">
+
+          {/*  Options */}
+          <ScrollView 
+            className="p-4"
+            >
+
+          {/* User Options */}
+            <View className="w-full">
+              <ThemedText 
+                darkModeDisabled
+                textStyle='text-primary-500 text-2xl mb-4'
+                font='Nunito-Bold'
+                label="Impostazioni Account"
+              />
+
+              {/* Change Info */}
+              <TouchableOpacity 
+                activeOpacity={.7}
+                onPress={routeToAccountSettings}
+                disabled={!user?.accessTypeId}
+                className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 rounded-t-2xl">
+                  <View className="flex flex-row gap-4">
+                    <MaterialCommunityIcons
+                      name='account-box-edit-outline'
+                      color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                      size={16}
+                    />
+                    <ThemedText label='Modifica Informazioni' />
+                  </View>
+                  {
+                    !user?.accessTypeId &&
+                    <MaterialCommunityIcons
+                      name='lock'
+                      color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                      size={16}
+                    />
+                  }
+              </TouchableOpacity>
+
+              {/* Change Role */}
+              <TouchableOpacity 
+                activeOpacity={.7}
+                // disabled={!user}
+                disabled={true}
+                onPress={openEditRolesBottomSheet}
+                className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
+                  <View className="flex flex-row gap-4">
+                      <MaterialCommunityIcons
+                        name='account-switch'
+                        color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                        size={16}
+                      />
+                    <ThemedText label='Cambia Ruolo' />
+                  </View>
+                  {
+                    true && 
+                    // !user &&
+                    <MaterialCommunityIcons
+                      name='lock'
+                      color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                      size={16}
+                    />
+                  }
+              </TouchableOpacity>
+
+              {/* Logout */}
+              <TouchableOpacity 
+                activeOpacity={.7}
+                onPress={logout}
+                className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 ">
+                  <View className="flex flex-row gap-4">
+                    <MaterialCommunityIcons
+                      name='logout'
+                      color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}
+                      size={16}
+                    />
+                    <ThemedText label={user ? 'Log out' : 'Vai al Sign-in'} />
+                  </View>
+              </TouchableOpacity>
+
+              {/* Delete Account  */}
+              <TouchableOpacity 
+                activeOpacity={.7}
+                onPress={logout}
+                disabled={!user?.accessTypeId}
+                className="flex flex-row items-center justify-between gap-4 p-4 dark:bg-darkColor-800 bg-stone-100 mt-[2px] rounded-b-xl">
+                  <View className="flex flex-row gap-4">
+                    <MaterialCommunityIcons
+                      name='delete'
+                      color={colors.rose[500]}
+                      size={16}
+                    />
+                    <ThemedText label='Elimina Account' textStyle='text-rose-500' darkModeDisabled />
+                  </View>
+                  {               
+                    !user?.accessTypeId &&
+                    <MaterialCommunityIcons
+                      name='lock'
+                      color={colors.rose[500]}
+                      size={16}
+                    />
+                  }
+              </TouchableOpacity>
+
+            </View>
+          </ScrollView>
+        </View>
+
+        {/* * Bottom Sheet */}
+        {/* {
+          editingRoles && 
+          <BottomSheetComponent 
+            height={1.5}
+            onClose={() => setEditingRoles(false)}
+            ShownComponent={EditUserRoleSteper}
+          />
+        } */}
       </SafeAreaView>
 
     </View>

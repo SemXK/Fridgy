@@ -1,8 +1,8 @@
 ##  Release 1.5.0 - Interazione Negozi - Utenti - Nutrizionisti
 
 ### Generale
-- [] Possibilità di aggiornare l'utente
-- [] Google Login fix
+- [x] Possibilità di aggiornare l'utente
+- [x] Google Login fix
 
 ### Produttori
 - [] Nuova Dashboard

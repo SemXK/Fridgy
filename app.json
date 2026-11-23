@@ -7,11 +7,11 @@
     "owner": "xsemxkx",
     "jsEngine": "hermes",
     "icon": "./assets/images/icon.png",
-    "scheme": "com.xsemxkx.fridgy",
+    "scheme": "com.xsemxkx.fridgy.dev",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xsemxkx.fridgy",
+      "bundleIdentifier": "com.xsemxkx.fridgy.dev",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -32,7 +32,7 @@
         }
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.xsemxkx.fridgy"
+      "package": "com.xsemxkx.fridgy.dev"
     },
     "web": {
       "output": "static",

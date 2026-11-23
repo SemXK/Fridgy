@@ -5,7 +5,7 @@ import React from 'react'
 import { View } from 'react-native'
 
 interface MPCInterface {
-  user: User
+  user: User;
 }
 
 const MiniProfileComponent = ({user}:MPCInterface) => {
@@ -16,17 +16,13 @@ const MiniProfileComponent = ({user}:MPCInterface) => {
       <UserProfileImage user={user as User}/>
       <View className="w-5/6 h-full rounded-2xl p-2">
         <ThemedText
-          label={user ? `${user.name || user.username} ${user.surname || ''}` : 'Utente'} 
+          label={user?.accessType  ? `${user.name || user.username} ${user.surname || ''}` : 'Utente'} 
           textStyle='text-2xl'
           font='Nunito-Bold'
         />
-        {user?.accessType ?
-          <ThemedText 
-            label={user?.accessType?.type || 'Ospite'} 
-          />        
-          :
-          null    
-        }
+        <ThemedText 
+          label={user?.accessType?.type || 'Ospite non autenticato'} 
+        />        
       </View>
 
     </View>

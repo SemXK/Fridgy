@@ -31,7 +31,7 @@ export default  function  GoogleLogin({ oauthTokenCollection }: GoogleLoginInter
       webClientId: oauthTokenCollection.webClientId,
       scopes: ["openid", "profile", "email"],
       shouldAutoExchangeCode: false,
-      redirectUri
+      // redirectUri
     });
 
   // % Functions

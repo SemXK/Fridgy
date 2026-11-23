@@ -15,6 +15,7 @@ interface CFF {
   textWidth?: string,
   multiline?: boolean,
   keyboardType?: KeyboardTypeOptions
+  rightIcon?: string
 }
 
 const ThemedFormField = ({ 
@@ -27,7 +28,8 @@ const ThemedFormField = ({
   className, 
   textWidth, 
   multiline,
-  keyboardType
+  keyboardType,
+  rightIcon
 }: CFF) => {
   return (
     <View className={"relative " + textWidth} >
@@ -71,6 +73,18 @@ const ThemedFormField = ({
             size={24}
           />
         </TouchableOpacity>
+      }
+      {
+        !!rightIcon &&
+        <View
+          className="aspect-square w-12 absolute right-0 top-1/3"
+        >
+          <Icon
+            source={rightIcon}
+            color={primaryColor[500]}
+            size={24}
+          />
+        </View>
       }
     </View>
   )

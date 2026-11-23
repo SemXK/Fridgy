@@ -24,8 +24,12 @@ export interface User {
   hatedProducts: Product[];
   address: Address;
   fitnessStats?: FitnessStat[];
+  mobilePhone: number;
+
   created_at: Date;
   updated_at: Date;
+
+
   profilePic?: string;
   isMale: boolean;
   token: string;

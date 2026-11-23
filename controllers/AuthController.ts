@@ -2,6 +2,7 @@ import { Guest, User } from "@/constants/interfaces/usersInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import * as SecureStore from "expo-secure-store";
 
+import { UpdateUserResponse } from "@/constants/interfaces/responsePayloads/auth";
 import { GoogleApiKeys } from "@/constants/interfaces/thirdParty/common";
 import { GoogleAuthPayload, GoogleSignInResponse } from "@/constants/interfaces/thirdParty/oauth";
 import { Controller } from "./Controller";
@@ -182,13 +183,26 @@ export abstract class AuthController extends Controller {
    * @returns the newly updated user
    */
   static changeAccessType = async (accessTypeId: number): Promise<User | boolean>  => {
-      return await this.authenticatedPostCall("change-access-type", {accessTypeId})
+    return await this.authenticatedPostCall("change-access-type", {accessTypeId})
       .then((res: AxiosResponse<AuthResponse>) => {
         if (res.status === 200) {
           this.currentUser = res.data.user
           return res.data.user
         }
         return false
+      })
+  }
+  /**
+   * Update user's basic info. Important infos (such as email, pass)  are filtered BE side
+   */
+  static updateUser = async(userPayload: Partial<User>): Promise<User | boolean> => {
+    return await this.authenticatedPostCall("update-user", userPayload)
+      .then((res: AxiosResponse<UpdateUserResponse>) => {
+        if (res.status === 200) {
+          this.currentUser = res.data.user
+          return res.data.user
+        }
+        throw new Error(res.statusText)
       })
   }
 }

@@ -21,7 +21,8 @@ interface UrlImageProps {
 const UrlImage = ({ source, width = 50, height = 50, resizeMode = 'contain', style, className }: UrlImageProps) => {
   const [imageUri, setImageUri] = useState<string>("")
   useEffect(() => {
-    setImageUri(`${baseUrl}/${source}`)
+    // ? Some images are obtained from other domains, not saved in my own buckets
+    setImageUri(`${source.includes("https://") ? '' : baseUrl + "/"}${source}`)
   }, [])
 
   if(!imageUri){
