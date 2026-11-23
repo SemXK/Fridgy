@@ -3,6 +3,7 @@
 ### Generale
 - [x] Possibilità di aggiornare l'utente
 - [x] Google Login fix
+- []  Allergeni
 
 ### Produttori
 - [] Nuova Dashboard
