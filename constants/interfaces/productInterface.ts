@@ -48,6 +48,12 @@ export interface Receipt {
   created_at: string;
   updated_at: string;
 }
+
+export interface Allergen {
+  id: number;
+  name: string;
+  color: string;
+}
 export interface Product {
   id: number;
   name: string;
@@ -63,6 +69,7 @@ export interface Product {
   pricePerUma?: number;
   taxPercent: number;
 
+  allergenList: Allergen[];
   prices: Receipt[];
   productTypes: ProductType[];
   created_at: string;

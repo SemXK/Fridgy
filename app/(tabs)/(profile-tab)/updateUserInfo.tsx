@@ -47,7 +47,6 @@ const UpdateUserInfo = () => {
         setShowSnackbar("Hai aggiornato il tuo profilo")
 
         setUser(response)
-        console.log({response})
         router.navigate('/(tabs)/(profile-tab)')
       })
     }

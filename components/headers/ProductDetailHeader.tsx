@@ -16,7 +16,7 @@ const ProductDetailHeader = (props: ProductHeaderInterface) => {
   // * Context
   useEffect(() => {
     console.log(props.product?.isLiked)
-  }, [])
+  }, [props])
   return (
     <View className="flex flex-row justify-between items-center h-8">
       <View className="flex flex-row  items-center">

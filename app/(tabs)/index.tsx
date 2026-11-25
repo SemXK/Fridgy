@@ -11,8 +11,8 @@ import { primaryColor } from '@/constants/theme';
 import { ProductController } from '@/controllers/ProductController';
 
 import { styleShadows } from '@/constants/styles/style-shadows';
-import { router } from 'expo-router';
-import React, { useContext, useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from '../_layout';
@@ -46,10 +46,12 @@ const HomePage = () => {
 
 
   // * lifecycle
-  useEffect(() => {
-    getProductTypes()
-    getShopItems()
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getProductTypes()
+      getShopItems()
+    }, [])
+  );
   useEffect(() => {
     const handler = setTimeout(() => {
       getShopItems();

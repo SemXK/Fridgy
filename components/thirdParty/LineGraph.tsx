@@ -70,97 +70,97 @@ const LineGraph: FC<LineGraphProps> = ({
     });
   };
 
-const graph = useMemo(() => {
-  const { width, height } = size;
+  const graph = useMemo(() => { 
+    const { width, height } = size;
 
-  if (
-    !verticalData.length ||
-    !horizontalData.length ||
-    width <= 0 ||
-    height <= 0
-  ) {
-    return null;
-  }
-
-  const chartLeft = yAxisWidth;
-  const chartBottom = xAxisHeight;
-
-  const chartWidth = Math.max(
-    width - chartLeft - padding,
-    1
-  );
-
-  const chartHeight = Math.max(
-    height - padding * 2 - chartBottom,
-    1
-  );
-
-  // ----------------------------------------
-  // Data
-  // ----------------------------------------
-
-  const values = verticalData.map((d) =>
-    Number(d.value)
-  );
-
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-
-  const stepX =
-    chartWidth / Math.max(values.length - 1, 1);
-
-  const points = values.map((value, i) => {
-    const x = chartLeft + i * stepX;
-
-    const y =
-      padding +
-      (1 - (value - min) / (max - min || 1)) *
-        chartHeight;
-
-    return { x, y };
-  });
-
-  // ----------------------------------------
-  // Paths
-  // ----------------------------------------
-
-  const linePath = points
-    .map(
-      (p, i) =>
-        `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`
-    )
-    .join(" ");
-
-  const areaPath = `
-    ${linePath}
-    L ${points[points.length - 1].x} ${
-      padding + chartHeight
+    if (
+      !verticalData.length ||
+      !horizontalData.length ||
+      width <= 0 ||
+      height <= 0
+    ) {
+      return null;
     }
-    L ${points[0].x} ${padding + chartHeight}
-    Z
-  `;
 
-  return {
-    width,
-    height,
-    points,
-    linePath,
-    areaPath,
-    min,
-    max,
-    stepX,
-    chartHeight,
-    chartLeft,
-    chartWidth,
-  };
-}, [
-  verticalData,
-  horizontalData,
-  size,
-  padding,
-  yAxisWidth,
-  xAxisHeight,
-]);
+    const chartLeft = yAxisWidth;
+    const chartBottom = xAxisHeight;
+
+    const chartWidth = Math.max(
+      width - chartLeft - padding,
+      1
+    );
+
+    const chartHeight = Math.max(
+      height - padding * 2 - chartBottom,
+      1
+    );
+
+    // ----------------------------------------
+    // Data
+    // ----------------------------------------
+
+    const values = verticalData.map((d) =>
+      Number(d.value)
+    );
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+
+    const stepX =
+      chartWidth / Math.max(values.length - 1, 1);
+
+    const points = values.map((value, i) => {
+      const x = chartLeft + i * stepX;
+
+      const y =
+        padding +
+        (1 - (value - min) / (max - min || 1)) *
+          chartHeight;
+
+      return { x, y };
+    });
+
+    // ----------------------------------------
+    // Paths
+    // ----------------------------------------
+
+    const linePath = points
+      .map(
+        (p, i) =>
+          `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`
+      )
+      .join(" ");
+
+    const areaPath = `
+      ${linePath}
+      L ${points[points.length - 1].x} ${
+        padding + chartHeight
+      }
+      L ${points[0].x} ${padding + chartHeight}
+      Z
+    `;
+
+    return {
+      width,
+      height,
+      points,
+      linePath,
+      areaPath,
+      min,
+      max,
+      stepX,
+      chartHeight,
+      chartLeft,
+      chartWidth,
+    };
+  }, [
+    verticalData,
+    horizontalData,
+    size,
+    padding,
+    yAxisWidth,
+    xAxisHeight,
+  ]);
 
 
   return (
